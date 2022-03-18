@@ -1,0 +1,48 @@
+
+
+#' Title
+#'
+#' @param mapping
+#' @param data
+#' @param position
+#' @param na.rm
+#' @param show.legend
+#' @param inherit.aes
+#' @param ...
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' library(lubridate)
+#' library(tidyverse)
+#'
+#' data.frame(date = as.Date("2020-01-01") + days(0:365)) %>%
+#'   ggplot() +
+#'   aes(date = date) +
+#'   aes(color = date) +
+#'   geom_point_calendar() +
+#'   facet_wrap(~month(date, label = T, abbr = T))
+#'
+#' data.frame(date = as.Date("2020-01-01") + days(0:400)) %>%
+#'   ggplot() +
+#'   aes(date = date) +
+#'   geom_point_calendar() +
+#'   facet_grid(year(date) ~ month(date, label = T, abbr = T))
+geom_point_calendar <- function(mapping = NULL, data = NULL,
+                               position = "identity", na.rm = FALSE,
+                               show.legend = NA,
+                               inherit.aes = TRUE, ...) {
+  ggplot2::layer(
+    stat = StatCalendar, # proto object from Step 2
+    geom = ggplot2::GeomPoint, # inherit other behavior
+    data = data,
+    mapping = mapping,
+    position = position,
+    show.legend = show.legend,
+    inherit.aes = inherit.aes,
+    params = list(na.rm = na.rm, ...)
+  )
+}
+
+
