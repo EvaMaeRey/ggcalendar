@@ -10,12 +10,12 @@ compute_group_calendar_count <- function(data, scales){
     dplyr::mutate(academic_year =  lubridate::year(.data$date) +
                     ifelse(lubridate::month(date) >
                              6, 1, 0)) %>%
-    mutate(academic_month = .data$month %>%
+    dplyr::mutate(academic_month = .data$month %>%
              factor(levels = c("Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
                                "Jan", "Feb", "Mar", "Apr", "May", "Jun"))) %>%
-    mutate(x = .data$day_of_week) %>%
-    mutate(y = -.data$week_of_month) %>%
-    mutate(label = .data$date_of_month)
+    dplyr::mutate(x = .data$day_of_week) %>%
+    dplyr::mutate(y = -.data$week_of_month) %>%
+    dplyr::mutate(label = .data$date_of_month)
 
 }
 
@@ -41,16 +41,16 @@ StatCalendarcount <- ggplot2::ggproto(`_class` = "StatCalendarcount",
 #' @export
 #'
 #' @examples
-# library(lubridate)
-# library(tidyverse)
-#
-# data.frame(date = as.Date("2020-01-01") + days(0:365) ) %>%
-#   sample_n(500, replace = TRUE) %>%
-#   ggplot() +
-#   aes(date = date) +
-#   geom_count_calendar() +
-#   scale_color_discrete() +
-#   facet_wrap(~month(date, label = T, abbr = T))
+#' library(lubridate)
+#' library(tidyverse)
+#'
+#' data.frame(date = as.Date("2020-01-01") + days(0:365) ) %>%
+#'   sample_n(500, replace = TRUE) %>%
+#'   ggplot() +
+#'   aes(date = date) +
+#'   geom_count_calendar() +
+#'   scale_color_discrete() +
+#'   facet_wrap(~month(date, label = T, abbr = T))
 
 geom_count_calendar <- function(mapping = NULL, data = NULL,
                                position = "identity", na.rm = FALSE,

@@ -10,12 +10,10 @@ compute_group_calendar <- function(data, scales){
     dplyr::mutate(academic_year =  lubridate::year(.data$date) +
              ifelse(lubridate::month(date) >
                       6, 1, 0)) %>%
-    mutate(academic_month = .data$month %>%
+    dplyr::mutate(academic_month = .data$month %>%
              factor(levels = c("Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
                                "Jan", "Feb", "Mar", "Apr", "May", "Jun"))) %>%
-    mutate(x = .data$day_of_week) %>%
-    mutate(y = -.data$week_of_month) %>%
-    mutate(label = .data$date_of_month)
+    dplyr::mutate(label = .data$date_of_month)
 
 }
 
@@ -24,7 +22,8 @@ StatCalendar <- ggplot2::ggproto(`_class` = "StatCalendar",
                                  `_inherit` = ggplot2::Stat,
                                  required_aes = c("date"),
                                  compute_group = compute_group_calendar,
-                                 default_aes = ggplot2::aes(x = after_stat(x)))
+                                 default_aes = ggplot2::aes(x = after_stat(day_of_week),
+                                                            y = after_stat(week_of_month)))
 
 #' Title
 #'
@@ -48,7 +47,8 @@ StatCalendar <- ggplot2::ggproto(`_class` = "StatCalendar",
 #'   aes(date = date) +
 #'   aes(color = date) +
 #'   geom_text_calendar() +
-#'   facet_wrap(~month(date, label = T, abbr = T))
+#'   facet_wrap(~month(date, label = T, abbr = T)) +
+#'   scale_y_reverse()
 #'
 #' data.frame(date = as.Date("2020-01-01") + days(0:800)) %>%
 #'   ggplot() +
