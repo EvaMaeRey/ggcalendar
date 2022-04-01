@@ -9,7 +9,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%"
+  out.width = "100%",
+  warning = F
 )
 ```
 
@@ -18,7 +19,15 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-Create grammatical calendars.  
+Create grammar of graphics calendars.  
+
+
+```{r}
+library(ggcalendar)
+library(ggplot2)
+library(lubridate)
+library(tidyverse)
+```
 
 
 ``` r
@@ -27,18 +36,38 @@ devtools::install_github("EvaMaeRey/ggcalendar")
 ```
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+```{r}
+compute_group_calendar_script <- readLines("./R/compute_group_calendar.R")
+```
+
+```{r count, code = compute_group_calendar_script}
+
+```
+
+```{r}
+# compute function
+return_dates_year(1999) %>%
+head() %>%
+compute_group_calendar()
+```
+
 
 ```{r example}
-library(ggcalendar)
-library(ggplot2)
-library(lubridate)
-library(tidyverse)
+
 ## basic example code
 
-ggplot(data = return_dates_year(2022)) + 
+return_dates_year(2022) %>% 
+ggplot(data = .) + 
   aes(date = date) + 
-  facet_wrap(~month(date)) + 
-  geom_point_calendar()
+  facet_wrap(~month(date, label = T)) + 
+  geom_text_calendar(aes(label = day(date))) + 
+  geom_point_calendar(data = data.frame(date = c("2022-03-19", "2022-04-09")),
+                      color = 'red',
+                      size = 8, alpha = .5) + 
+  labs(title = "nu2ggplot2X10sion")
+
+
+lubridate::as_datetime("2022-04-09 09:00:00 UTC")
+
 ```
 
