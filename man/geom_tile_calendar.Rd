@@ -30,13 +30,15 @@ library(tidyverse)
 data.frame(date = as.Date("2020-01-01") + days(0:365)) \%>\%
   ggplot() +
   aes(date = date) +
-  aes(color = date) +
-  geom_tile_calendar() +
-  facet_wrap(~month(date, label = T, abbr = T))
+  aes(fill = date) +
+  geom_tile_calendar(color = "white") +
+  facet_wrap(~month(date, label = TRUE, abbr = TRUE)) +
+  scale_y_reverse()
 
 data.frame(date = as.Date("2020-01-01") + days(0:400)) \%>\%
   ggplot() +
   aes(date = date) +
   geom_tile_calendar() +
-  facet_grid(year(date) ~ month(date, label = T, abbr = T))
+  facet_grid(year(date) ~ month(date, label = TRUE, abbr = TRUE)) +
+  scale_y_reverse()
 }

@@ -32,14 +32,15 @@ data.frame(date = as.Date("2020-01-01") + days(0:365)) \%>\%
   aes(date = date) +
   aes(color = date) +
   geom_text_calendar() +
-  facet_wrap(~month(date, label = T, abbr = T))
+  facet_wrap(~month(date, label = TRUE, abbr = TRUE)) +
+  scale_y_reverse()
 
 data.frame(date = as.Date("2020-01-01") + days(0:800)) \%>\%
   ggplot() +
   aes(date = date) +
   aes(color = date) +
   geom_text_calendar() +
-  facet_grid(year(date) ~ month(date, label = T, abbr = T))
+  facet_grid(year(date) ~ month(date, label = TRUE, abbr = TRUE))
 
   data.frame(date = as.Date("2020-01-01") + days(0:800)) \%>\%
   ggplot() +
@@ -47,6 +48,6 @@ data.frame(date = as.Date("2020-01-01") + days(0:800)) \%>\%
   aes(color = date) +
   geom_text_calendar() +
   scale_x_discrete() +
-  facet_grid(lubridate::year(date) ~ lubridate::month(date, label = T, abbr = T))
+  facet_grid(lubridate::year(date) ~ lubridate::month(date, label = TRUE, abbr = TRUE))
 
 }

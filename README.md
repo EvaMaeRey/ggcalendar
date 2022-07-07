@@ -4,6 +4,7 @@
 # ggcalendar
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 Create grammar of graphics calendars.
@@ -57,15 +58,19 @@ compute_group_calendar_script <- readLines("./R/compute_group_calendar.R")
 #' return_dates_year(1999) %>%
 #' head() %>%
 #' compute_group_calendar()
+#'
 compute_group_calendar <- function(data, scales){
 
   data %>%
     dplyr::mutate(num_day_of_week = lubridate::wday(.data$date)) %>%
-    dplyr::mutate(day_of_week = lubridate::wday(.data$date, label = T, abbr = T)) %>%
-    dplyr::mutate(week_of_month = (- lubridate::wday(.data$date) + lubridate::day(.data$date)) %/% 7 + 1) %>%
+    dplyr::mutate(day_of_week = lubridate::wday(.data$date, label = TRUE, abbr = TRUE)) %>%
+    dplyr::mutate(week_of_month = (- lubridate::wday(.data$date) + lubridate::day(.data$date)) %/% 7 + 1 +
+                    ifelse(lubridate::wday(lubridate::floor_date(lubridate::as_date(.data$date), "month")) == 1, -1, 0)
+                  ) %>%
     dplyr::mutate(date_of_month = lubridate::day(.data$date)) %>%
     dplyr::mutate(which_year = lubridate::year(.data$date) - 2018) %>%
-    dplyr::mutate(month = lubridate::month(.data$date, abbr = T, label = T)) %>%
+    dplyr::mutate(month = lubridate::month(.data$date, abbr = TRUE, label = TRUE)) %>%
+    dplyr::mutate(hour = lubridate::hour(.data$date)) %>%
     dplyr::mutate(academic_year =  lubridate::year(.data$date) +
                     ifelse(lubridate::month(date) >
                              6, 1, 0)) %>%
@@ -89,16 +94,17 @@ compute_group_calendar()
 #> 4 1999-01-04               2         Mon             1             4        -19
 #> 5 1999-01-05               3         Tue             1             5        -19
 #> 6 1999-01-06               4         Wed             1             6        -19
-#>   month academic_year academic_month label
-#> 1   Jan          1999            Jan     1
-#> 2   Jan          1999            Jan     2
-#> 3   Jan          1999            Jan     3
-#> 4   Jan          1999            Jan     4
-#> 5   Jan          1999            Jan     5
-#> 6   Jan          1999            Jan     6
+#>   month hour academic_year academic_month label
+#> 1   Jan    0          1999            Jan     1
+#> 2   Jan    0          1999            Jan     2
+#> 3   Jan    0          1999            Jan     3
+#> 4   Jan    0          1999            Jan     4
+#> 5   Jan    0          1999            Jan     5
+#> 6   Jan    0          1999            Jan     6
 ```
 
 ``` r
+
 ## basic example code
 
 return_dates_year(2022) %>% 
@@ -109,13 +115,11 @@ ggplot(data = .) +
   geom_point_calendar(data = data.frame(date = c("2022-03-19", "2022-04-09")),
                       color = 'red',
                       size = 8, alpha = .5) + 
-  labs(title = "nu2ggplot2X10sion")
+  geom_point_calendar(data = data.frame(date = c("2022-05-07")),
+                      color = 'goldenrod3',
+                      size = 8, alpha = .6) + 
+  labs(title = "nu2ggplot2X10sion") + 
+  scale_y_reverse()
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
-
-``` r
-
-lubridate::as_datetime("2022-04-09 09:00:00 UTC")
-#> [1] "2022-04-09 09:00:00 UTC"
-```

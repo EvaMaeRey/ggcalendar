@@ -64,10 +64,11 @@ ggplot(data = .) +
   geom_point_calendar(data = data.frame(date = c("2022-03-19", "2022-04-09")),
                       color = 'red',
                       size = 8, alpha = .5) + 
-  labs(title = "nu2ggplot2X10sion")
-
-
-lubridate::as_datetime("2022-04-09 09:00:00 UTC")
+  geom_point_calendar(data = data.frame(date = c("2022-05-07")),
+                      color = 'goldenrod3',
+                      size = 8, alpha = .6) + 
+  labs(title = "nu2ggplot2X10sion") + 
+  scale_y_reverse()
 
 ```
 

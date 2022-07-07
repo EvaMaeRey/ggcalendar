@@ -2,11 +2,11 @@ compute_group_calendar_count <- function(data, scales){
 
   data %>%
     dplyr::count(date) %>%
-    dplyr::mutate(day_of_week = lubridate::wday(.data$date, label = T, abbr = T)) %>%
+    dplyr::mutate(day_of_week = lubridate::wday(.data$date, label = TRUE, abbr = TRUE)) %>%
     dplyr::mutate(week_of_month = (- lubridate::wday(.data$date) + lubridate::day(.data$date)) %/% 7 + 1) %>%
     dplyr::mutate(date_of_month = lubridate::day(.data$date)) %>%
     dplyr::mutate(which_year = lubridate::year(.data$date) - 2018) %>%
-    dplyr::mutate(month = lubridate::month(.data$date, abbr = T, label = T)) %>%
+    dplyr::mutate(month = lubridate::month(.data$date, abbr = TRUE, label = TRUE)) %>%
     dplyr::mutate(academic_year =  lubridate::year(.data$date) +
                     ifelse(lubridate::month(date) >
                              6, 1, 0)) %>%
@@ -50,7 +50,7 @@ StatCalendarcount <- ggplot2::ggproto(`_class` = "StatCalendarcount",
 #'   aes(date = date) +
 #'   geom_count_calendar() +
 #'   scale_color_discrete() +
-#'   facet_wrap(~month(date, label = T, abbr = T))
+#'   facet_wrap(~month(date, label = TRUE, abbr = TRUE))
 
 geom_count_calendar <- function(mapping = NULL, data = NULL,
                                position = "identity", na.rm = FALSE,

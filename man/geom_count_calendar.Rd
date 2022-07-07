@@ -23,3 +23,15 @@ geom_count_calendar(
 \description{
 Title
 }
+\examples{
+library(lubridate)
+library(tidyverse)
+
+data.frame(date = as.Date("2020-01-01") + days(0:365) ) \%>\%
+  sample_n(500, replace = TRUE) \%>\%
+  ggplot() +
+  aes(date = date) +
+  geom_count_calendar() +
+  scale_color_discrete() +
+  facet_wrap(~month(date, label = TRUE, abbr = TRUE))
+}

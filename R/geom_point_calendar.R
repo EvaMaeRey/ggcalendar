@@ -14,21 +14,21 @@
 #' @export
 #'
 #' @examples
-# library(lubridate)
-# library(tidyverse)
-#
-# data.frame(date = as.Date("2020-01-01") + days(0:365)) %>%
-#   ggplot() +
-#   aes(date = date) +
-#   aes(color = date) +
-#   geom_point_calendar() +
-#   facet_wrap(~month(date, label = T, abbr = T))
-#
-# data.frame(date = as.Date("2020-01-01") + days(0:400)) %>%
-#   ggplot() +
-#   aes(date = date) +
-#   geom_point_calendar() +
-#   facet_grid(year(date) ~ month(date, label = T, abbr = T))
+#' library(lubridate)
+#' library(tidyverse)
+#'
+#' data.frame(date = as.Date("2020-01-01") + days(0:365)) %>%
+#'   ggplot() +
+#'   aes(date = date) +
+#'   aes(color = date) +
+#'   geom_point_calendar() +
+#'   facet_wrap(~month(date, label = TRUE, abbr = TRUE))
+#'
+#' data.frame(date = as.Date("2020-01-01") + days(0:400)) %>%
+#'   ggplot() +
+#'   aes(date = date) +
+#'   geom_point_calendar() +
+#'   facet_grid(year(date) ~ month(date, label = TRUE, abbr = TRUE))
 geom_point_calendar <- function(mapping = NULL, data = NULL,
                                position = "identity", na.rm = FALSE,
                                show.legend = NA,

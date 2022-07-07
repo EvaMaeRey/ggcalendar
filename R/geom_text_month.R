@@ -5,8 +5,8 @@ StatCalendar <- ggplot2::ggproto(`_class` = "StatCalendar",
                                  `_inherit` = ggplot2::Stat,
                                  required_aes = c("date"),
                                  compute_group = compute_group_calendar,
-                                 default_aes = ggplot2::aes(x = after_stat(day_of_week),
-                                                            y = after_stat(week_of_month)))
+                                 default_aes = ggplot2::aes(x = ggplot2::after_stat(day_of_week),
+                                                            y = ggplot2::after_stat(week_of_month)))
 
 #' Title
 #'
@@ -30,7 +30,7 @@ StatCalendar <- ggplot2::ggproto(`_class` = "StatCalendar",
 #'   aes(date = date) +
 #'   aes(color = date) +
 #'   geom_text_calendar() +
-#'   facet_wrap(~month(date, label = T, abbr = T)) +
+#'   facet_wrap(~month(date, label = TRUE, abbr = TRUE)) +
 #'   scale_y_reverse()
 #'
 #' data.frame(date = as.Date("2020-01-01") + days(0:800)) %>%
@@ -38,7 +38,7 @@ StatCalendar <- ggplot2::ggproto(`_class` = "StatCalendar",
 #'   aes(date = date) +
 #'   aes(color = date) +
 #'   geom_text_calendar() +
-#'   facet_grid(year(date) ~ month(date, label = T, abbr = T))
+#'   facet_grid(year(date) ~ month(date, label = TRUE, abbr = TRUE))
 #'
 #'   data.frame(date = as.Date("2020-01-01") + days(0:800)) %>%
 #'   ggplot() +
@@ -46,7 +46,7 @@ StatCalendar <- ggplot2::ggproto(`_class` = "StatCalendar",
 #'   aes(color = date) +
 #'   geom_text_calendar() +
 #'   scale_x_discrete() +
-#'   facet_grid(lubridate::year(date) ~ lubridate::month(date, label = T, abbr = T))
+#'   facet_grid(lubridate::year(date) ~ lubridate::month(date, label = TRUE, abbr = TRUE))
 #'
 geom_text_calendar <- function(mapping = NULL, data = NULL,
                                position = "identity", na.rm = FALSE,

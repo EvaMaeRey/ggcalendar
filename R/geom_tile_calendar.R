@@ -2,7 +2,8 @@ StatCalendartile <- ggplot2::ggproto(`_class` = "StatCalendartile",
                                  `_inherit` = ggplot2::Stat,
                                  required_aes = c("date"),
                                  compute_group = compute_group_calendar,
-                                 default_aes = ggplot2::aes(x = after_stat(num_day_of_week)))
+                                 default_aes = ggplot2::aes(x = after_stat(num_day_of_week),
+                                                            y = after_stat(week_of_month)))
 
 #' Title
 #'
@@ -24,15 +25,17 @@ StatCalendartile <- ggplot2::ggproto(`_class` = "StatCalendartile",
 #' data.frame(date = as.Date("2020-01-01") + days(0:365)) %>%
 #'   ggplot() +
 #'   aes(date = date) +
-#'   aes(color = date) +
-#'   geom_tile_calendar() +
-#'   facet_wrap(~month(date, label = T, abbr = T))
+#'   aes(fill = date) +
+#'   geom_tile_calendar(color = "white") +
+#'   facet_wrap(~month(date, label = TRUE, abbr = TRUE)) +
+#'   scale_y_reverse()
 #'
 #' data.frame(date = as.Date("2020-01-01") + days(0:400)) %>%
 #'   ggplot() +
 #'   aes(date = date) +
 #'   geom_tile_calendar() +
-#'   facet_grid(year(date) ~ month(date, label = T, abbr = T))
+#'   facet_grid(year(date) ~ month(date, label = TRUE, abbr = TRUE)) +
+#'   scale_y_reverse()
 geom_tile_calendar <- function(mapping = NULL, data = NULL,
                                position = "identity", na.rm = FALSE,
                                show.legend = NA,
