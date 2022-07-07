@@ -59,111 +59,179 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
+
 <div id="ggcalendar" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#ggcalendar" class="anchor"></a>ggcalendar</h1></div>
 <!-- badges: start -->
-<!-- badges: end -->
+
 <p>Create grammar of graphics calendars.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggcalendar)</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(lubridate)</span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="co">#&gt; </span></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="co">#&gt; Attaching package: 'lubridate'</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="co">#&gt; </span></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="co">#&gt;     date, intersect, setdiff, union</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyverse)</span>
-<span id="cb1-10"><a href="#cb1-10"></a><span class="co">#&gt; ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</span></span>
-<span id="cb1-11"><a href="#cb1-11"></a><span class="co">#&gt; ✓ tibble  3.1.6     ✓ dplyr   1.0.8</span></span>
-<span id="cb1-12"><a href="#cb1-12"></a><span class="co">#&gt; ✓ tidyr   1.0.2     ✓ stringr 1.4.0</span></span>
-<span id="cb1-13"><a href="#cb1-13"></a><span class="co">#&gt; ✓ readr   1.3.1     ✓ forcats 0.5.0</span></span>
-<span id="cb1-14"><a href="#cb1-14"></a><span class="co">#&gt; ✓ purrr   0.3.4</span></span>
-<span id="cb1-15"><a href="#cb1-15"></a><span class="co">#&gt; ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──</span></span>
-<span id="cb1-16"><a href="#cb1-16"></a><span class="co">#&gt; x lubridate::as.difftime() masks base::as.difftime()</span></span>
-<span id="cb1-17"><a href="#cb1-17"></a><span class="co">#&gt; x lubridate::date()        masks base::date()</span></span>
-<span id="cb1-18"><a href="#cb1-18"></a><span class="co">#&gt; x dplyr::filter()          masks stats::filter()</span></span>
-<span id="cb1-19"><a href="#cb1-19"></a><span class="co">#&gt; x lubridate::intersect()   masks base::intersect()</span></span>
-<span id="cb1-20"><a href="#cb1-20"></a><span class="co">#&gt; x dplyr::lag()             masks stats::lag()</span></span>
-<span id="cb1-21"><a href="#cb1-21"></a><span class="co">#&gt; x lubridate::setdiff()     masks base::setdiff()</span></span>
-<span id="cb1-22"><a href="#cb1-22"></a><span class="co">#&gt; x lubridate::union()       masks base::union()</span></span></code></pre></div>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyverse)</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># install.packages("devtools")</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a>devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"EvaMaeRey/ggcalendar"</span>)</span></code></pre></div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>compute_group_calendar_script &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="st">"./R/compute_group_calendar.R"</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">#' Title</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="co">#'</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#' @param data</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="co">#' @param scales</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="co">#'</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a><span class="co">#' @return</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="co">#' @export</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="co">#'</span></span>
-<span id="cb4-9"><a href="#cb4-9"></a><span class="co">#' @examples</span></span>
-<span id="cb4-10"><a href="#cb4-10"></a><span class="co">#' return_dates_year(1999) %&gt;%</span></span>
-<span id="cb4-11"><a href="#cb4-11"></a><span class="co">#' head() %&gt;%</span></span>
-<span id="cb4-12"><a href="#cb4-12"></a><span class="co">#' compute_group_calendar()</span></span>
-<span id="cb4-13"><a href="#cb4-13"></a><span class="co">#'</span></span>
-<span id="cb4-14"><a href="#cb4-14"></a>compute_group_calendar &lt;-<span class="st"> </span><span class="cf">function</span>(data, scales){</span>
-<span id="cb4-15"><a href="#cb4-15"></a></span>
-<span id="cb4-16"><a href="#cb4-16"></a>  data <span class="op">%&gt;%</span></span>
-<span id="cb4-17"><a href="#cb4-17"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/mutate.html">mutate</a></span>(<span class="dt">num_day_of_week =</span> lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/day.html">wday</a></span>(.data<span class="op">$</span>date)) <span class="op">%&gt;%</span></span>
-<span id="cb4-18"><a href="#cb4-18"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/mutate.html">mutate</a></span>(<span class="dt">day_of_week =</span> lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/day.html">wday</a></span>(.data<span class="op">$</span>date, <span class="dt">label =</span> <span class="ot">TRUE</span>, <span class="dt">abbr =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb4-19"><a href="#cb4-19"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/mutate.html">mutate</a></span>(<span class="dt">week_of_month =</span> (<span class="op">-</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/day.html">wday</a></span>(.data<span class="op">$</span>date) <span class="op">+</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/day.html">day</a></span>(.data<span class="op">$</span>date)) <span class="op">%/%</span><span class="st"> </span><span class="dv">7</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span></span>
-<span id="cb4-20"><a href="#cb4-20"></a><span class="st">                    </span><span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/day.html">wday</a></span>(lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/round_date.html">floor_date</a></span>(lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/as_date.html">as_date</a></span>(.data<span class="op">$</span>date), <span class="st">"month"</span>)) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="dv">-1</span>, <span class="dv">0</span>)</span>
-<span id="cb4-21"><a href="#cb4-21"></a>                  ) <span class="op">%&gt;%</span></span>
-<span id="cb4-22"><a href="#cb4-22"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/mutate.html">mutate</a></span>(<span class="dt">date_of_month =</span> lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/day.html">day</a></span>(.data<span class="op">$</span>date)) <span class="op">%&gt;%</span></span>
-<span id="cb4-23"><a href="#cb4-23"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/mutate.html">mutate</a></span>(<span class="dt">which_year =</span> lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/year.html">year</a></span>(.data<span class="op">$</span>date) <span class="op">-</span><span class="st"> </span><span class="dv">2018</span>) <span class="op">%&gt;%</span></span>
-<span id="cb4-24"><a href="#cb4-24"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/mutate.html">mutate</a></span>(<span class="dt">month =</span> lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/month.html">month</a></span>(.data<span class="op">$</span>date, <span class="dt">abbr =</span> <span class="ot">TRUE</span>, <span class="dt">label =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb4-25"><a href="#cb4-25"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/mutate.html">mutate</a></span>(<span class="dt">hour =</span> lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/hour.html">hour</a></span>(.data<span class="op">$</span>date)) <span class="op">%&gt;%</span></span>
-<span id="cb4-26"><a href="#cb4-26"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/mutate.html">mutate</a></span>(<span class="dt">academic_year =</span>  lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/year.html">year</a></span>(.data<span class="op">$</span>date) <span class="op">+</span></span>
-<span id="cb4-27"><a href="#cb4-27"></a><span class="st">                    </span><span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/month.html">month</a></span>(date) <span class="op">&gt;</span></span>
-<span id="cb4-28"><a href="#cb4-28"></a><span class="st">                             </span><span class="dv">6</span>, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb4-29"><a href="#cb4-29"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/mutate.html">mutate</a></span>(<span class="dt">academic_month =</span> .data<span class="op">$</span>month <span class="op">%&gt;%</span></span>
-<span id="cb4-30"><a href="#cb4-30"></a><span class="st">                    </span><span class="kw"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="dt">levels =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Jul"</span>, <span class="st">"Aug"</span>, <span class="st">"Sep"</span>, <span class="st">"Oct"</span>, <span class="st">"Nov"</span>, <span class="st">"Dec"</span>,</span>
-<span id="cb4-31"><a href="#cb4-31"></a>                                      <span class="st">"Jan"</span>, <span class="st">"Feb"</span>, <span class="st">"Mar"</span>, <span class="st">"Apr"</span>, <span class="st">"May"</span>, <span class="st">"Jun"</span>))) <span class="op">%&gt;%</span></span>
-<span id="cb4-32"><a href="#cb4-32"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/mutate.html">mutate</a></span>(<span class="dt">label =</span> .data<span class="op">$</span>date_of_month)</span>
-<span id="cb4-33"><a href="#cb4-33"></a></span>
-<span id="cb4-34"><a href="#cb4-34"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># compute function</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="kw"><a href="reference/return_dates_year.html">return_dates_year</a></span>(<span class="dv">1999</span>) <span class="op">%&gt;%</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>() <span class="op">%&gt;%</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="kw"><a href="reference/compute_group_calendar.html">compute_group_calendar</a></span>()</span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="co">#&gt;         date num_day_of_week day_of_week week_of_month date_of_month which_year</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a><span class="co">#&gt; 1 1999-01-01               6         Fri             0             1        -19</span></span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="co">#&gt; 2 1999-01-02               7         Sat             0             2        -19</span></span>
-<span id="cb5-8"><a href="#cb5-8"></a><span class="co">#&gt; 3 1999-01-03               1         Sun             1             3        -19</span></span>
-<span id="cb5-9"><a href="#cb5-9"></a><span class="co">#&gt; 4 1999-01-04               2         Mon             1             4        -19</span></span>
-<span id="cb5-10"><a href="#cb5-10"></a><span class="co">#&gt; 5 1999-01-05               3         Tue             1             5        -19</span></span>
-<span id="cb5-11"><a href="#cb5-11"></a><span class="co">#&gt; 6 1999-01-06               4         Wed             1             6        -19</span></span>
-<span id="cb5-12"><a href="#cb5-12"></a><span class="co">#&gt;   month hour academic_year academic_month label</span></span>
-<span id="cb5-13"><a href="#cb5-13"></a><span class="co">#&gt; 1   Jan    0          1999            Jan     1</span></span>
-<span id="cb5-14"><a href="#cb5-14"></a><span class="co">#&gt; 2   Jan    0          1999            Jan     2</span></span>
-<span id="cb5-15"><a href="#cb5-15"></a><span class="co">#&gt; 3   Jan    0          1999            Jan     3</span></span>
-<span id="cb5-16"><a href="#cb5-16"></a><span class="co">#&gt; 4   Jan    0          1999            Jan     4</span></span>
-<span id="cb5-17"><a href="#cb5-17"></a><span class="co">#&gt; 5   Jan    0          1999            Jan     5</span></span>
-<span id="cb5-18"><a href="#cb5-18"></a><span class="co">#&gt; 6   Jan    0          1999            Jan     6</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw"><a href="reference/ggcalendar.html">ggcalendar</a></span>() <span class="op">+</span><span class="st"> </span><span class="co"># defaults to full calendar of current year</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="st">  </span><span class="kw"><a href="reference/geom_point_calendar.html">geom_point_calendar</a></span>() <span class="co"># default to dates declared in ggcalendar</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="100%"></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="kw"><a href="reference/ggcalendar.html">ggcalendar</a></span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="st">  </span><span class="kw"><a href="reference/geom_text_calendar.html">geom_text_calendar</a></span>() <span class="co"># defaults to day of month in ggcalendar</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-3-2.png" width="100%"></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="kw"><a href="reference/ggcalendar.html">ggcalendar</a></span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="st">  </span><span class="kw"><a href="reference/geom_text_calendar.html">geom_text_calendar</a></span>(<span class="dt">label =</span> <span class="st">"Day"</span>, <span class="co"># override default</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>                     <span class="dt">size =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-3-3.png" width="100%"></p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="co">## basic example code</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="kw"><a href="reference/return_dates_year.html">return_dates_year</a></span>(<span class="dv">2022</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> .) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb6-6"><a href="#cb6-6"></a><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/aes.html">aes</a></span>(<span class="dt">date =</span> date) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/month.html">month</a></span>(date, <span class="dt">label =</span> T)) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb6-8"><a href="#cb6-8"></a><span class="st">  </span><span class="kw"><a href="reference/geom_text_calendar.html">geom_text_calendar</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/aes.html">aes</a></span>(<span class="dt">label =</span> <span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/day.html">day</a></span>(date))) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb6-9"><a href="#cb6-9"></a><span class="st">  </span><span class="kw"><a href="reference/geom_point_calendar.html">geom_point_calendar</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">date =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"2022-03-19"</span>, <span class="st">"2022-04-09"</span>)),</span>
-<span id="cb6-10"><a href="#cb6-10"></a>                      <span class="dt">color =</span> <span class="st">'red'</span>,</span>
-<span id="cb6-11"><a href="#cb6-11"></a>                      <span class="dt">size =</span> <span class="dv">8</span>, <span class="dt">alpha =</span> <span class="fl">.5</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb6-12"><a href="#cb6-12"></a><span class="st">  </span><span class="kw"><a href="reference/geom_point_calendar.html">geom_point_calendar</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">date =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"2022-05-07"</span>)),</span>
-<span id="cb6-13"><a href="#cb6-13"></a>                      <span class="dt">color =</span> <span class="st">'goldenrod3'</span>,</span>
-<span id="cb6-14"><a href="#cb6-14"></a>                      <span class="dt">size =</span> <span class="dv">8</span>, <span class="dt">alpha =</span> <span class="fl">.6</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb6-15"><a href="#cb6-15"></a><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/labs.html">labs</a></span>(<span class="dt">title =</span> <span class="st">"nu2ggplot2X10sion"</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb6-16"><a href="#cb6-16"></a><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/scale_continuous.html">scale_y_reverse</a></span>()</span></code></pre></div>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="kw"><a href="reference/ggcalendar.html">ggcalendar</a></span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="st">  </span><span class="kw"><a href="reference/geom_text_calendar.html">geom_text_calendar</a></span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="st">  </span><span class="kw"><a href="reference/geom_point_calendar.html">geom_point_calendar</a></span>(<span class="dt">data =</span> . <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/day.html">wday</a></span>(date) <span class="op">%in%</span><span class="st"> </span><span class="dv">2</span><span class="op">:</span><span class="dv">6</span>),</span>
+<span id="cb6-5"><a href="#cb6-5"></a>                      <span class="dt">alpha =</span> <span class="fl">.2</span>,</span>
+<span id="cb6-6"><a href="#cb6-6"></a>                      <span class="dt">size =</span> <span class="dv">5</span>,</span>
+<span id="cb6-7"><a href="#cb6-7"></a>                      <span class="dt">color =</span> <span class="st">"red"</span>)</span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-3-4.png" width="100%"></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="co">## basic example code</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"2022-03-19"</span>, <span class="st">"2022-04-09"</span>, <span class="st">"2022-05-07"</span>, <span class="st">"2022-06-11"</span>, <span class="st">"2022-07-16"</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="st">  </span><span class="kw">tibble</span>(<span class="dt">date =</span> . ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">date =</span> date <span class="op">%&gt;%</span><span class="st"> </span>as_date) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">future =</span> <span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span>() <span class="op">&lt;</span><span class="st"> </span>date) -&gt;</span>
+<span id="cb7-8"><a href="#cb7-8"></a>events</span>
+<span id="cb7-9"><a href="#cb7-9"></a></span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="kw"><a href="reference/ggcalendar.html">ggcalendar</a></span>() <span class="op">+</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/month.html">month</a></span>(date, <span class="dt">label =</span> T)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb7-12"><a href="#cb7-12"></a><span class="st">  </span><span class="kw"><a href="reference/geom_text_calendar.html">geom_text_calendar</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/aes.html">aes</a></span>(<span class="dt">label =</span> <span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/day.html">day</a></span>(date))) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="st">  </span><span class="kw"><a href="reference/geom_point_calendar.html">geom_point_calendar</a></span>(<span class="dt">data =</span> events,</span>
+<span id="cb7-14"><a href="#cb7-14"></a>                      <span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/aes.html">aes</a></span>(<span class="dt">color =</span> future),</span>
+<span id="cb7-15"><a href="#cb7-15"></a>                      <span class="dt">size =</span> <span class="dv">8</span>, </span>
+<span id="cb7-16"><a href="#cb7-16"></a>                      <span class="dt">alpha =</span> <span class="fl">.5</span>) <span class="op">+</span></span>
+<span id="cb7-17"><a href="#cb7-17"></a><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/labs.html">labs</a></span>(<span class="dt">title =</span> <span class="st">"nu2ggplot2X^2sion"</span>)</span></code></pre></div>
 <p><img src="reference/figures/README-example-1.png" width="100%"></p>
+<hr>
 </div>
 </div>
+<div id="a-little-on-the-internals-the-compute-group-function-or-thank-you-lubridate" class="section level1">
+<h1 class="hasAnchor">
+<a href="#a-little-on-the-internals-the-compute-group-function-or-thank-you-lubridate" class="anchor"></a>A little on the internals, the compute group function or thank you lubridate!</h1>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>compute_group_calendar_script &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="st">"./R/compute_group_calendar.R"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">#' Title</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="co">#'</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="co">#' @param data</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="co">#' @param scales</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="co">#'</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="co">#' @return</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="co">#' @export</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="co">#'</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="co">#' @examples</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="co">#' return_dates_year(1999) %&gt;%</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="co">#' head() %&gt;%</span></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="co">#' compute_group_calendar()</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a><span class="co">#'</span></span>
+<span id="cb9-14"><a href="#cb9-14"></a>compute_group_calendar &lt;-<span class="st"> </span><span class="cf">function</span>(data, scales){</span>
+<span id="cb9-15"><a href="#cb9-15"></a></span>
+<span id="cb9-16"><a href="#cb9-16"></a>  data <span class="op">%&gt;%</span></span>
+<span id="cb9-17"><a href="#cb9-17"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/mutate.html">mutate</a></span>(<span class="dt">num_day_of_week =</span> lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/day.html">wday</a></span>(.data<span class="op">$</span>date)) <span class="op">%&gt;%</span></span>
+<span id="cb9-18"><a href="#cb9-18"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/mutate.html">mutate</a></span>(<span class="dt">day_of_week =</span> lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/day.html">wday</a></span>(.data<span class="op">$</span>date, <span class="dt">label =</span> <span class="ot">TRUE</span>, <span class="dt">abbr =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb9-19"><a href="#cb9-19"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/mutate.html">mutate</a></span>(<span class="dt">week_of_month =</span> (<span class="op">-</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/day.html">wday</a></span>(.data<span class="op">$</span>date) <span class="op">+</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/day.html">day</a></span>(.data<span class="op">$</span>date)) <span class="op">%/%</span><span class="st"> </span><span class="dv">7</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span></span>
+<span id="cb9-20"><a href="#cb9-20"></a><span class="st">                    </span><span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/day.html">wday</a></span>(lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/round_date.html">floor_date</a></span>(lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/as_date.html">as_date</a></span>(.data<span class="op">$</span>date), <span class="st">"month"</span>)) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="dv">-1</span>, <span class="dv">0</span>)</span>
+<span id="cb9-21"><a href="#cb9-21"></a>                  ) <span class="op">%&gt;%</span></span>
+<span id="cb9-22"><a href="#cb9-22"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/mutate.html">mutate</a></span>(<span class="dt">date_of_month =</span> lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/day.html">day</a></span>(.data<span class="op">$</span>date)) <span class="op">%&gt;%</span></span>
+<span id="cb9-23"><a href="#cb9-23"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/mutate.html">mutate</a></span>(<span class="dt">which_year =</span> lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/year.html">year</a></span>(.data<span class="op">$</span>date) <span class="op">-</span><span class="st"> </span><span class="dv">2018</span>) <span class="op">%&gt;%</span></span>
+<span id="cb9-24"><a href="#cb9-24"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/mutate.html">mutate</a></span>(<span class="dt">month =</span> lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/month.html">month</a></span>(.data<span class="op">$</span>date, <span class="dt">abbr =</span> <span class="ot">TRUE</span>, <span class="dt">label =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb9-25"><a href="#cb9-25"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/mutate.html">mutate</a></span>(<span class="dt">hour =</span> lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/hour.html">hour</a></span>(.data<span class="op">$</span>date)) <span class="op">%&gt;%</span></span>
+<span id="cb9-26"><a href="#cb9-26"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/mutate.html">mutate</a></span>(<span class="dt">academic_year =</span>  lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/year.html">year</a></span>(.data<span class="op">$</span>date) <span class="op">+</span></span>
+<span id="cb9-27"><a href="#cb9-27"></a><span class="st">                    </span><span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/month.html">month</a></span>(date) <span class="op">&gt;</span></span>
+<span id="cb9-28"><a href="#cb9-28"></a><span class="st">                             </span><span class="dv">6</span>, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb9-29"><a href="#cb9-29"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/mutate.html">mutate</a></span>(<span class="dt">academic_month =</span> .data<span class="op">$</span>month <span class="op">%&gt;%</span></span>
+<span id="cb9-30"><a href="#cb9-30"></a><span class="st">                    </span><span class="kw"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="dt">levels =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Jul"</span>, <span class="st">"Aug"</span>, <span class="st">"Sep"</span>, <span class="st">"Oct"</span>, <span class="st">"Nov"</span>, <span class="st">"Dec"</span>,</span>
+<span id="cb9-31"><a href="#cb9-31"></a>                                      <span class="st">"Jan"</span>, <span class="st">"Feb"</span>, <span class="st">"Mar"</span>, <span class="st">"Apr"</span>, <span class="st">"May"</span>, <span class="st">"Jun"</span>))) <span class="op">%&gt;%</span></span>
+<span id="cb9-32"><a href="#cb9-32"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/mutate.html">mutate</a></span>(<span class="dt">label =</span> .data<span class="op">$</span>date_of_month)</span>
+<span id="cb9-33"><a href="#cb9-33"></a></span>
+<span id="cb9-34"><a href="#cb9-34"></a>}</span>
+<span id="cb9-35"><a href="#cb9-35"></a></span>
+<span id="cb9-36"><a href="#cb9-36"></a>StatCalendar &lt;-<span class="st"> </span>ggplot2<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/ggproto.html">ggproto</a></span>(<span class="st">`</span><span class="dt">_class</span><span class="st">`</span> =<span class="st"> "StatCalendar"</span>,</span>
+<span id="cb9-37"><a href="#cb9-37"></a>                                 <span class="st">`</span><span class="dt">_inherit</span><span class="st">`</span> =<span class="st"> </span>ggplot2<span class="op">::</span>Stat,</span>
+<span id="cb9-38"><a href="#cb9-38"></a>                                 <span class="dt">required_aes =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"date"</span>),</span>
+<span id="cb9-39"><a href="#cb9-39"></a>                                 <span class="dt">compute_group =</span> compute_group_calendar,</span>
+<span id="cb9-40"><a href="#cb9-40"></a>                                 <span class="dt">default_aes =</span> ggplot2<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/aes.html">aes</a></span>(<span class="dt">x =</span> ggplot2<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/aes_eval.html">after_stat</a></span>(day_of_week),</span>
+<span id="cb9-41"><a href="#cb9-41"></a>                                                            <span class="dt">y =</span> ggplot2<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/aes_eval.html">after_stat</a></span>(week_of_month)))</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># compute function</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="kw"><a href="reference/return_dates_year.html">return_dates_year</a></span>(<span class="dv">1999</span>) <span class="op">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>() <span class="op">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="kw"><a href="reference/compute_group_calendar.html">compute_group_calendar</a></span>()</span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="co">#&gt;         date num_day_of_week day_of_week week_of_month date_of_month which_year</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="co">#&gt; 1 1999-01-01               6         Fri             0             1        -19</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="co">#&gt; 2 1999-01-02               7         Sat             0             2        -19</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="co">#&gt; 3 1999-01-03               1         Sun             1             3        -19</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="co">#&gt; 4 1999-01-04               2         Mon             1             4        -19</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="co">#&gt; 5 1999-01-05               3         Tue             1             5        -19</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="co">#&gt; 6 1999-01-06               4         Wed             1             6        -19</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a><span class="co">#&gt;   month hour academic_year academic_month label</span></span>
+<span id="cb10-13"><a href="#cb10-13"></a><span class="co">#&gt; 1   Jan    0          1999            Jan     1</span></span>
+<span id="cb10-14"><a href="#cb10-14"></a><span class="co">#&gt; 2   Jan    0          1999            Jan     2</span></span>
+<span id="cb10-15"><a href="#cb10-15"></a><span class="co">#&gt; 3   Jan    0          1999            Jan     3</span></span>
+<span id="cb10-16"><a href="#cb10-16"></a><span class="co">#&gt; 4   Jan    0          1999            Jan     4</span></span>
+<span id="cb10-17"><a href="#cb10-17"></a><span class="co">#&gt; 5   Jan    0          1999            Jan     5</span></span>
+<span id="cb10-18"><a href="#cb10-18"></a><span class="co">#&gt; 6   Jan    0          1999            Jan     6</span></span></code></pre></div>
+<div id="how-used-in-geom_point_calendar-default-aes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#how-used-in-geom_point_calendar-default-aes" class="anchor"></a>How used in geom_point_calendar… default aes</h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>geom_point_calendar_script &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="st">"./R/geom_point_calendar.R"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a></span>
+<span id="cb12-2"><a href="#cb12-2"></a></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="co">#' Title</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="co">#'</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="co">#' @param mapping</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="co">#' @param data</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="co">#' @param position</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a><span class="co">#' @param na.rm</span></span>
+<span id="cb12-9"><a href="#cb12-9"></a><span class="co">#' @param show.legend</span></span>
+<span id="cb12-10"><a href="#cb12-10"></a><span class="co">#' @param inherit.aes</span></span>
+<span id="cb12-11"><a href="#cb12-11"></a><span class="co">#' @param ...</span></span>
+<span id="cb12-12"><a href="#cb12-12"></a><span class="co">#'</span></span>
+<span id="cb12-13"><a href="#cb12-13"></a><span class="co">#' @return</span></span>
+<span id="cb12-14"><a href="#cb12-14"></a><span class="co">#' @export</span></span>
+<span id="cb12-15"><a href="#cb12-15"></a><span class="co">#'</span></span>
+<span id="cb12-16"><a href="#cb12-16"></a><span class="co">#' @examples</span></span>
+<span id="cb12-17"><a href="#cb12-17"></a><span class="co">#' library(lubridate)</span></span>
+<span id="cb12-18"><a href="#cb12-18"></a><span class="co">#' library(tidyverse)</span></span>
+<span id="cb12-19"><a href="#cb12-19"></a><span class="co">#'</span></span>
+<span id="cb12-20"><a href="#cb12-20"></a><span class="co">#' data.frame(date = as.Date("2020-01-01") + days(0:365)) %&gt;%</span></span>
+<span id="cb12-21"><a href="#cb12-21"></a><span class="co">#'   ggplot() +</span></span>
+<span id="cb12-22"><a href="#cb12-22"></a><span class="co">#'   aes(date = date) +</span></span>
+<span id="cb12-23"><a href="#cb12-23"></a><span class="co">#'   aes(color = date) +</span></span>
+<span id="cb12-24"><a href="#cb12-24"></a><span class="co">#'   geom_point_calendar() +</span></span>
+<span id="cb12-25"><a href="#cb12-25"></a><span class="co">#'   facet_wrap(~month(date, label = TRUE, abbr = TRUE))</span></span>
+<span id="cb12-26"><a href="#cb12-26"></a><span class="co">#'</span></span>
+<span id="cb12-27"><a href="#cb12-27"></a><span class="co">#' data.frame(date = as.Date("2020-01-01") + days(0:400)) %&gt;%</span></span>
+<span id="cb12-28"><a href="#cb12-28"></a><span class="co">#'   ggplot() +</span></span>
+<span id="cb12-29"><a href="#cb12-29"></a><span class="co">#'   aes(date = date) +</span></span>
+<span id="cb12-30"><a href="#cb12-30"></a><span class="co">#'   geom_point_calendar() +</span></span>
+<span id="cb12-31"><a href="#cb12-31"></a><span class="co">#'   facet_grid(year(date) ~ month(date, label = TRUE, abbr = TRUE))</span></span>
+<span id="cb12-32"><a href="#cb12-32"></a>geom_point_calendar &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">mapping =</span> <span class="ot">NULL</span>, <span class="dt">data =</span> <span class="ot">NULL</span>,</span>
+<span id="cb12-33"><a href="#cb12-33"></a>                               <span class="dt">position =</span> <span class="st">"identity"</span>, <span class="dt">na.rm =</span> <span class="ot">FALSE</span>,</span>
+<span id="cb12-34"><a href="#cb12-34"></a>                               <span class="dt">show.legend =</span> <span class="ot">NA</span>,</span>
+<span id="cb12-35"><a href="#cb12-35"></a>                               <span class="dt">inherit.aes =</span> <span class="ot">TRUE</span>, ...) {</span>
+<span id="cb12-36"><a href="#cb12-36"></a>  ggplot2<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/layer.html">layer</a></span>(</span>
+<span id="cb12-37"><a href="#cb12-37"></a>    <span class="dt">stat =</span> StatCalendar, <span class="co"># proto object from Step 2</span></span>
+<span id="cb12-38"><a href="#cb12-38"></a>    <span class="dt">geom =</span> ggplot2<span class="op">::</span>GeomPoint, <span class="co"># inherit other behavior</span></span>
+<span id="cb12-39"><a href="#cb12-39"></a>    <span class="dt">data =</span> data,</span>
+<span id="cb12-40"><a href="#cb12-40"></a>    <span class="dt">mapping =</span> mapping,</span>
+<span id="cb12-41"><a href="#cb12-41"></a>    <span class="dt">position =</span> position,</span>
+<span id="cb12-42"><a href="#cb12-42"></a>    <span class="dt">show.legend =</span> show.legend,</span>
+<span id="cb12-43"><a href="#cb12-43"></a>    <span class="dt">inherit.aes =</span> inherit.aes,</span>
+<span id="cb12-44"><a href="#cb12-44"></a>    <span class="dt">params =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">na.rm =</span> na.rm, ...)</span>
+<span id="cb12-45"><a href="#cb12-45"></a>  )</span>
+<span id="cb12-46"><a href="#cb12-46"></a>}</span></code></pre></div>
+</div>
+</div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -181,7 +249,13 @@
 </ul>
 </div>
 
-  </div>
+  <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+</ul>
+</div>
+</div>
 </div>
 
 
