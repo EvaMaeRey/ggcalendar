@@ -10,13 +10,15 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "man/figures/README-",
   out.width = "100%",
-  warning = F
+  warning = F,
+  message = F
 )
 ```
 
 # ggcalendar
 
 <!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
 Create grammar of graphics calendars.  
@@ -36,12 +38,60 @@ devtools::install_github("EvaMaeRey/ggcalendar")
 ```
 ## Example
 
+
+
+
+```{r}
+ggcalendar() + # defaults to full calendar of current year
+  geom_point_calendar() # default to dates declared in ggcalendar
+
+ggcalendar() + 
+  geom_text_calendar() # defaults to day of month in ggcalendar
+
+ggcalendar() + 
+  geom_text_calendar(label = "Day", # override default
+                     size = 2)
+
+ggcalendar() + 
+  geom_text_calendar() + 
+  geom_point_calendar(data = . %>% filter(wday(date) %in% 2:6),
+                      alpha = .2,
+                      size = 5,
+                      color = "red")
+
+```
+
+```{r example}
+
+## basic example code
+
+c("2022-03-19", "2022-04-09", "2022-05-07", "2022-06-11", "2022-07-16") %>% 
+  tibble(date = . ) %>% 
+  mutate(date = date %>% as_date) %>% 
+  mutate(future = Sys.Date() < date) ->
+events
+
+ggcalendar() +
+  facet_wrap(~month(date, label = T)) + 
+  geom_text_calendar(aes(label = day(date))) + 
+  geom_point_calendar(data = events,
+                      aes(color = future),
+                      size = 8, 
+                      alpha = .5) +
+  labs(title = "nu2ggplot2X^2sion")
+
+```
+
+---
+
+# A little on the internals, the compute group function or thank you lubridate!
+
+
 ```{r}
 compute_group_calendar_script <- readLines("./R/compute_group_calendar.R")
 ```
 
 ```{r count, code = compute_group_calendar_script}
-
 ```
 
 ```{r}
@@ -52,23 +102,13 @@ compute_group_calendar()
 ```
 
 
-```{r example}
 
-## basic example code
+## How used in geom_point_calendar... default aes
 
-return_dates_year(2022) %>% 
-ggplot(data = .) + 
-  aes(date = date) + 
-  facet_wrap(~month(date, label = T)) + 
-  geom_text_calendar(aes(label = day(date))) + 
-  geom_point_calendar(data = data.frame(date = c("2022-03-19", "2022-04-09")),
-                      color = 'red',
-                      size = 8, alpha = .5) + 
-  geom_point_calendar(data = data.frame(date = c("2022-05-07")),
-                      color = 'goldenrod3',
-                      size = 8, alpha = .6) + 
-  labs(title = "nu2ggplot2X10sion") + 
-  scale_y_reverse()
-
+```{r}
+geom_point_calendar_script <- readLines("./R/geom_point_calendar.R")
 ```
 
+
+```{r count, code = geom_point_calendar_script}
+```

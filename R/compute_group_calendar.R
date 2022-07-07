@@ -33,4 +33,10 @@ compute_group_calendar <- function(data, scales){
 
 }
 
+StatCalendar <- ggplot2::ggproto(`_class` = "StatCalendar",
+                                 `_inherit` = ggplot2::Stat,
+                                 required_aes = c("date"),
+                                 compute_group = compute_group_calendar,
+                                 default_aes = ggplot2::aes(x = ggplot2::after_stat(day_of_week),
+                                                            y = ggplot2::after_stat(week_of_month)))
 

@@ -5,6 +5,8 @@
 
 <!-- badges: start -->
 
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
 Create grammar of graphics calendars.
@@ -13,25 +15,7 @@ Create grammar of graphics calendars.
 library(ggcalendar)
 library(ggplot2)
 library(lubridate)
-#> 
-#> Attaching package: 'lubridate'
-#> The following objects are masked from 'package:base':
-#> 
-#>     date, intersect, setdiff, union
 library(tidyverse)
-#> ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
-#> ✓ tibble  3.1.6     ✓ dplyr   1.0.8
-#> ✓ tidyr   1.0.2     ✓ stringr 1.4.0
-#> ✓ readr   1.3.1     ✓ forcats 0.5.0
-#> ✓ purrr   0.3.4
-#> ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-#> x lubridate::as.difftime() masks base::as.difftime()
-#> x lubridate::date()        masks base::date()
-#> x dplyr::filter()          masks stats::filter()
-#> x lubridate::intersect()   masks base::intersect()
-#> x dplyr::lag()             masks stats::lag()
-#> x lubridate::setdiff()     masks base::setdiff()
-#> x lubridate::union()       masks base::union()
 ```
 
 ``` r
@@ -40,6 +24,68 @@ devtools::install_github("EvaMaeRey/ggcalendar")
 ```
 
 ## Example
+
+``` r
+ggcalendar() + # defaults to full calendar of current year
+  geom_point_calendar() # default to dates declared in ggcalendar
+```
+
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+
+``` r
+
+ggcalendar() + 
+  geom_text_calendar() # defaults to day of month in ggcalendar
+```
+
+<img src="man/figures/README-unnamed-chunk-3-2.png" width="100%" />
+
+``` r
+
+ggcalendar() + 
+  geom_text_calendar(label = "Day", # override default
+                     size = 2)
+```
+
+<img src="man/figures/README-unnamed-chunk-3-3.png" width="100%" />
+
+``` r
+
+ggcalendar() + 
+  geom_text_calendar() + 
+  geom_point_calendar(data = . %>% filter(wday(date) %in% 2:6),
+                      alpha = .2,
+                      size = 5,
+                      color = "red")
+```
+
+<img src="man/figures/README-unnamed-chunk-3-4.png" width="100%" />
+
+``` r
+
+## basic example code
+
+c("2022-03-19", "2022-04-09", "2022-05-07", "2022-06-11", "2022-07-16") %>% 
+  tibble(date = . ) %>% 
+  mutate(date = date %>% as_date) %>% 
+  mutate(future = Sys.Date() < date) ->
+events
+
+ggcalendar() +
+  facet_wrap(~month(date, label = T)) + 
+  geom_text_calendar(aes(label = day(date))) + 
+  geom_point_calendar(data = events,
+                      aes(color = future),
+                      size = 8, 
+                      alpha = .5) +
+  labs(title = "nu2ggplot2X^2sion")
+```
+
+<img src="man/figures/README-example-1.png" width="100%" />
+
+-----
+
+# A little on the internals, the compute group function or thank you lubridate\!
 
 ``` r
 compute_group_calendar_script <- readLines("./R/compute_group_calendar.R")
@@ -80,6 +126,13 @@ compute_group_calendar <- function(data, scales){
     dplyr::mutate(label = .data$date_of_month)
 
 }
+
+StatCalendar <- ggplot2::ggproto(`_class` = "StatCalendar",
+                                 `_inherit` = ggplot2::Stat,
+                                 required_aes = c("date"),
+                                 compute_group = compute_group_calendar,
+                                 default_aes = ggplot2::aes(x = ggplot2::after_stat(day_of_week),
+                                                            y = ggplot2::after_stat(week_of_month)))
 ```
 
 ``` r
@@ -103,23 +156,57 @@ compute_group_calendar()
 #> 6   Jan    0          1999            Jan     6
 ```
 
+## How used in geom\_point\_calendar… default aes
+
 ``` r
-
-## basic example code
-
-return_dates_year(2022) %>% 
-ggplot(data = .) + 
-  aes(date = date) + 
-  facet_wrap(~month(date, label = T)) + 
-  geom_text_calendar(aes(label = day(date))) + 
-  geom_point_calendar(data = data.frame(date = c("2022-03-19", "2022-04-09")),
-                      color = 'red',
-                      size = 8, alpha = .5) + 
-  geom_point_calendar(data = data.frame(date = c("2022-05-07")),
-                      color = 'goldenrod3',
-                      size = 8, alpha = .6) + 
-  labs(title = "nu2ggplot2X10sion") + 
-  scale_y_reverse()
+geom_point_calendar_script <- readLines("./R/geom_point_calendar.R")
 ```
 
-<img src="man/figures/README-example-1.png" width="100%" />
+``` r
+
+
+#' Title
+#'
+#' @param mapping
+#' @param data
+#' @param position
+#' @param na.rm
+#' @param show.legend
+#' @param inherit.aes
+#' @param ...
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' library(lubridate)
+#' library(tidyverse)
+#'
+#' data.frame(date = as.Date("2020-01-01") + days(0:365)) %>%
+#'   ggplot() +
+#'   aes(date = date) +
+#'   aes(color = date) +
+#'   geom_point_calendar() +
+#'   facet_wrap(~month(date, label = TRUE, abbr = TRUE))
+#'
+#' data.frame(date = as.Date("2020-01-01") + days(0:400)) %>%
+#'   ggplot() +
+#'   aes(date = date) +
+#'   geom_point_calendar() +
+#'   facet_grid(year(date) ~ month(date, label = TRUE, abbr = TRUE))
+geom_point_calendar <- function(mapping = NULL, data = NULL,
+                               position = "identity", na.rm = FALSE,
+                               show.legend = NA,
+                               inherit.aes = TRUE, ...) {
+  ggplot2::layer(
+    stat = StatCalendar, # proto object from Step 2
+    geom = ggplot2::GeomPoint, # inherit other behavior
+    data = data,
+    mapping = mapping,
+    position = position,
+    show.legend = show.legend,
+    inherit.aes = inherit.aes,
+    params = list(na.rm = na.rm, ...)
+  )
+}
+```
