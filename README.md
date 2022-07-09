@@ -72,8 +72,7 @@ c("2022-03-19", "2022-04-09", "2022-05-07", "2022-06-11", "2022-07-16") %>%
 events
 
 ggcalendar() +
-  facet_wrap(~month(date, label = T)) + 
-  geom_text_calendar(aes(label = day(date))) + 
+  geom_text_calendar() + 
   geom_point_calendar(data = events,
                       aes(color = future),
                       size = 8, 
@@ -82,6 +81,30 @@ ggcalendar() +
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
+
+``` r
+
+## basic example code
+ggcalendar::return_dates_month(month = "2022-07") %>% 
+  head
+#>         date
+#> 1 2022-07-01
+#> 2 2022-07-02
+#> 3 2022-07-03
+#> 4 2022-07-04
+#> 5 2022-07-05
+#> 6 2022-07-06
+
+ggcalendar(ggcalendar::return_dates_interval(start_date = "2022-07-01", end_date = "2022-08-31")) +
+  geom_text_calendar(size = 8) + 
+  geom_point_calendar(data = . %>% filter(date == "2022-07-04"),
+                      size = 8, 
+                      alpha = .5) +
+  geom_point_calendar(data = . %>% filter(date < Sys.Date()),
+                      size = 10, shape = "x")
+```
+
+<img src="man/figures/README-example2-1.png" width="100%" />
 
 -----
 
