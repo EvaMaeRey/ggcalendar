@@ -9,7 +9,7 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-Create grammar of graphics calendars.
+Create grammar-of-graphics calendars.
 
 ``` r
 library(ggcalendar)
@@ -104,7 +104,34 @@ ggcalendar(ggcalendar::return_dates_interval(start_date = "2022-07-01", end_date
                       size = 10, shape = "x")
 ```
 
-<img src="man/figures/README-example2-1.png" width="100%" />
+<img src="man/figures/README-example2-1.png" width="100%" /> \# NYC
+flights
+
+> Airline on-time data for all flights departing NYC in 2013. Also
+> includes useful ‘metadata’ on airlines, airports, weather, and planes.
+
+Data inspiration:
+<https://twitter.com/rappa753/status/1545729747774308354> @rappa753
+
+``` r
+
+# example 
+nycflights13::flights %>% 
+  ungroup() %>% 
+  mutate(date = as.Date(time_hour)) %>% 
+  filter(year(date) == 2013) %>% 
+  count(date) %>% 
+  ggcalendar() +
+  geom_point_calendar(data = . %>% tibble(), aes(size = n, 
+                          color = n), 
+                      alpha = .7, show.legend = F) + 
+  scale_color_viridis_c(option = "inferno", direction = 1) + 
+  scale_size(range = c(3,8)) +
+  geom_text_calendar(aes(label = n), size = 2) + 
+  NULL
+```
+
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
 
 -----
 
@@ -145,8 +172,7 @@ compute_group_calendar <- function(data, scales){
                              6, 1, 0)) %>%
     dplyr::mutate(academic_month = .data$month %>%
                     factor(levels = c("Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-                                      "Jan", "Feb", "Mar", "Apr", "May", "Jun"))) %>%
-    dplyr::mutate(label = .data$date_of_month)
+                                      "Jan", "Feb", "Mar", "Apr", "May", "Jun")))
 
 }
 
@@ -155,7 +181,8 @@ StatCalendar <- ggplot2::ggproto(`_class` = "StatCalendar",
                                  required_aes = c("date"),
                                  compute_group = compute_group_calendar,
                                  default_aes = ggplot2::aes(x = ggplot2::after_stat(day_of_week),
-                                                            y = ggplot2::after_stat(week_of_month)))
+                                                            y = ggplot2::after_stat(week_of_month),
+                                                            label = ggplot2::after_stat(date_of_month)))
 ```
 
 ``` r
@@ -170,13 +197,13 @@ compute_group_calendar()
 #> 4 1999-01-04               2         Mon             1             4        -19
 #> 5 1999-01-05               3         Tue             1             5        -19
 #> 6 1999-01-06               4         Wed             1             6        -19
-#>   month hour academic_year academic_month label
-#> 1   Jan    0          1999            Jan     1
-#> 2   Jan    0          1999            Jan     2
-#> 3   Jan    0          1999            Jan     3
-#> 4   Jan    0          1999            Jan     4
-#> 5   Jan    0          1999            Jan     5
-#> 6   Jan    0          1999            Jan     6
+#>   month hour academic_year academic_month
+#> 1   Jan    0          1999            Jan
+#> 2   Jan    0          1999            Jan
+#> 3   Jan    0          1999            Jan
+#> 4   Jan    0          1999            Jan
+#> 5   Jan    0          1999            Jan
+#> 6   Jan    0          1999            Jan
 ```
 
 ## How used in geom\_point\_calendar… default aes

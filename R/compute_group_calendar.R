@@ -28,8 +28,7 @@ compute_group_calendar <- function(data, scales){
                              6, 1, 0)) %>%
     dplyr::mutate(academic_month = .data$month %>%
                     factor(levels = c("Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-                                      "Jan", "Feb", "Mar", "Apr", "May", "Jun"))) %>%
-    dplyr::mutate(label = .data$date_of_month)
+                                      "Jan", "Feb", "Mar", "Apr", "May", "Jun")))
 
 }
 
@@ -38,5 +37,6 @@ StatCalendar <- ggplot2::ggproto(`_class` = "StatCalendar",
                                  required_aes = c("date"),
                                  compute_group = compute_group_calendar,
                                  default_aes = ggplot2::aes(x = ggplot2::after_stat(day_of_week),
-                                                            y = ggplot2::after_stat(week_of_month)))
+                                                            y = ggplot2::after_stat(week_of_month),
+                                                            label = ggplot2::after_stat(date_of_month)))
 

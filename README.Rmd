@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-Create grammar of graphics calendars.  
+Create grammar-of-graphics calendars.  
 
 
 ```{r}
@@ -79,7 +79,10 @@ ggcalendar() +
                       alpha = .5) +
   labs(title = "nu2ggplot2X^2sion")
 
+
 ```
+
+
 
 ```{r example2}
 
@@ -95,7 +98,31 @@ ggcalendar(ggcalendar::return_dates_interval(start_date = "2022-07-01", end_date
   geom_point_calendar(data = . %>% filter(date < Sys.Date()),
                       size = 10, shape = "x")
 ```
+# NYC flights
 
+> Airline on-time data for all flights departing NYC in 2013. Also includes useful 'metadata' on airlines, airports, weather, and planes.
+
+
+
+Data inspiration:  https://twitter.com/rappa753/status/1545729747774308354 @rappa753
+
+```{r}
+
+# example 
+nycflights13::flights %>% 
+  ungroup() %>% 
+  mutate(date = as.Date(time_hour)) %>% 
+  filter(year(date) == 2013) %>% 
+  count(date) %>% 
+  ggcalendar() +
+  geom_point_calendar(data = . %>% tibble(), aes(size = n, 
+                          color = n), 
+                      alpha = .7, show.legend = F) + 
+  scale_color_viridis_c(option = "inferno", direction = 1) + 
+  scale_size(range = c(3,8)) +
+  geom_text_calendar(aes(label = n), size = 2) + 
+  NULL
+```
 
 ---
 
@@ -127,3 +154,5 @@ geom_point_calendar_script <- readLines("./R/geom_point_calendar.R")
 
 ```{r count, code = geom_point_calendar_script}
 ```
+
+
