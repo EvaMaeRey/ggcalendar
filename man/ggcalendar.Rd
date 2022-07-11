@@ -30,6 +30,7 @@ filter(wday(date) == 3),
 color = "red",  alpha = .4, size = 5) +
 labs(title = "When to do #TidyTuesday in 2022") +
 geom_text_calendar(label = "X",
-                  data = data.frame(date = seq(as.Date("2022/01/01"), as.Date("2022/04/18"), "days")))
+                  data = data.frame(date = seq(as.Date("2022/01/01"),
+                  as.Date("2022/04/18"), "days")))
 
 }
