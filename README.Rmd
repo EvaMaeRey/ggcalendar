@@ -1,0 +1,158 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%",
+  warning = F,
+  message = F
+)
+```
+
+# ggcalendar
+
+<!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+<!-- badges: end -->
+
+Create grammar-of-graphics calendars.  
+
+
+```{r}
+library(ggcalendar)
+library(ggplot2)
+library(lubridate)
+library(tidyverse)
+```
+
+
+``` r
+# install.packages("devtools")
+devtools::install_github("EvaMaeRey/ggcalendar")
+```
+## Example
+
+
+
+
+```{r}
+ggcalendar() + # defaults to full calendar of current year
+  geom_point_calendar() # default to dates declared in ggcalendar
+
+ggcalendar() + 
+  geom_text_calendar() # defaults to day of month in ggcalendar
+
+ggcalendar() + 
+  geom_text_calendar(label = "Day", # override default
+                     size = 2)
+
+ggcalendar() + 
+  geom_text_calendar() + 
+  geom_point_calendar(data = . %>% filter(wday(date) %in% 2:6),
+                      alpha = .2,
+                      size = 5,
+                      color = "red")
+
+```
+
+```{r example}
+
+## basic example code
+
+c("2022-03-19", "2022-04-09", "2022-05-07", "2022-06-11", "2022-07-16") %>% 
+  tibble(date = . ) %>% 
+  mutate(date = date %>% as_date) %>% 
+  mutate(future = Sys.Date() < date) ->
+events
+
+ggcalendar() +
+  geom_text_calendar() + 
+  geom_point_calendar(data = events,
+                      aes(color = future),
+                      size = 8, 
+                      alpha = .5) +
+  labs(title = "nu2ggplot2X^2sion")
+
+
+```
+
+
+
+```{r example2}
+
+## basic example code
+ggcalendar::return_dates_month(month = "2022-07") %>% 
+  head
+
+ggcalendar(ggcalendar::return_dates_interval(start_date = "2022-07-01", end_date = "2022-08-31")) +
+  geom_text_calendar(size = 8) + 
+  geom_point_calendar(data = . %>% filter(date == "2022-07-04"),
+                      size = 8, 
+                      alpha = .5) +
+  geom_point_calendar(data = . %>% filter(date < Sys.Date()),
+                      size = 10, shape = "x")
+```
+# NYC flights
+
+> Airline on-time data for all flights departing NYC in 2013. Also includes useful 'metadata' on airlines, airports, weather, and planes.
+
+
+
+Data inspiration:  https://twitter.com/rappa753/status/1545729747774308354 @rappa753
+
+```{r}
+
+# example 
+nycflights13::flights %>% 
+  ungroup() %>% 
+  mutate(date = as.Date(time_hour)) %>% 
+  filter(year(date) == 2013) %>% 
+  count(date) %>% 
+  ggcalendar() +
+  geom_point_calendar(data = . %>% tibble(), aes(size = n, 
+                          color = n), 
+                      alpha = .7, show.legend = F) + 
+  scale_color_viridis_c(option = "inferno", direction = 1) + 
+  scale_size(range = c(3,8)) +
+  geom_text_calendar(aes(label = n), size = 2) + 
+  NULL
+```
+
+---
+
+# A little on the internals, the compute group function or thank you lubridate!
+
+
+```{r}
+compute_group_calendar_script <- readLines("./R/compute_group_calendar.R")
+```
+
+```{r count, code = compute_group_calendar_script}
+```
+
+```{r}
+# compute function
+return_dates_year(1999) %>%
+head() %>%
+compute_group_calendar()
+```
+
+
+
+## How used in geom_point_calendar... default aes
+
+```{r}
+geom_point_calendar_script <- readLines("./R/geom_point_calendar.R")
+```
+
+
+```{r count, code = geom_point_calendar_script}
+```
+
+
