@@ -40,3 +40,11 @@ StatCalendar <- ggplot2::ggproto(`_class` = "StatCalendar",
                                                             y = ggplot2::after_stat(week_of_month),
                                                             label = ggplot2::after_stat(date_of_month)))
 
+StatWeekly <- ggplot2::ggproto(`_class` = "StatCalendar",
+                               `_inherit` = ggplot2::Stat,
+                               required_aes = c("date"),
+                               compute_group = compute_group_calendar,
+                               default_aes = ggplot2::aes(x = ggplot2::after_stat(day_of_week %>% as.numeric()),
+                                                          y = ggplot2::after_stat(hour),
+                                                          label = ggplot2::after_stat(hour)))
+

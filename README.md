@@ -135,6 +135,30 @@ nycflights13::flights %>%
 
 -----
 
+``` r
+births <- "https://raw.githubusercontent.com/EvaMaeRey/tableau/9e91c2b5ee803bfef10d35646cf4ce6675b92b55/tidytuesday_data/2018-10-02-us_births_2000-2014.csv"
+
+read_csv(births) %>% 
+  mutate(month = str_pad(month, 2, pad = "0"),
+         date_of_month = str_pad(date_of_month, 2, pad = "0")) %>% 
+  mutate(date = paste(year, month, date_of_month, sep = "-") %>% as_date()) %>% 
+  filter(year == 2012) %>% 
+  ggcalendar() + 
+  aes(date = date) + 
+  geom_point_calendar() +
+  aes(size = births) +
+  aes(color = births) +
+  geom_text_calendar(aes(label = day(date)), color = "oldlace", size = 2) + 
+  guides(
+    colour = guide_legend("Births"),
+    size = guide_legend("Births")
+ )
+```
+
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+
+-----
+
 # A little on the internals, the compute group function or thank you lubridate\!
 
 ``` r
@@ -183,6 +207,14 @@ StatCalendar <- ggplot2::ggproto(`_class` = "StatCalendar",
                                  default_aes = ggplot2::aes(x = ggplot2::after_stat(day_of_week %>% as.numeric()),
                                                             y = ggplot2::after_stat(week_of_month),
                                                             label = ggplot2::after_stat(date_of_month)))
+
+StatWeekly <- ggplot2::ggproto(`_class` = "StatCalendar",
+                               `_inherit` = ggplot2::Stat,
+                               required_aes = c("date"),
+                               compute_group = compute_group_calendar,
+                               default_aes = ggplot2::aes(x = ggplot2::after_stat(day_of_week %>% as.numeric()),
+                                                          y = ggplot2::after_stat(hour),
+                                                          label = ggplot2::after_stat(hour)))
 ```
 
 ``` r

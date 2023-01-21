@@ -46,6 +46,52 @@ return_dates_month <- function(month){
 
 #' Title
 #'
+#' @param date
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' return_dates_week()
+return_dates_week <- function(date = NULL){
+
+  if(is.null(date)){date <- Sys.Date()}
+
+  start_date <- floor_date(date, unit = "week")
+  end_date <- ceiling_date(date, unit = "week")
+
+  return_dates_interval(start_date, end_date - lubridate::days(1)) %>%
+    data.frame(date = .)
+
+}
+
+
+#' Title
+#'
+#' @param date
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' return_hours_week()
+return_hours_week <- function(date = NULL){
+
+  if(is.null(date)){date <- Sys.Date()}
+
+  start_date <- floor_date(date, unit = "week")
+
+  (start_date + lubridate::hours(1:(24*7-1))) %>%
+    data.frame(date = .)
+
+}
+
+week("2022-08-26")
+week("2022-08-27")
+(as_date("2022-08-27") + hours(x = 1)) %>% week()
+
+#' Title
+#'
 #' @param year
 #'
 #' @return
@@ -66,3 +112,7 @@ return_dates_year <- function(year){
     data.frame(date = .)
 
 }
+
+
+
+

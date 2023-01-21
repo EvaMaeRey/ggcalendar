@@ -124,6 +124,32 @@ nycflights13::flights %>%
   NULL
 ```
 
+
+---
+
+
+```{r}
+births <- "https://raw.githubusercontent.com/EvaMaeRey/tableau/9e91c2b5ee803bfef10d35646cf4ce6675b92b55/tidytuesday_data/2018-10-02-us_births_2000-2014.csv"
+
+read_csv(births) %>% 
+  mutate(month = str_pad(month, 2, pad = "0"),
+         date_of_month = str_pad(date_of_month, 2, pad = "0")) %>% 
+  mutate(date = paste(year, month, date_of_month, sep = "-") %>% as_date()) %>% 
+  filter(year == 2012) %>% 
+  ggcalendar() + 
+  aes(date = date) + 
+  geom_point_calendar() +
+  aes(size = births) +
+  aes(color = births) +
+  geom_text_calendar(aes(label = day(date)), color = "oldlace", size = 2) + 
+  guides(
+    colour = guide_legend("Births"),
+    size = guide_legend("Births")
+ )
+  
+
+```
+
 ---
 
 # A little on the internals, the compute group function or thank you lubridate!
