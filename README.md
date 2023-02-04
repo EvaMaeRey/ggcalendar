@@ -11,6 +11,12 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 Create grammar-of-graphics calendars.
 
+ggcalendar introduces a new positional aesthetic: ‘date’. Specify the
+position of your geom using date, and let ggcalendar() and the
+geom\_\*\_calendar() functions place your geom. Under the hood, the
+compute\_group functions finds the x and y position for the calendar
+date and panels are created based on the month.
+
 ``` r
 library(ggcalendar)
 library(ggplot2)
@@ -26,15 +32,19 @@ devtools::install_github("EvaMaeRey/ggcalendar")
 ## Example
 
 ``` r
-ggcalendar() + # defaults to full calendar of current year
-  geom_point_calendar() # default to dates declared in ggcalendar
+return_dates_month("2023-01") %>% 
+  ggcalendar() + 
+  aes(date = date) + 
+  geom_point_calendar()
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
 ``` r
 
+return_dates_month("2023-01") %>% 
 ggcalendar() + 
+  aes(date = date) +
   geom_text_calendar() # defaults to day of month in ggcalendar
 ```
 
@@ -42,7 +52,9 @@ ggcalendar() +
 
 ``` r
 
+return_dates_month("2023-01") %>% 
 ggcalendar() + 
+  aes(date = date) + 
   geom_text_calendar(label = "Day", # override default
                      size = 2)
 ```
@@ -51,12 +63,15 @@ ggcalendar() +
 
 ``` r
 
+return_dates_month("2023-01") %>% 
 ggcalendar() + 
+  aes(date = date) + 
   geom_text_calendar() + 
   geom_point_calendar(data = . %>% filter(wday(date) %in% 2:6),
                       alpha = .2,
                       size = 5,
-                      color = "red")
+                      color = "cadetblue") + 
+  theme(panel.background = element_rect(fill = "beige"))
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-4.png" width="100%" />
@@ -71,7 +86,9 @@ c("2022-03-19", "2022-04-09", "2022-05-07", "2022-06-11", "2022-07-16") %>%
   mutate(future = Sys.Date() < date) ->
 events
 
-ggcalendar() +
+return_dates_year(2022) %>% 
+  ggcalendar() +
+  aes(date = date) +
   geom_text_calendar() + 
   geom_point_calendar(data = events,
                       aes(color = future),
@@ -95,7 +112,9 @@ ggcalendar::return_dates_month(month = "2022-07") %>%
 #> 5 2022-07-05
 #> 6 2022-07-06
 
-ggcalendar(ggcalendar::return_dates_interval(start_date = "2022-07-01", end_date = "2022-08-31")) +
+ggcalendar::return_dates_interval(start_date = "2022-07-01", end_date = "2022-08-31") %>% 
+  ggcalendar() +
+  aes(date = date) +
   geom_text_calendar(size = 8) + 
   geom_point_calendar(data = . %>% filter(date == "2022-07-04"),
                       size = 8, 
@@ -104,8 +123,9 @@ ggcalendar(ggcalendar::return_dates_interval(start_date = "2022-07-01", end_date
                       size = 10, shape = "x")
 ```
 
-<img src="man/figures/README-example2-1.png" width="100%" /> \# NYC
-flights
+<img src="man/figures/README-example2-1.png" width="100%" />
+
+# NYC flights Example
 
 > Airline on-time data for all flights departing NYC in 2013. Also
 > includes useful ‘metadata’ on airlines, airports, weather, and planes.
@@ -122,6 +142,7 @@ nycflights13::flights %>%
   filter(year(date) == 2013) %>% 
   count(date) %>% 
   ggcalendar() +
+  aes(date = date) +
   geom_point_calendar(data = . %>% tibble(), aes(size = n, 
                           color = n), 
                       alpha = .7, show.legend = F) + 
@@ -135,10 +156,12 @@ nycflights13::flights %>%
 
 -----
 
+# Births example
+
 ``` r
 births <- "https://raw.githubusercontent.com/EvaMaeRey/tableau/9e91c2b5ee803bfef10d35646cf4ce6675b92b55/tidytuesday_data/2018-10-02-us_births_2000-2014.csv"
 
-read_csv(births) %>% 
+readr::read_csv(births) %>% 
   mutate(month = str_pad(month, 2, pad = "0"),
          date_of_month = str_pad(date_of_month, 2, pad = "0")) %>% 
   mutate(date = paste(year, month, date_of_month, sep = "-") %>% as_date()) %>% 
@@ -152,12 +175,40 @@ read_csv(births) %>%
   guides(
     colour = guide_legend("Births"),
     size = guide_legend("Births")
- )
+ ) + 
+  geom_point_calendar(data = data.frame(date =
+                                      as_date("2012-12-25")),
+                      size = 5, color = "red", shape = 21)
 ```
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
 
 -----
+
+# data defaults to calendar year and aes(date = date)
+
+The following feels a little weird to me, but is allowed.
+
+A grammar of graphics fundamental is that a statistical graphic are
+composed of geometries/marks that take on aesthetics (color, position,
+size), to represent a variable.
+
+Below we aren’t aren’t fully stating these specifications; which feels a
+bit funny; I would not recommend this as a starting point.
+
+``` r
+ggcalendar() + 
+ geom_text_calendar()
+```
+
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+
+Under the hood:
+
+ggcalendar() - has a data default of the current calendar year - has the
+date aes specified: aes(date = date) - geom\_text\_calendar, uses a
+compute group function the finds the calendar day as the label for the
+text layer. —
 
 # A little on the internals, the compute group function or thank you lubridate\!
 

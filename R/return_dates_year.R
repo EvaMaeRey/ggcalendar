@@ -86,9 +86,9 @@ return_hours_week <- function(date = NULL){
 
 }
 
-week("2022-08-26")
-week("2022-08-27")
-(as_date("2022-08-27") + hours(x = 1)) %>% week()
+# week("2022-08-26")
+# week("2022-08-27")
+# (as_date("2022-08-27") + hours(x = 1)) %>% week()
 
 #' Title
 #'

@@ -10,10 +10,14 @@
 #' library(dplyr)
 #' library(ggplot2)
 #'
-#' ggcalendar() +
-#' geom_text_calendar()
+#' return_dates_year(2023) %>%
+#'   ggcalendar() +
+#'   aes(date = date) +
+#'   geom_text_calendar()
 #'
+#' return_dates_year(2018) %>%
 #' ggcalendar() +
+#' aes(date = date) +
 #' geom_text_calendar(color = "grey35") +
 #' geom_point_calendar(data = . %>%
 #' filter(wday(date) == 3),
@@ -23,7 +27,11 @@
 #'                   data = data.frame(date = seq(as.Date("2022/01/01"),
 #'                   as.Date("2022/04/18"), "days")))
 #'
-ggcalendar <- function(dates_df = return_dates_year(2022), day_labels = c("S", "M", "T", "W", "T", "F", "S")){
+#' ggcalendar() +
+#' geom_text_calendar()
+#'
+#'
+ggcalendar <- function(dates_df = return_dates_year(2023), day_labels = c("S", "M", "T", "W", "T", "F", "S")){
 
   ggplot2::ggplot(data = dates_df) +
     ggplot2::aes(date = date) +
@@ -33,12 +41,12 @@ ggcalendar <- function(dates_df = return_dates_year(2022), day_labels = c("S", "
 
                                 #position = "top"
                                 ) +
-    ggplot2::facet_wrap(~month(date, abbr = T, label = T), scales = "free") +
+    ggplot2::facet_wrap(~lubridate::month(date, abbr = T, label = T), scales = "free") +
     ggplot2::labs(x = NULL, y = NULL) +
     ggplot2::theme(axis.text.y = ggplot2::element_blank(),
           axis.ticks.y = ggplot2::element_blank(),
           axis.ticks.x = ggplot2::element_blank()) +
-    ggplot2::theme(panel.grid.major = element_blank()) +
+    ggplot2::theme(panel.grid.major = ggplot2::element_blank()) +
     ggplot2::geom_blank() +
     # theme(strip.placement = "outside") +
     NULL

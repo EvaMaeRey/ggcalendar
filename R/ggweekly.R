@@ -47,7 +47,7 @@ ggweekly <- function(dates_df = return_hours_week(), day_labels = c("S", "M", "T
     ggplot2::theme(#axis.text.y = ggplot2::element_blank(),
           axis.ticks.y = ggplot2::element_blank(),
           axis.ticks.x = ggplot2::element_blank()) +
-    ggplot2::theme(panel.grid.major = element_blank()) +
+    ggplot2::theme(panel.grid.major = ggplot2::element_blank()) +
     ggplot2::geom_blank() +
     # theme(strip.placement = "outside") +
     NULL
