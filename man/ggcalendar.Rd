@@ -4,7 +4,10 @@
 \alias{ggcalendar}
 \title{Title}
 \usage{
-ggcalendar(dates_df = return_dates_year(2022))
+ggcalendar(
+  dates_df = return_dates_year(2023),
+  day_labels = c("S", "M", "T", "W", "T", "F", "S")
+)
 }
 \arguments{
 \item{dates_df}{}
@@ -20,10 +23,14 @@ library(lubridate)
 library(dplyr)
 library(ggplot2)
 
-ggcalendar() +
-geom_text_calendar()
+return_dates_year(2023) \%>\%
+  ggcalendar() +
+  aes(date = date) +
+  geom_text_calendar()
 
+return_dates_year(2018) \%>\%
 ggcalendar() +
+aes(date = date) +
 geom_text_calendar(color = "grey35") +
 geom_point_calendar(data = . \%>\%
 filter(wday(date) == 3),
@@ -32,5 +39,9 @@ labs(title = "When to do #TidyTuesday in 2022") +
 geom_text_calendar(label = "X",
                   data = data.frame(date = seq(as.Date("2022/01/01"),
                   as.Date("2022/04/18"), "days")))
+
+ggcalendar() +
+geom_text_calendar()
+
 
 }

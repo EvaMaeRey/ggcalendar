@@ -21,9 +21,13 @@ knitr::opts_chunk$set(
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-Create grammar-of-graphics calendars.
+Create grammar-of-graphics calendars. Let's *put* things on the calendar!  
 
-ggcalendar introduces a new positional aesthetic: 'date'.  Specify the position of your geom using date, and let ggcalendar() and the geom_*_calendar() functions place your geom.  Under the hood, the compute_group functions finds the x and y position for the calendar date and panels are created based on the month. 
+For calendars, 'when?' and 'where?' are the same question!  So ggcalendar introduces a new positional aesthetic: 'date'.  
+
+Specify the position of your calendar geom using a dates: `aes(date = my_vector_of_dates)`!  Then use ggcalendar() and the geom_*_calendar() functions place your geom in the plot space. 
+
+Under the hood, the compute_group functions finds the x and y position for the calendar date; panels/facets are created based on the month. This computation is assisted with date parsing - lubridate functions have been especially helpful! 
 
 
 ```{r}
@@ -44,7 +48,7 @@ devtools::install_github("EvaMaeRey/ggcalendar")
 
 
 ```{r}
-return_dates_month("2023-01") %>% 
+return_dates_month("2023-02") %>% 
   ggcalendar() + 
   aes(date = date) + 
   geom_point_calendar()
@@ -57,8 +61,9 @@ ggcalendar() +
 return_dates_month("2023-01") %>% 
 ggcalendar() + 
   aes(date = date) + 
-  geom_text_calendar(label = "Day", # override default
-                     size = 2)
+  
+  geom_text_calendar(label = "A day...", # override default
+                     size = 4)
 
 return_dates_month("2023-01") %>% 
 ggcalendar() + 

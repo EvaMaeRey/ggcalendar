@@ -9,21 +9,17 @@
 #' library(lubridate)
 #' library(dplyr)
 #' library(ggplot2)
+#' library(magrittr)
 #'
 #' ggweekly() +
 #' geom_text_weekly()
 #'
 #' ggweekly() +
 #' geom_text_weekly(color = "grey35") +
-#' geom_point_weekly(data = . %>%
-#' filter(wday(date) == 3),
-#' color = "red",  alpha = .4, size = 5) +
 #' labs(title = "When to do #TidyTuesday in 2022") +
 #' geom_text_weekly(label = "X",
 #'                   data = data.frame(date = seq(as.Date("2022/01/01"),
 #'                   as.Date("2022/04/18"), "days")))
-#'
-#'
 #'
 ggweekly <- function(dates_df = return_hours_week(), day_labels = c("S", "M", "T", "W", "T", "F", "S")){
 

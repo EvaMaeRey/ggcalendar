@@ -57,8 +57,8 @@ return_dates_week <- function(date = NULL){
 
   if(is.null(date)){date <- Sys.Date()}
 
-  start_date <- floor_date(date, unit = "week")
-  end_date <- ceiling_date(date, unit = "week")
+  start_date <- lubridate::floor_date(date, unit = "week")
+  end_date <- lubridate::ceiling_date(date, unit = "week")
 
   return_dates_interval(start_date, end_date - lubridate::days(1)) %>%
     data.frame(date = .)
