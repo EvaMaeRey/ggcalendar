@@ -45,21 +45,21 @@ return_dates_month("2023-02") %>%
   geom_point_calendar()
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
 ``` r
 
-return_dates_month("2023-01") %>% 
+return_dates_month("2023-02") %>% 
 ggcalendar() + 
   aes(date = date) +
   geom_text_calendar() # defaults to day of month in ggcalendar
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-2-2.png" width="100%" />
 
 ``` r
 
-return_dates_month("2023-01") %>% 
+return_dates_month("2023-02") %>% 
 ggcalendar() + 
   aes(date = date) + 
   
@@ -67,7 +67,7 @@ ggcalendar() +
                      size = 4)
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-3.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-2-3.png" width="100%" />
 
 ``` r
 
@@ -82,7 +82,7 @@ ggcalendar() +
   theme(panel.background = element_rect(fill = "beige"))
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-4.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-2-4.png" width="100%" />
 
 ``` r
 
@@ -160,7 +160,7 @@ nycflights13::flights %>%
   NULL
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
 -----
 
@@ -189,7 +189,7 @@ readr::read_csv(births) %>%
                       size = 5, color = "red", shape = 21)
 ```
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
 
 -----
 
@@ -209,7 +209,7 @@ ggcalendar() +
  geom_text_calendar()
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
 
 Under the hood:
 

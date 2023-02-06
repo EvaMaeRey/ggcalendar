@@ -30,7 +30,7 @@ Specify the position of your calendar geom using a dates: `aes(date = my_vector_
 Under the hood, the compute_group functions finds the x and y position for the calendar date; panels/facets are created based on the month. This computation is assisted with date parsing - lubridate functions have been especially helpful! 
 
 
-```{r}
+```{r setup}
 library(ggcalendar)
 library(ggplot2)
 library(lubridate)
@@ -53,12 +53,12 @@ return_dates_month("2023-02") %>%
   aes(date = date) + 
   geom_point_calendar()
 
-return_dates_month("2023-01") %>% 
+return_dates_month("2023-02") %>% 
 ggcalendar() + 
   aes(date = date) +
   geom_text_calendar() # defaults to day of month in ggcalendar
 
-return_dates_month("2023-01") %>% 
+return_dates_month("2023-02") %>% 
 ggcalendar() + 
   aes(date = date) + 
   
