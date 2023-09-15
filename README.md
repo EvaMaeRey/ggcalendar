@@ -86,6 +86,17 @@ ggcalendar() +
 
 ``` r
 
+library(ggplot2)
+return_dates_interval("2023-09-01", "2023-12-31") %>% 
+  ggcalendar() + 
+  aes(date = date) + 
+  geom_text_calendar()
+```
+
+<img src="man/figures/README-unnamed-chunk-2-5.png" width="100%" />
+
+``` r
+
 ## basic example code
 
 c("2022-03-19", "2022-04-09", "2022-05-07", "2022-06-11", "2022-07-16") %>% 

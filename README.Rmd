@@ -75,6 +75,11 @@ ggcalendar() +
                       color = "cadetblue") + 
   theme(panel.background = element_rect(fill = "beige"))
 
+library(ggplot2)
+return_dates_interval("2023-09-01", "2023-12-31") %>% 
+  ggcalendar() + 
+  aes(date = date) + 
+  geom_text_calendar()
 ```
 
 ```{r example}
@@ -227,7 +232,7 @@ geom_point_calendar_script <- readLines("./R/geom_point_calendar.R")
 ```
 
 
-```{r count, code = geom_point_calendar_script}
+```{r count1, code = geom_point_calendar_script}
 ```
 
 
