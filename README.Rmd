@@ -567,6 +567,40 @@ ggcalendar() +
 
 ---
 
+
+```{r}
+contrast <- function(colour) {
+  out   <- rep("grey35", length(colour))
+  light <- farver::get_channel(colour, "l", space = "hcl")
+  out[light < 50] <- "grey80"
+  out
+}
+  
+aes_autocontrast_color_on_fill <- aes(colour = after_scale(contrast(fill)))
+
+
+
+nhl_player_births <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-01-09/nhl_player_births.csv')
+
+
+nhl_player_births |> 
+  mutate(date = birth_date %>% str_replace("....", "2024") %>% 
+           as_date()) %>% 
+  count(date) %>% 
+  ggcalendar(labels_layer = F) +  # aes(date = date)  # local aes?
+  aes(fill = n, label = n) + 
+  aes_autocontrast_color_on_fill + 
+  geom_tile_calendar(alpha = .85, linewidth = 0, show.legend = F) + 
+  scale_fill_viridis_c() +
+  geom_text_calendar(size = 3) +
+  labs(title = "NHL Player Birthdays 1879-2005 (as celebrated in 2024)")
+  
+
+```
+
+
+---
+
 # Minimal Viable Packaging
 
 ```{r, eval = F}
