@@ -15,15 +15,19 @@ knitr::opts_chunk$set(
 )
 ```
 
+
+
 # ggcalendar
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
+*Note: This README walks through package rational and contains the details of functions and first cut testing. [TLDR - Jump to traditional readme content](#traditional-readme)*
+
 Here's a proposal for creating calendars with ggplot2 via Stat extension.   
 
-When using calendars, 'when?' and 'where?' are the same question! So, ggcalendar introduces a new positional aesthetic: 'date'.  Let's *put* things on the calendar!   
+When using calendars, 'when?' and 'where?' are the same question! So, ggcalendar introduces a new positional aesthetic: 'date'.  Let's *put* things on the calendar!
 
 In this proposed package, we'll specify the position of a calendar event calendar using dates as the required aesthetic: `aes(date = my_variable_of_dates)`!  Then you can use layers function `stat_calendar()` and derivative geom functions `geom_text_calendar`, `geom_tile_calendar` and `geom_point_calendar` to place specific grobs/mark in the plot space. 
 
@@ -240,7 +244,7 @@ StatWeekly <- ggplot2::ggproto(`_class` = "StatCalendar",
 Okay, let's see how our compute and Stat work in action!
 
 ```{r}
-return_df_dates_month() |>
+return_df_dates_week() |>
   compute_group_calendar()
 
 return_df_dates_month() |>
@@ -612,3 +616,5 @@ usethis::use_package("dplyr")
 devtools::check()
 
 ```
+
+# Traditional README

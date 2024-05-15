@@ -9,6 +9,10 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
+*Note: This README walks through package rational and contains the
+details of functions and first cut testing. [TLDR - Jump to traditional
+readme content](#traditional-readme)*
+
 Here’s a proposal for creating calendars with ggplot2 via Stat
 extension.
 
@@ -287,72 +291,24 @@ StatWeekly <- ggplot2::ggproto(`_class` = "StatCalendar",
 Okay, let’s see how our compute and Stat work in action\!
 
 ``` r
-return_df_dates_month() |>
+return_df_dates_week() |>
   compute_group_calendar()
-#>          date wday wday_abbr week_of_month day year month_abbr hour
-#> 1  2024-05-01    4       Wed             0   1    6        May    0
-#> 2  2024-05-02    5       Thu             0   2    6        May    0
-#> 3  2024-05-03    6       Fri             0   3    6        May    0
-#> 4  2024-05-04    7       Sat             0   4    6        May    0
-#> 5  2024-05-05    1       Sun             1   5    6        May    0
-#> 6  2024-05-06    2       Mon             1   6    6        May    0
-#> 7  2024-05-07    3       Tue             1   7    6        May    0
-#> 8  2024-05-08    4       Wed             1   8    6        May    0
-#> 9  2024-05-09    5       Thu             1   9    6        May    0
-#> 10 2024-05-10    6       Fri             1  10    6        May    0
-#> 11 2024-05-11    7       Sat             1  11    6        May    0
-#> 12 2024-05-12    1       Sun             2  12    6        May    0
-#> 13 2024-05-13    2       Mon             2  13    6        May    0
-#> 14 2024-05-14    3       Tue             2  14    6        May    0
-#> 15 2024-05-15    4       Wed             2  15    6        May    0
-#> 16 2024-05-16    5       Thu             2  16    6        May    0
-#> 17 2024-05-17    6       Fri             2  17    6        May    0
-#> 18 2024-05-18    7       Sat             2  18    6        May    0
-#> 19 2024-05-19    1       Sun             3  19    6        May    0
-#> 20 2024-05-20    2       Mon             3  20    6        May    0
-#> 21 2024-05-21    3       Tue             3  21    6        May    0
-#> 22 2024-05-22    4       Wed             3  22    6        May    0
-#> 23 2024-05-23    5       Thu             3  23    6        May    0
-#> 24 2024-05-24    6       Fri             3  24    6        May    0
-#> 25 2024-05-25    7       Sat             3  25    6        May    0
-#> 26 2024-05-26    1       Sun             4  26    6        May    0
-#> 27 2024-05-27    2       Mon             4  27    6        May    0
-#> 28 2024-05-28    3       Tue             4  28    6        May    0
-#> 29 2024-05-29    4       Wed             4  29    6        May    0
-#> 30 2024-05-30    5       Thu             4  30    6        May    0
-#> 31 2024-05-31    6       Fri             4  31    6        May    0
-#>    year_academic month_academic_abbr
-#> 1           2024                 May
-#> 2           2024                 May
-#> 3           2024                 May
-#> 4           2024                 May
-#> 5           2024                 May
-#> 6           2024                 May
-#> 7           2024                 May
-#> 8           2024                 May
-#> 9           2024                 May
-#> 10          2024                 May
-#> 11          2024                 May
-#> 12          2024                 May
-#> 13          2024                 May
-#> 14          2024                 May
-#> 15          2024                 May
-#> 16          2024                 May
-#> 17          2024                 May
-#> 18          2024                 May
-#> 19          2024                 May
-#> 20          2024                 May
-#> 21          2024                 May
-#> 22          2024                 May
-#> 23          2024                 May
-#> 24          2024                 May
-#> 25          2024                 May
-#> 26          2024                 May
-#> 27          2024                 May
-#> 28          2024                 May
-#> 29          2024                 May
-#> 30          2024                 May
-#> 31          2024                 May
+#>         date wday wday_abbr week_of_month day year month_abbr hour
+#> 1 2024-05-12    1       Sun             2  12    6        May    0
+#> 2 2024-05-13    2       Mon             2  13    6        May    0
+#> 3 2024-05-14    3       Tue             2  14    6        May    0
+#> 4 2024-05-15    4       Wed             2  15    6        May    0
+#> 5 2024-05-16    5       Thu             2  16    6        May    0
+#> 6 2024-05-17    6       Fri             2  17    6        May    0
+#> 7 2024-05-18    7       Sat             2  18    6        May    0
+#>   year_academic month_academic_abbr
+#> 1          2024                 May
+#> 2          2024                 May
+#> 3          2024                 May
+#> 4          2024                 May
+#> 5          2024                 May
+#> 6          2024                 May
+#> 7          2024                 May
 
 return_df_dates_month() |>
   ggplot() + 
@@ -770,3 +726,5 @@ usethis::use_package("dplyr")
 
 devtools::check()
 ```
+
+# Traditional README
