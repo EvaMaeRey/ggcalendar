@@ -30,7 +30,7 @@ return_df_dates_month <- function(month = NULL, year = NULL){
    
   if(is.numeric(month)){ 
     
-    month <- str_pad(month, width = 2, pad = "0")
+    month <- stringr::str_pad(month, width = 2, pad = "0")
     
   }
   
@@ -70,7 +70,7 @@ return_df_hours_week <- function(date = NULL){
 
   if(is.null(date)){date <- Sys.Date()}
 
-  start_date <- floor_date(date, unit = "week")
+  start_date <- lubridate::floor_date(date, unit = "week")
 
   data.frame(date = (start_date + lubridate::hours(1:(24*7-1))))
 

@@ -9,9 +9,10 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-*Note: This README walks through package rational and contains the
-details of functions and first cut testing. [TLDR - Jump to traditional
-readme content](#traditional-readme)*
+*Note: This README walks through package rational and contains the code
+that defines proposed package functions and in addition to first-cut
+testing. [TLDR - Jump to traditional readme
+content](#traditional-readme)*
 
 Here’s a proposal for creating calendars with ggplot2 via Stat
 extension.
@@ -92,7 +93,7 @@ return_df_dates_month <- function(month = NULL, year = NULL){
    
   if(is.numeric(month)){ 
     
-    month <- str_pad(month, width = 2, pad = "0")
+    month <- stringr::str_pad(month, width = 2, pad = "0")
     
   }
   
@@ -132,7 +133,7 @@ return_df_hours_week <- function(date = NULL){
 
   if(is.null(date)){date <- Sys.Date()}
 
-  start_date <- floor_date(date, unit = "week")
+  start_date <- lubridate::floor_date(date, unit = "week")
 
   data.frame(date = (start_date + lubridate::hours(1:(24*7-1))))
 
@@ -163,11 +164,11 @@ Let’s have a look at some of these.
 ``` r
 return_df_dates_today()
 #>         date
-#> 1 2024-05-14
+#> 1 2024-05-15
 
 return_df_dates_day()
 #>         date
-#> 1 2024-05-14
+#> 1 2024-05-15
 
 return_df_dates_interval(start_date = "2024-10-02", end_date = "2024-10-04")
 #>         date
@@ -221,7 +222,7 @@ first-class ‘x’ and ‘y’ positional aesthetic mappings, as well as
 variables that can be used in faceting (month).
 
 ``` r
-knitrExtra:::chunk_to_r("compute_group_calendar")
+knitrExtra:::chunk_to_r("get_week_of_month")
 ```
 
 As a pre-step to computing many useful variables from our date variable,
@@ -233,7 +234,7 @@ get_week_of_month <- function(x){
   
   (- lubridate::wday(x) + lubridate::day(x)) %/% 
     7 + 1 +
-    ifelse(lubridate::wday(lubridate::floor_date(lubridate::as_date(x), "month")) == 1, -1, 0)
+    ifelse(lubridate::wday(lubridate::floor_date(lubridate::as_date(x), "month")) == 1, 0, 1)
   
 }
 ```
@@ -247,6 +248,10 @@ create ggplot2 core aesthetic channels ‘x’, ‘y’, and ‘label’ variabl
 but instead uses the default\_aes field to state what should be first
 interpreted as x, y and label (thoughts? Maybe only ‘label’ should be
 managed like this).
+
+``` r
+knitrExtra:::chunk_to_r("compute_group_calendar")
+```
 
 ``` r
 compute_group_calendar <- function(data, scales){
@@ -294,13 +299,13 @@ Okay, let’s see how our compute and Stat work in action\!
 return_df_dates_week() |>
   compute_group_calendar()
 #>         date wday wday_abbr week_of_month day year month_abbr hour
-#> 1 2024-05-12    1       Sun             2  12    6        May    0
-#> 2 2024-05-13    2       Mon             2  13    6        May    0
-#> 3 2024-05-14    3       Tue             2  14    6        May    0
-#> 4 2024-05-15    4       Wed             2  15    6        May    0
-#> 5 2024-05-16    5       Thu             2  16    6        May    0
-#> 6 2024-05-17    6       Fri             2  17    6        May    0
-#> 7 2024-05-18    7       Sat             2  18    6        May    0
+#> 1 2024-05-12    1       Sun             3  12    6        May    0
+#> 2 2024-05-13    2       Mon             3  13    6        May    0
+#> 3 2024-05-14    3       Tue             3  14    6        May    0
+#> 4 2024-05-15    4       Wed             3  15    6        May    0
+#> 5 2024-05-16    5       Thu             3  16    6        May    0
+#> 6 2024-05-17    6       Fri             3  17    6        May    0
+#> 7 2024-05-18    7       Sat             3  18    6        May    0
 #>   year_academic month_academic_abbr
 #> 1          2024                 May
 #> 2          2024                 May
@@ -320,6 +325,10 @@ return_df_dates_month() |>
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
 # Step 3. Let’s write a user-facing function `stat_calendar()`
+
+``` r
+knitrExtra:::chunk_to_r("a_stat_calendar")
+```
 
 ``` r
 stat_calendar <- function(mapping = NULL, 
@@ -361,6 +370,10 @@ To give the user a better sense of what they’ll see when using
 stat\_calendar we create the alias, ‘geom\_text\_calendar()’.
 
 ``` r
+knitrExtra:::chunk_to_r("geom_text_calendar")
+```
+
+``` r
 geom_text_calendar <- stat_calendar
 geom_point_calendar <- function(...){stat_calendar(geom = "point", ...)}
 geom_tile_calendar <- function(...){stat_calendar(geom = "tile", ...)}
@@ -382,7 +395,7 @@ return_df_dates_year() |>
     ggplot2::aes(date = date) +
     ggplot2::scale_y_reverse(breaks = 5:0, 
                              expand = c(0,0), 
-                             limits = c(5.5, -0.5)) +
+                             limits = c(6.5, 0.5)) +
     ggplot2::scale_x_continuous(breaks = 1:7, 
                                 labels = day_labels,
                                 limits = c(.5, 7.5), 
@@ -403,6 +416,10 @@ return_df_dates_year() |>
 
 Then, we bundle these up into defaults\_calendar, which can be quickly
 added for converting to a more polished and readable calendar.
+
+``` r
+knitrExtra:::chunk_to_r("defaults_calendar")
+```
 
 ``` r
 defaults_calendar <- function(day_labels = c("S", "M", "T", "W", "T", "F", "S")){
@@ -438,12 +455,16 @@ return_df_dates_year(2018) |>
   defaults_calendar()
 ```
 
-<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
 
 Furthermore, we provide ggcalendar as an alternative point of entry into
 the ggplot framework. The default data frame is even included (the
 current calendar year), so a full calendar will print with no additional
 specification.
+
+``` r
+knitrExtra:::chunk_to_r("ggcalendar")
+```
 
 ``` r
 ggcalendar <- function(dates_df = return_df_dates_year(), 
@@ -457,7 +478,7 @@ ggcalendar <- function(dates_df = return_df_dates_year(),
   
   ggplot2::ggplot(data = dates_df) +
   defaults_calendar(day_labels = day_labels) +
-  aes(date = date) +
+  ggplot2::aes(date = date) +
   my_layer
 
   }
@@ -469,7 +490,7 @@ Let’s check it out\!
 ggcalendar()
 ```
 
-<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
 
 ``` r
 
@@ -481,7 +502,7 @@ ggcalendar() +
                 alpha = .5)
 ```
 
-<img src="man/figures/README-unnamed-chunk-13-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-14-2.png" width="100%" />
 
 ## More
 
@@ -503,14 +524,14 @@ ggcalendar() +
                  alpha = .35)
 ```
 
-<img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
 
 ``` r
 return_df_dates_month(year = 2023, month = 2) |> 
   ggcalendar()
 ```
 
-<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-16-1.png" width="100%" />
 
 ``` r
 
@@ -518,7 +539,7 @@ return_df_dates_month(year = 2023, month = 2) |>
 ggcalendar()
 ```
 
-<img src="man/figures/README-unnamed-chunk-15-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-16-2.png" width="100%" />
 
 ``` r
 
@@ -529,7 +550,7 @@ ggcalendar(labels_layer = F) +
                      size = 4)
 ```
 
-<img src="man/figures/README-unnamed-chunk-15-3.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-16-3.png" width="100%" />
 
 ``` r
 
@@ -544,7 +565,7 @@ ggcalendar() +
   theme(panel.background = element_rect(fill = "beige"))
 ```
 
-<img src="man/figures/README-unnamed-chunk-15-4.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-16-4.png" width="100%" />
 
 ``` r
 
@@ -554,7 +575,7 @@ return_df_dates_interval("2023-09-01", "2023-12-31") |>
   ggcalendar()
 ```
 
-<img src="man/figures/README-unnamed-chunk-15-5.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-16-5.png" width="100%" />
 
 ``` r
 ## basic example code
@@ -578,31 +599,6 @@ return_df_dates_year(2022) |>
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
-
-``` r
-## basic example code
-ggcalendar::return_dates_month(month = "2022-07") |> 
-  head()
-#>         date
-#> 1 2022-07-01
-#> 2 2022-07-02
-#> 3 2022-07-03
-#> 4 2022-07-04
-#> 5 2022-07-05
-#> 6 2022-07-06
-
-ggcalendar::return_dates_interval(start_date = "2022-07-01", end_date = "2022-08-31") |> 
-  ggcalendar() +
-  aes(date = date) +
-  geom_text_calendar(size = 8) + 
-  geom_point_calendar(data = . %>% filter(date == "2022-07-04"),
-                      size = 8, 
-                      alpha = .5) +
-  geom_point_calendar(data = . %>% filter(date < Sys.Date()),
-                      size = 10, shape = "x")
-```
-
-<img src="man/figures/README-example2-1.png" width="100%" />
 
 # NYC flights Example
 
@@ -631,7 +627,7 @@ nycflights13::flights |>
   NULL
 ```
 
-<img src="man/figures/README-unnamed-chunk-16-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
 
 -----
 
@@ -641,7 +637,7 @@ nycflights13::flights |>
 births <- "https://raw.githubusercontent.com/EvaMaeRey/tableau/9e91c2b5ee803bfef10d35646cf4ce6675b92b55/tidytuesday_data/2018-10-02-us_births_2000-2014.csv"
 
 readr::read_csv(births) |> 
-  mutate(month = str_pad(month, 2, pad = "0"),
+  mutate(month = stringr::str_pad(month, 2, pad = "0"),
          date_of_month = str_pad(date_of_month, 2, pad = "0")) |> 
   mutate(date = paste(year, month, date_of_month, sep = "-") |> as_date()) |> 
   filter(year == 2012) |> 
@@ -660,7 +656,7 @@ readr::read_csv(births) |>
                       size = 5, color = "red", shape = 21)
 ```
 
-<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
 
 -----
 
@@ -680,7 +676,7 @@ ggcalendar() +
  geom_text_calendar()
 ```
 
-<img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-19-1.png" width="100%" />
 
 -----
 
@@ -700,31 +696,203 @@ nhl_player_births <- readr::read_csv('https://raw.githubusercontent.com/rfordata
 
 
 nhl_player_births |> 
-  mutate(date = birth_date %>% str_replace("....", "2024") %>% 
+  mutate(date = birth_date %>% 
+           str_replace("....", "2024") %>% 
            as_date()) %>% 
   count(date) %>% 
   ggcalendar(labels_layer = F) +  # aes(date = date)  # local aes?
   aes(fill = n, label = n) + 
-  aes_autocontrast_color_on_fill + 
+  aes_autocontrast_color_on_fill +
   geom_tile_calendar(alpha = .85, linewidth = 0, show.legend = F) + 
   scale_fill_viridis_c() +
   geom_text_calendar(size = 3) +
-  labs(title = "NHL Player Birthdays 1879-2005 (as celebrated in 2024)")
+  labs(title = "Number of NHL Player Birthdays by day 1879-2005\nas celebrated in 2024")
 ```
 
-<img src="man/figures/README-unnamed-chunk-19-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-20-1.png" width="100%" />
 
 -----
 
 # Minimal Viable Packaging
 
 ``` r
-# devtools::create()
+# devtools::create(".")
 usethis::use_package("lubridate")
 usethis::use_package("ggplot2")
 usethis::use_package("dplyr")
+usethis::use_package("stringr")
 
 devtools::check()
 ```
 
 # Traditional README
+
+``` r
+library(ggcalendar)
+library(tidyverse)
+
+
+ggcalendar:::ggcalendar() + 
+  labs(title = "Calendar: 2024")
+```
+
+<img src="man/figures/README-unnamed-chunk-22-1.png" width="100%" />
+
+``` r
+
+ggcalendar:::ggcalendar() + 
+  ggcalendar:::geom_tile_calendar(
+    data = ggcalendar:::return_df_dates_week(),
+    fill = "red",
+    alpha = .25) + 
+  ggcalendar:::geom_point_calendar(
+    data = ggcalendar:::return_df_dates_today(),
+    color = "goldenrod3", shape = 21,
+    size = 8, stroke = 1.5
+    )
+```
+
+<img src="man/figures/README-unnamed-chunk-22-2.png" width="100%" />
+
+``` r
+
+
+# example 
+nycflights13::flights |> 
+  ungroup() |> 
+  mutate(date = as.Date(time_hour)) |> 
+  filter(year(date) == 2013) |> 
+  count(date) |> 
+  ggcalendar:::ggcalendar() +
+  aes(date = date) +
+  ggcalendar:::geom_tile_calendar(
+    aes(fill = n),
+    alpha = .7, show.legend = F) + 
+  scale_fill_viridis_c(option = "inferno", 
+                        direction = 1) + 
+  scale_size(range = c(3,8)) +
+  ggcalendar:::geom_text_calendar(aes(label = n), 
+                                  size = 2) + 
+  NULL
+```
+
+<img src="man/figures/README-unnamed-chunk-22-3.png" width="100%" />
+
+``` r
+## basic example code
+ggcalendar:::return_df_dates_month(month = "2022-07") |> 
+  head()
+
+ggcalendar::return_dates_interval(start_date = "2022-07-01", end_date = "2022-08-31") |> 
+  ggcalendar() +
+  aes(date = date) +
+  geom_text_calendar(size = 8) + 
+  geom_point_calendar(data = . %>% filter(date == "2022-07-04"),
+                      size = 8, 
+                      alpha = .5) +
+  geom_point_calendar(data = . %>% filter(date < Sys.Date()),
+                      size = 10, shape = "x")
+```
+
+-----
+
+# more ideas
+
+``` r
+#' #' Title
+#' #'
+#' #' @param data
+#' #' @param scales
+#' #'
+#' #' @return
+#' #' @export
+#' #'
+#' #' @examples
+#' #' return_dates_year(1999) %>%
+#' #' head() %>%
+#' #' compute_group_calendar()
+#' #'
+#' compute_group_weekly <- function(data, scales){
+#'
+#'   data %>%
+#'     dplyr::mutate(num_day_of_week = lubridate::wday(.data$date)) %>%
+#'     dplyr::mutate(day_of_week = lubridate::wday(.data$date, label = TRUE, abbr = TRUE)) %>%
+#'     dplyr::mutate(week_of_month = (- lubridate::wday(.data$date) + lubridate::day(.data$date)) %/% 7 + 1 +
+#'                     ifelse(lubridate::wday(lubridate::floor_date(lubridate::as_date(.data$date), "month")) == 1, -1, 0)
+#'                   ) %>%
+#'     dplyr::mutate(date_of_month = lubridate::day(.data$date)) %>%
+#'     dplyr::mutate(which_year = lubridate::year(.data$date) - 2018) %>%
+#'     dplyr::mutate(month = lubridate::month(.data$date, abbr = TRUE, label = TRUE)) %>%
+#'     dplyr::mutate(hour = lubridate::hour(.data$date)) %>%
+#'     dplyr::mutate(academic_year =  lubridate::year(.data$date) +
+#'                     ifelse(lubridate::month(date) >
+#'                              6, 1, 0)) %>%
+#'     dplyr::mutate(academic_month = .data$month %>%
+#'                     factor(levels = c("Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+#'                                       "Jan", "Feb", "Mar", "Apr", "May", "Jun")))
+#'
+#' }
+#'
+#' StatWeekly <- ggplot2::ggproto(`_class` = "StatWeekly",
+#'                                  `_inherit` = ggplot2::Stat,
+#'                                  required_aes = c("date"),
+#'                                  compute_group = compute_group_weekly,
+#'                                  default_aes = ggplot2::aes(x = ggplot2::after_stat(day_of_week %>% as.numeric()),
+#'                                                             y = ggplot2::after_stat(hour),
+#'                                                             label = ggplot2::after_stat(date_of_month)))
+#'
+```
+
+``` r
+#' Title
+#'
+#' @param dates_df
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' library(lubridate)
+#' library(dplyr)
+#' library(ggplot2)
+#' library(magrittr)
+#'
+#' ggweekly() +
+#' geom_text_weekly()
+#'
+#' ggweekly() +
+#' geom_text_weekly(color = "grey35") +
+#' labs(title = "When to do #TidyTuesday in 2022") +
+#' geom_text_weekly(label = "X",
+#'                   data = data.frame(date = seq(as.Date("2022/01/01"),
+#'                   as.Date("2022/04/18"), "days")))
+#'
+ggweekly <- function(dates_df = return_hours_week(), day_labels = c("S", "M", "T", "W", "T", "F", "S")){
+
+
+  ggplot2::ggplot(data = dates_df) +
+    ggplot2::aes(date = date) +
+    ggplot2::scale_y_reverse(
+      breaks = 7:21,
+                             expand = c(0,0),
+                             limits = c(21 + .5,
+                                        7 - .5),
+
+                             ) +
+    ggplot2::scale_x_continuous(breaks = 1:7, labels = day_labels,
+                                limits = c(.5, 7.5),expand = c(0,0)
+
+                                #position = "top"
+                                ) +
+    ggplot2::facet_wrap(~epiweek(date), scales = "free") +
+    ggplot2::labs(x = NULL, y = NULL) +
+    ggplot2::theme(#axis.text.y = ggplot2::element_blank(),
+          axis.ticks.y = ggplot2::element_blank(),
+          axis.ticks.x = ggplot2::element_blank()) +
+    ggplot2::theme(panel.grid.major = ggplot2::element_blank()) +
+    ggplot2::geom_blank() +
+    # theme(strip.placement = "outside") +
+    NULL
+
+}
+```
