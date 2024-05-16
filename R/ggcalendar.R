@@ -1,4 +1,4 @@
-ggcalendar <- function(dates_df = return_df_dates_year(), 
+ggcalendar <- function(dates_df = df_year(), 
                        day_labels = c("S", "M", "T", "W", "T", "F", "S"), 
                        labels_layer = TRUE, 
                        color = "grey35",

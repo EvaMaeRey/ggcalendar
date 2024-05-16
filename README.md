@@ -57,17 +57,17 @@ number of convenience functions that will help us produce dataframes
 with column ‘date’ we can feed into ggplot2.
 
 ``` r
-knitrExtra:::chunk_to_r("return_df_dates")
+knitrExtra:::chunk_to_r("df")
 ```
 
 ``` r
-return_df_dates_today <- function(){
+df_today <- function(){
 
   data.frame(date = Sys.Date())
 
 }
 
-return_df_dates_day <- function(date = NULL){
+df_day <- function(date = NULL){
   
   if(is.null(date)){date <- Sys.Date()}
 
@@ -76,14 +76,14 @@ return_df_dates_day <- function(date = NULL){
 }
 
 
-return_df_dates_interval <- function(start_date, end_date){
+df_dates_interval <- function(start_date, end_date){
 
   data.frame(date = as.Date(start_date):as.Date(end_date) |>
     as.Date())
 
 }
 
-return_df_dates_month <- function(month = NULL, year = NULL){
+df_month <- function(month = NULL, year = NULL){
 
   if(is.null(month)){
     
@@ -112,19 +112,19 @@ return_df_dates_month <- function(month = NULL, year = NULL){
     end_date
 
     data.frame(date = 
-                 return_df_dates_interval(start_date, 
+                 df_dates_interval(start_date, 
                                        end_date - lubridate::days(1)))
 
 }
 
-return_df_dates_week <- function(date = NULL){
+df_week <- function(date = NULL){
 
   if(is.null(date)){date <- Sys.Date()}
 
   start_date <- lubridate::floor_date(date, unit = "week")
   end_date <- lubridate::ceiling_date(date, unit = "week")
 
-  data.frame(date = return_df_dates_interval(start_date, 
+  data.frame(date = df_dates_interval(start_date, 
                         end_date - lubridate::days(1)) )
 
 }
@@ -139,7 +139,7 @@ return_df_hours_week <- function(date = NULL){
 
 }
 
-return_df_dates_year <- function(year = NULL){
+df_year <- function(year = NULL){
 
   if(is.null(year)){year <-  lubridate::year(Sys.Date())}
 
@@ -151,7 +151,7 @@ return_df_dates_year <- function(year = NULL){
     end_date
 
     data.frame(date = 
-                 return_df_dates_interval(start_date, 
+                 df_dates_interval(start_date, 
                                        end_date - lubridate::days(1)))
     
 }
@@ -162,21 +162,21 @@ return_df_dates_year <- function(year = NULL){
 Let’s have a look at some of these.
 
 ``` r
-return_df_dates_today()
+df_today()
 #>         date
-#> 1 2024-05-15
+#> 1 2024-05-16
 
-return_df_dates_day()
+df_day()
 #>         date
-#> 1 2024-05-15
+#> 1 2024-05-16
 
-return_df_dates_interval(start_date = "2024-10-02", end_date = "2024-10-04")
+df_dates_interval(start_date = "2024-10-02", end_date = "2024-10-04")
 #>         date
 #> 1 2024-10-02
 #> 2 2024-10-03
 #> 3 2024-10-04
 
-return_df_dates_week()
+df_week()
 #>         date
 #> 1 2024-05-12
 #> 2 2024-05-13
@@ -186,7 +186,7 @@ return_df_dates_week()
 #> 6 2024-05-17
 #> 7 2024-05-18
 
-return_df_dates_year() |> head()
+df_year() |> head()
 #>         date
 #> 1 2024-01-01
 #> 2 2024-01-02
@@ -195,7 +195,7 @@ return_df_dates_year() |> head()
 #> 5 2024-01-05
 #> 6 2024-01-06
 
-return_df_dates_month() |> head()
+df_month() |> head()
 #>         date
 #> 1 2024-05-01
 #> 2 2024-05-02
@@ -296,7 +296,7 @@ StatWeekly <- ggplot2::ggproto(`_class` = "StatCalendar",
 Okay, let’s see how our compute and Stat work in action\!
 
 ``` r
-return_df_dates_week() |>
+df_week() |>
   compute_group_calendar()
 #>         date wday wday_abbr week_of_month day year month_abbr hour
 #> 1 2024-05-12    1       Sun             3  12    6        May    0
@@ -315,7 +315,7 @@ return_df_dates_week() |>
 #> 6          2024                 May
 #> 7          2024                 May
 
-return_df_dates_month() |>
+df_month() |>
   ggplot() + 
   aes(date = date) + 
   layer(stat = StatCalendar, geom = "text", 
@@ -354,7 +354,7 @@ stat_calendar <- function(mapping = NULL,
 ### Test `stat_calendar`
 
 ``` r
-return_df_dates_year() |> 
+df_year() |> 
   ggplot() + 
   aes(date = date) +
   stat_calendar(color = "grey") + 
@@ -388,7 +388,7 @@ and more beautiful.
 ``` r
 day_labels = c("S", "M", "T", "W", "T", "F", "S")
 
-return_df_dates_year() |> 
+df_year() |> 
   ggplot() + 
   aes(date = date) +
   stat_calendar(color = "grey") +
@@ -448,7 +448,7 @@ defaults_calendar <- function(day_labels = c("S", "M", "T", "W", "T", "F", "S"))
 Let’s check it out…
 
 ``` r
-return_df_dates_year(2018) |> 
+df_year(2018) |> 
   ggplot() +
   aes(date = date) + 
   stat_calendar() + 
@@ -467,7 +467,7 @@ knitrExtra:::chunk_to_r("ggcalendar")
 ```
 
 ``` r
-ggcalendar <- function(dates_df = return_df_dates_year(), 
+ggcalendar <- function(dates_df = df_year(), 
                        day_labels = c("S", "M", "T", "W", "T", "F", "S"), 
                        labels_layer = TRUE, 
                        color = "grey35",
@@ -496,7 +496,7 @@ ggcalendar()
 
 ggcalendar() + 
   stat_calendar(geom = "point", 
-                data = return_df_dates_week(),
+                data = df_week(),
                 color = "darkred",
                 size = 5,
                 alpha = .5)
@@ -519,7 +519,7 @@ ggcalendar() +
   stat_calendar(label = "X",
                 color = "darkred",
                 size = 5,
-                data = return_df_dates_interval(
+                data = df_dates_interval(
                   "2024/01/01", Sys.Date() - days(1)),
                  alpha = .35)
 ```
@@ -527,7 +527,7 @@ ggcalendar() +
 <img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
 
 ``` r
-return_df_dates_month(year = 2023, month = 2) |> 
+df_month(year = 2023, month = 2) |> 
   ggcalendar()
 ```
 
@@ -535,7 +535,7 @@ return_df_dates_month(year = 2023, month = 2) |>
 
 ``` r
 
-return_df_dates_month(year = 2023, month = 2) |> 
+df_month(year = 2023, month = 2) |> 
 ggcalendar()
 ```
 
@@ -543,7 +543,7 @@ ggcalendar()
 
 ``` r
 
-return_df_dates_month(year = 2023, month = 2) |> 
+df_month(year = 2023, month = 2) |> 
 ggcalendar(labels_layer = F) + 
   aes(date = date) + 
   geom_text_calendar(label = "Another\nday...", # override default
@@ -554,7 +554,7 @@ ggcalendar(labels_layer = F) +
 
 ``` r
 
-return_df_dates_month(year = 2023, month = 2) |> 
+df_month(year = 2023, month = 2) |> 
 ggcalendar() + 
   aes(date = date) + 
   geom_text_calendar() + 
@@ -571,7 +571,7 @@ ggcalendar() +
 
 library(ggplot2)
 
-return_df_dates_interval("2023-09-01", "2023-12-31") |> 
+df_dates_interval("2023-09-01", "2023-12-31") |> 
   ggcalendar()
 ```
 
@@ -586,7 +586,7 @@ c("2022-03-19", "2022-04-09", "2022-05-07",
   mutate(future = Sys.Date() < date) ->
 events
 
-return_df_dates_year(2022) |> 
+df_year(2022) |> 
   ggcalendar() +
   aes(date = date) +
   geom_text_calendar() + 
@@ -731,7 +731,6 @@ devtools::check()
 library(ggcalendar)
 library(tidyverse)
 
-
 ggcalendar:::ggcalendar() + 
   labs(title = "Calendar: 2024")
 ```
@@ -742,11 +741,11 @@ ggcalendar:::ggcalendar() +
 
 ggcalendar:::ggcalendar() + 
   ggcalendar:::geom_tile_calendar(
-    data = ggcalendar:::return_df_dates_week(),
+    data = ggcalendar:::df_week(),
     fill = "red",
     alpha = .25) + 
   ggcalendar:::geom_point_calendar(
-    data = ggcalendar:::return_df_dates_today(),
+    data = ggcalendar:::df_today(),
     color = "goldenrod3", shape = 21,
     size = 8, stroke = 1.5
     )
@@ -763,24 +762,24 @@ nycflights13::flights |>
   mutate(date = as.Date(time_hour)) |> 
   filter(year(date) == 2013) |> 
   count(date) |> 
-  ggcalendar:::ggcalendar() +
-  aes(date = date) +
-  ggcalendar:::geom_tile_calendar(
-    aes(fill = n),
-    alpha = .7, show.legend = F) + 
-  scale_fill_viridis_c(option = "inferno", 
-                        direction = 1) + 
-  scale_size(range = c(3,8)) +
-  ggcalendar:::geom_text_calendar(aes(label = n), 
-                                  size = 2) + 
-  NULL
+  ggcalendar:::ggcalendar(labels_layer = FALSE) +
+      aes(date = date) +
+      ggcalendar:::geom_tile_calendar(
+        aes(fill = n),
+        alpha = .7, show.legend = F) + 
+      scale_fill_viridis_c(option = "inferno", 
+                            direction = 1) + 
+      scale_size(range = c(3,8)) +
+      ggcalendar:::geom_text_calendar(aes(label = n), 
+                                      size = 2) + 
+      NULL
 ```
 
 <img src="man/figures/README-unnamed-chunk-22-3.png" width="100%" />
 
 ``` r
 ## basic example code
-ggcalendar:::return_df_dates_month(month = "2022-07") |> 
+ggcalendar:::df_month(month = "2022-07") |> 
   head()
 
 ggcalendar::return_dates_interval(start_date = "2022-07-01", end_date = "2022-08-31") |> 
