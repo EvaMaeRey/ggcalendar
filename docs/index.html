@@ -56,7 +56,32 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
-<div class="section level1">
+<ul>
+<li><a href="#ggcalendar">ggcalendar</a></li>
+<li>
+<a href="#step-00-convenience-functions-dates-vectors-to-data-frames">Step 00. Convenience functions, dates vectors to data frames.</a><ul><li><a href="#examples">Examples</a></li></ul>
+</li>
+<li>
+<a href="#step-1--2-compute-from-date-to-xy--define-statcalendar">Step 1 &amp; 2. Compute: from date to x/y, &amp; define StatCalendar</a><ul><li><a href="#test-it-out">Test it out</a></li></ul>
+</li>
+<li>
+<a href="#step-3-lets-write-a-user-facing-function-stat_calendar">Step 3. Let’s write a user-facing function <code>stat_calendar()</code></a><ul><li><a href="#test-stat_calendar">Test <code>stat_calendar</code></a></li></ul>
+</li>
+<li><a href="#aliasing-and-convenience">aliasing and convenience</a></li>
+<li>
+<a href="#defaults_calendar--ggcalendar-thinking-about-set-of-scalescoords-etc-that-gives-you-a-nice-calendar-to-wrap-up-into-defaults"><code>defaults_calendar</code> &amp; <code>ggcalendar()</code> Thinking about set of scales/coords etc, that gives you a nice calendar (to wrap up into defaults)</a><ul>
+<li><a href="#defaults_calendar--ggcalendar"><code>defaults_calendar</code> &amp; <code>ggcalendar()</code></a></li>
+<li><a href="#more">More</a></li>
+</ul>
+</li>
+<li><a href="#nyc-flights-example">NYC flights Example</a></li>
+<li><a href="#births-example">Births example</a></li>
+<li><a href="#data-defaults-to-calendar-year-and-aesdate--date">data defaults to calendar year and aes(date = date)</a></li>
+<li><a href="#minimal-viable-packaging">Minimal Viable Packaging</a></li>
+<li><a href="#traditional-readme">Traditional README</a></li>
+<li><a href="#more-ideas">more ideas</a></li>
+</ul>
+<!-- README.md is generated from README.Rmd. Please edit that file --><div class="section level1">
 <div class="page-header"><h1 id="ggcalendar">ggcalendar<a class="anchor" aria-label="anchor" href="#ggcalendar"></a>
 </h1></div>
 <!-- badges: start -->
@@ -65,7 +90,7 @@
 <p>When using calendars, ‘when?’ and ‘where?’ are the same question! So, ggcalendar introduces a new positional aesthetic: ‘date’. Let’s <em>put</em> things on the calendar!</p>
 <p>In this proposed package, we’ll specify the position of a calendar event calendar using dates as the required aesthetic: <code>aes(date = my_variable_of_dates)</code>! Then you can use layers function <code>stat_calendar()</code> and derivative geom functions <code>geom_text_calendar</code>, <code>geom_tile_calendar</code> and <code>geom_point_calendar</code> to place specific grobs/mark in the plot space.</p>
 <p>Under the hood, the compute_group functions finds the x and y position for the date in the month (x is day in week and y is week in month). Faceting by month is used to prevent over-plotting.</p>
-<p>Other possible directions would be to just calculate x and y based on date in month and combine with faceting by month – but also to position (x and y) based on month. Furthermore, a dedicated Coord could be created (Teun’s thought). Then maybe dates would just feed generically in as the ‘x’ aes - this sounds cool!</p>
+<p>Other possible directions would be to calculate x and y based on date in month <em>and</em> on month - instead of relying on faceting by month. Furthermore, a dedicated Coord could be created (Teun’s thought). Then maybe dates would just feed generically in as the ‘x’ aes - this sounds cool!</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># library(ggcalendar)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>

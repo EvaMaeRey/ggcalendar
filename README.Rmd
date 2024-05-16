@@ -1,5 +1,7 @@
 ---
-output: github_document
+output: 
+  github_document:
+    toc: TRUE
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -55,10 +57,10 @@ devtools::install_github("EvaMaeRey/ggcalendar")
 Because ggplot2's diet is consists solely of dataframes, we create a number of convenience functions that will help us produce dataframes with column 'date' we can feed into ggplot2.
 
 ```{r}
-knitrExtra:::chunk_to_r("df")
+knitrExtra:::chunk_to_r("df_functions")
 ```
 
-```{r df}
+```{r df_functions}
 df_today <- function(){
 
   data.frame(date = Sys.Date())

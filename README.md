@@ -1,4 +1,29 @@
 
+  - [ggcalendar](#ggcalendar)
+  - [Step 00. Convenience functions, dates vectors to data
+    frames.](#step-00-convenience-functions-dates-vectors-to-data-frames)
+      - [Examples](#examples)
+  - [Step 1 & 2. Compute: from date to x/y, & define
+    StatCalendar](#step-1--2-compute-from-date-to-xy--define-statcalendar)
+      - [Test it out](#test-it-out)
+  - [Step 3. Let’s write a user-facing function
+    `stat_calendar()`](#step-3-lets-write-a-user-facing-function-stat_calendar)
+      - [Test `stat_calendar`](#test-stat_calendar)
+  - [aliasing and convenience](#aliasing-and-convenience)
+  - [`defaults_calendar` & `ggcalendar()` Thinking about set of
+    scales/coords etc, that gives you a nice calendar (to wrap up into
+    defaults)](#defaults_calendar--ggcalendar-thinking-about-set-of-scalescoords-etc-that-gives-you-a-nice-calendar-to-wrap-up-into-defaults)
+      - [`defaults_calendar` &
+        `ggcalendar()`](#defaults_calendar--ggcalendar)
+      - [More](#more)
+  - [NYC flights Example](#nyc-flights-example)
+  - [Births example](#births-example)
+  - [data defaults to calendar year and aes(date =
+    date)](#data-defaults-to-calendar-year-and-aesdate--date)
+  - [Minimal Viable Packaging](#minimal-viable-packaging)
+  - [Traditional README](#traditional-readme)
+  - [more ideas](#more-ideas)
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # ggcalendar
@@ -57,7 +82,7 @@ number of convenience functions that will help us produce dataframes
 with column ‘date’ we can feed into ggplot2.
 
 ``` r
-knitrExtra:::chunk_to_r("df")
+knitrExtra:::chunk_to_r("df_functions")
 ```
 
 ``` r
