@@ -33,7 +33,7 @@ In this proposed package, we'll specify the position of a calendar event calenda
 
 Under the hood, the compute_group functions finds the x and y position for the date in the month (x is day in week and y is week in month). Faceting by month is used to prevent over-plotting.   
 
-Other possible directions would be to just calculate x and y based on date in month and combine with faceting by month --  but also to position (x and y) based on month.  Furthermore, a dedicated Coord could be created (Teun's thought).  Then maybe dates would just feed generically in as the 'x' aes - this sounds cool!
+Other possible directions would be to calculate x and y based on date in month *and* on month - instead of relying on faceting by month.  Furthermore, a dedicated Coord could be created (Teun's thought).  Then maybe dates would just feed generically in as the 'x' aes - this sounds cool!
 
 
 ```{r setup}
