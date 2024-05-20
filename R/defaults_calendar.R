@@ -1,3 +1,11 @@
+#' Title
+#'
+#' @param day_labels 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 defaults_calendar <- function(day_labels = c("S", "M", "T", "W", "T", "F", "S")){
   
   list(

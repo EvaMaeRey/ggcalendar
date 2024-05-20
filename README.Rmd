@@ -33,7 +33,7 @@ When using calendars, 'when?' and 'where?' are the same question! So, ggcalendar
 
 In this proposed package, we'll specify the position of a calendar event calendar using dates as the required aesthetic: `aes(date = my_variable_of_dates)`!  Then you can use layers function `stat_calendar()` and derivative geom functions `geom_text_calendar`, `geom_tile_calendar` and `geom_point_calendar` to place specific grobs/mark in the plot space. 
 
-Under the hood, the compute_group functions finds the x and y position for the date in the month (x is day in week and y is week in month). Faceting by month is used to prevent over-plotting.   
+Under the hood, the compute_group functions finds the x and y position for the date in the month (x is day in week and y is week in month). Faceting by month is used to prevent over-plotting.  Note:  automatic faceting by month via ggcalendar() function presupposes that your variable is also named 'date'.
 
 Other possible directions would be to calculate x and y based on date in month *and* on month - instead of relying on faceting by month.  Furthermore, a dedicated Coord could be created (Teun's thought).  Then maybe dates would just feed generically in as the 'x' aes - this sounds cool!
 
@@ -61,12 +61,26 @@ knitrExtra:::chunk_to_r("df_functions")
 ```
 
 ```{r df_functions}
+#' Title
+#'
+#' @return
+#' @export
+#'
+#' @examples
 df_today <- function(){
 
   data.frame(date = Sys.Date())
 
 }
 
+#' Title
+#'
+#' @param date 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 df_day <- function(date = NULL){
   
   if(is.null(date)){date <- Sys.Date()}
@@ -76,6 +90,15 @@ df_day <- function(date = NULL){
 }
 
 
+#' Title
+#'
+#' @param start_date 
+#' @param end_date 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 df_dates_interval <- function(start_date, end_date){
 
   data.frame(date = as.Date(start_date):as.Date(end_date) |>
@@ -83,6 +106,15 @@ df_dates_interval <- function(start_date, end_date){
 
 }
 
+#' Title
+#'
+#' @param month 
+#' @param year 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 df_month <- function(month = NULL, year = NULL){
 
   if(is.null(month)){
@@ -117,6 +149,14 @@ df_month <- function(month = NULL, year = NULL){
 
 }
 
+#' Title
+#'
+#' @param date 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 df_week <- function(date = NULL){
 
   if(is.null(date)){date <- Sys.Date()}
@@ -129,6 +169,14 @@ df_week <- function(date = NULL){
 
 }
 
+#' Title
+#'
+#' @param date 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 return_df_hours_week <- function(date = NULL){
 
   if(is.null(date)){date <- Sys.Date()}
@@ -139,6 +187,14 @@ return_df_hours_week <- function(date = NULL){
 
 }
 
+#' Title
+#'
+#' @param year 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 df_year <- function(year = NULL){
 
   if(is.null(year)){year <-  lubridate::year(Sys.Date())}
@@ -269,6 +325,21 @@ knitrExtra:::chunk_to_r("a_stat_calendar")
 
 
 ```{r a_stat_calendar}
+#' Title
+#'
+#' @param mapping 
+#' @param data 
+#' @param geom 
+#' @param position 
+#' @param na.rm 
+#' @param show.legend 
+#' @param inherit.aes 
+#' @param ... 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 stat_calendar <- function(mapping = NULL, 
                           data = NULL,
                           geom = "text",
@@ -311,8 +382,34 @@ knitrExtra:::chunk_to_r("geom_text_calendar")
 ```
 
 ```{r geom_text_calendar}
-geom_text_calendar <- stat_calendar
+#' Title
+#'
+#' @param ... 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+geom_text_calendar <- function(...){stat_calendar(...)}
+
+#' Title
+#'
+#' @param ... 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 geom_point_calendar <- function(...){stat_calendar(geom = "point", ...)}
+
+#' Title
+#'
+#' @param ... 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 geom_tile_calendar <- function(...){stat_calendar(geom = "tile", ...)}
 ```
 
@@ -358,6 +455,14 @@ knitrExtra:::chunk_to_r("defaults_calendar")
 ```
 
 ```{r defaults_calendar}
+#' Title
+#'
+#' @param day_labels 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 defaults_calendar <- function(day_labels = c("S", "M", "T", "W", "T", "F", "S")){
   
   list(
@@ -400,6 +505,19 @@ knitrExtra:::chunk_to_r("ggcalendar")
 ```
 
 ```{r ggcalendar}
+#' Title
+#'
+#' @param dates_df 
+#' @param day_labels 
+#' @param labels_layer 
+#' @param color 
+#' @param size 
+#' @param alpha 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 ggcalendar <- function(dates_df = df_year(), 
                        day_labels = c("S", "M", "T", "W", "T", "F", "S"), 
                        labels_layer = TRUE, 
@@ -582,71 +700,49 @@ ggcalendar() +
 ---
 
 
-```{r}
-contrast <- function(colour) {
-  out   <- rep("grey35", length(colour))
-  light <- farver::get_channel(colour, "l", space = "hcl")
-  out[light < 50] <- "grey80"
-  out
-}
-  
-aes_autocontrast_color_on_fill <- aes(colour = after_scale(contrast(fill)))
 
-
-
-nhl_player_births <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-01-09/nhl_player_births.csv')
-
-
-nhl_player_births |> 
-  mutate(date = birth_date %>% 
-           str_replace("....", "2024") %>% 
-           as_date()) %>% 
-  count(date) %>% 
-  ggcalendar(labels_layer = F) +  # aes(date = date)  # local aes?
-  aes(fill = n, label = n) + 
-  aes_autocontrast_color_on_fill +
-  geom_tile_calendar(alpha = .85, linewidth = 0, show.legend = F) + 
-  scale_fill_viridis_c() +
-  geom_text_calendar(size = 3) +
-  labs(title = "Number of NHL Player Birthdays by day 1879-2005\nas celebrated in 2024")
-  
-
-```
 
 
 ---
 
+
+
+
 # Minimal Viable Packaging
 
-```{r, eval = F}
-# devtools::create(".")
+```{r, eval = T}
 usethis::use_package("lubridate")
 usethis::use_package("ggplot2")
 usethis::use_package("dplyr")
 usethis::use_package("stringr")
+```
 
+```{r, eval = F}
 devtools::check()
-
+devtools::install(pkg = ".", upgrade = "never") 
 
 ```
+
+
 
 # Traditional README
 
 
 ```{r, eval = T}
+rm(list = ls())
 library(ggcalendar)
 library(tidyverse)
 
-ggcalendar:::ggcalendar() + 
+ggcalendar() + 
   labs(title = "Calendar: 2024")
 
-ggcalendar:::ggcalendar() + 
-  ggcalendar:::geom_tile_calendar(
-    data = ggcalendar:::df_week(),
+ggcalendar() + 
+  geom_tile_calendar(
+    data = df_week(),
     fill = "red",
     alpha = .25) + 
-  ggcalendar:::geom_point_calendar(
-    data = ggcalendar:::df_today(),
+  geom_point_calendar(
+    data = df_today(),
     color = "goldenrod3", shape = 21,
     size = 8, stroke = 1.5
     )
@@ -658,27 +754,64 @@ nycflights13::flights |>
   mutate(date = as.Date(time_hour)) |> 
   filter(year(date) == 2013) |> 
   count(date) |> 
-  ggcalendar:::ggcalendar(labels_layer = FALSE) +
+  ggcalendar(labels_layer = FALSE) +
       aes(date = date) +
-      ggcalendar:::geom_tile_calendar(
+      geom_tile_calendar(
         aes(fill = n),
         alpha = .7, show.legend = F) + 
       scale_fill_viridis_c(option = "inferno", 
                             direction = 1) + 
       scale_size(range = c(3,8)) +
-      ggcalendar:::geom_text_calendar(aes(label = n), 
-                                      size = 2) + 
+      geom_text_calendar(aes(label = n), 
+                         size = 2) + 
       NULL
+
+```
+
+```{r}
+contrast <- function(colour) {
+  out   <- rep("grey35", length(colour))
+  light <- farver::get_channel(colour, "l", space = "hcl")
+  out[light < 50] <- "grey80"
+  out
+}
+  
+aes_autocontrast_color_on_fill <- aes(colour = after_scale(contrast(fill)))
+
+library(ggcalendar)
+
+nhl_player_births <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-01-09/nhl_player_births.csv')
+
+
+nhl_player_births |> 
+  mutate(date = birth_date %>% 
+           str_replace("....", "2024") %>% 
+           as_date()) %>% 
+  count(date) %>% 
+  ggcalendar(labels_layer = F) +  
+  aes(date = date, # date is positional aes
+      fill = n) +
+  labs(title = "Number of NHL Player Birthdays by day 1879-2005\nas celebrated in 2024") +
+  geom_tile_calendar(alpha = .85, linewidth = 0) +
+  scale_fill_viridis_c() 
+
+last_plot() +
+  aes(label = n) + 
+  geom_text_calendar(size = 3) +
+  aes_autocontrast_color_on_fill + 
+  guides(fill = "none")
+  
 
 ```
 
 
 ```{r example2, eval = F}
 ## basic example code
-ggcalendar:::df_month(month = "2022-07") |> 
+df_month(month = "2022-07") |> 
   head()
 
-ggcalendar::return_dates_interval(start_date = "2022-07-01", end_date = "2022-08-31") |> 
+return_dates_interval(start_date = "2022-07-01", 
+                      end_date = "2022-08-31") |> 
   ggcalendar() +
   aes(date = date) +
   geom_text_calendar(size = 8) + 
@@ -691,6 +824,11 @@ ggcalendar::return_dates_interval(start_date = "2022-07-01", end_date = "2022-08
 
 
 ---
+
+```{r}
+knitr::knit_exit()
+
+```
 
 # more ideas
 

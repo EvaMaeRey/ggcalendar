@@ -1,3 +1,16 @@
+#' Title
+#'
+#' @param dates_df 
+#' @param day_labels 
+#' @param labels_layer 
+#' @param color 
+#' @param size 
+#' @param alpha 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 ggcalendar <- function(dates_df = df_year(), 
                        day_labels = c("S", "M", "T", "W", "T", "F", "S"), 
                        labels_layer = TRUE, 

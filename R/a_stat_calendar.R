@@ -1,3 +1,18 @@
+#' Title
+#'
+#' @param mapping 
+#' @param data 
+#' @param geom 
+#' @param position 
+#' @param na.rm 
+#' @param show.legend 
+#' @param inherit.aes 
+#' @param ... 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 stat_calendar <- function(mapping = NULL, 
                           data = NULL,
                           geom = "text",
