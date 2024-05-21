@@ -246,11 +246,11 @@ Let’s have a look at some of these.
 ``` r
 df_today()
 #>         date
-#> 1 2024-05-20
+#> 1 2024-05-21
 
 df_day()
 #>         date
-#> 1 2024-05-20
+#> 1 2024-05-21
 
 df_dates_interval(start_date = "2024-10-02", end_date = "2024-10-04")
 #>         date
@@ -553,7 +553,12 @@ knitrExtra:::chunk_to_r("defaults_calendar")
 #' @export
 #'
 #' @examples
-defaults_calendar <- function(day_labels = c("S", "M", "T", "W", "T", "F", "S")){
+defaults_calendar <- function(day_labels = c("M", "T", "W", "T", "F", "S", "S")){
+  
+  week_start <- getOption("lubridate.week.start", 7)
+  
+  if(week_start != 1){day_labels <- day_labels[c(week_start:7, 1:(week_start-1))]}
+
   
   list(
     ggplot2::scale_y_reverse(breaks = 6:0, 
@@ -579,7 +584,7 @@ defaults_calendar <- function(day_labels = c("S", "M", "T", "W", "T", "F", "S"))
 Let’s check it out…
 
 ``` r
-df_year(2018) |> 
+df_year(2024) |> 
   ggplot() +
   aes(date = date) + 
   stat_calendar() + 
@@ -612,13 +617,19 @@ knitrExtra:::chunk_to_r("ggcalendar")
 #'
 #' @examples
 ggcalendar <- function(dates_df = df_year(), 
-                       day_labels = c("S", "M", "T", "W", "T", "F", "S"), 
+                       day_labels = c("M", "T", "W", "T", "F", "S", "S"), 
                        labels_layer = TRUE, 
                        color = "grey35",
                        size = 3,
                        alpha = .5){
-
-  if(labels_layer){my_layer <- stat_calendar(color = color, aes(date = date), size = size, show.legend = F)}else{my_layer <- NULL}
+  
+  if(labels_layer){
+    
+    my_layer <- stat_calendar(
+    color = color, aes(date = date), 
+    size = size, show.legend = F) 
+    
+    } else { my_layer <- NULL}
   
   ggplot2::ggplot(data = dates_df) +
   defaults_calendar(day_labels = day_labels) +
@@ -647,6 +658,21 @@ ggcalendar() +
 ```
 
 <img src="man/figures/README-unnamed-chunk-14-2.png" width="100%" />
+
+``` r
+
+
+options(lubridate.week.start = 1)
+
+ggcalendar() + 
+  stat_calendar(geom = "point", 
+                data = df_week(),
+                color = "darkred",
+                size = 5,
+                alpha = .5)
+```
+
+<img src="man/figures/README-unnamed-chunk-14-3.png" width="100%" />
 
 ## More
 

@@ -12,13 +12,19 @@
 #'
 #' @examples
 ggcalendar <- function(dates_df = df_year(), 
-                       day_labels = c("S", "M", "T", "W", "T", "F", "S"), 
+                       day_labels = c("M", "T", "W", "T", "F", "S", "S"), 
                        labels_layer = TRUE, 
                        color = "grey35",
                        size = 3,
                        alpha = .5){
-
-  if(labels_layer){my_layer <- stat_calendar(color = color, aes(date = date), size = size, show.legend = F)}else{my_layer <- NULL}
+  
+  if(labels_layer){
+    
+    my_layer <- stat_calendar(
+    color = color, aes(date = date), 
+    size = size, show.legend = F) 
+    
+    } else { my_layer <- NULL}
   
   ggplot2::ggplot(data = dates_df) +
   defaults_calendar(day_labels = day_labels) +
