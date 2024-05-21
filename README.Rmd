@@ -752,6 +752,7 @@ devtools::install(pkg = ".", upgrade = "never")
 rm(list = ls())
 library(ggcalendar)
 library(tidyverse)
+options(lubridate.week.start = 1) # start on Monday
 
 ggcalendar() + 
   labs(title = "Calendar: 2024")
