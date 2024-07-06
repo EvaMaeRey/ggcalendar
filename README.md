@@ -1,27 +1,27 @@
 
-  - [ggcalendar](#ggcalendar)
-  - [Step 00. Convenience functions, dates vectors to data
-    frames.](#step-00-convenience-functions-dates-vectors-to-data-frames)
-      - [Examples](#examples)
-  - [Step 1 & 2. Compute: from date to x/y, & define
-    StatCalendar](#step-1--2-compute-from-date-to-xy--define-statcalendar)
-      - [Test it out](#test-it-out)
-  - [Step 3. Let’s write a user-facing function
-    `stat_calendar()`](#step-3-lets-write-a-user-facing-function-stat_calendar)
-      - [Test `stat_calendar`](#test-stat_calendar)
-  - [aliasing and convenience](#aliasing-and-convenience)
-  - [`defaults_calendar` & `ggcalendar()` Thinking about set of
-    scales/coords etc, that gives you a nice calendar (to wrap up into
-    defaults)](#defaults_calendar--ggcalendar-thinking-about-set-of-scalescoords-etc-that-gives-you-a-nice-calendar-to-wrap-up-into-defaults)
-      - [`defaults_calendar` &
-        `ggcalendar()`](#defaults_calendar--ggcalendar)
-      - [More](#more)
-  - [NYC flights Example](#nyc-flights-example)
-  - [Births example](#births-example)
-  - [data defaults to calendar year and aes(date =
-    date)](#data-defaults-to-calendar-year-and-aesdate--date)
-  - [Minimal Viable Packaging](#minimal-viable-packaging)
-  - [Traditional README](#traditional-readme)
+- [ggcalendar](#ggcalendar)
+- [Step 00. Convenience functions, dates vectors to data
+  frames.](#step-00-convenience-functions-dates-vectors-to-data-frames)
+  - [Examples](#examples)
+- [Step 1 & 2. Compute: from date to x/y, & define
+  StatCalendar](#step-1--2-compute-from-date-to-xy--define-statcalendar)
+  - [Test it out](#test-it-out)
+- [Step 3. Let’s write a user-facing function
+  `stat_calendar()`](#step-3-lets-write-a-user-facing-function-stat_calendar)
+  - [Test `stat_calendar`](#test-stat_calendar)
+- [aliasing and convenience](#aliasing-and-convenience)
+- [`defaults_calendar` & `ggcalendar()` Thinking about set of
+  scales/coords etc, that gives you a nice calendar (to wrap up into
+  defaults)](#defaults_calendar--ggcalendar-thinking-about-set-of-scalescoords-etc-that-gives-you-a-nice-calendar-to-wrap-up-into-defaults)
+  - [`defaults_calendar` &
+    `ggcalendar()`](#defaults_calendar--ggcalendar)
+  - [More](#more)
+- [NYC flights Example](#nyc-flights-example)
+- [Births example](#births-example)
+- [data defaults to calendar year and aes(date =
+  date)](#data-defaults-to-calendar-year-and-aesdate--date)
+- [Minimal Viable Packaging](#minimal-viable-packaging)
+- [Traditional README](#traditional-readme)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -41,18 +41,18 @@ content](#traditional-readme)*
 Here’s a proposal for creating calendars with ggplot2 via Stat
 extension.
 
-When using calendars, ‘when?’ and ‘where?’ are the same question\! So,
+When using calendars, ‘when?’ and ‘where?’ are the same question! So,
 ggcalendar introduces a new positional aesthetic: ‘date’. Let’s *put*
-things on the calendar\!
+things on the calendar!
 
 In this proposed package, we’ll specify the position of a calendar event
-calendar using dates as the required aesthetic: `aes(date =
-my_variable_of_dates)`\! Then you can use layers function
+calendar using dates as the required aesthetic:
+`aes(date = my_variable_of_dates)`! Then you can use layers function
 `stat_calendar()` and derivative geom functions `geom_text_calendar`,
 `geom_tile_calendar` and `geom_point_calendar` to place specific
 grobs/mark in the plot space.
 
-Under the hood, the compute\_group functions finds the x and y position
+Under the hood, the compute_group functions finds the x and y position
 for the date in the month (x is day in week and y is week in month).
 Faceting by month is used to prevent over-plotting. Note: automatic
 faceting by month via ggcalendar() function presupposes that your
@@ -62,7 +62,7 @@ Other possible directions would be to calculate x and y based on date in
 month *and* on month - instead of relying on faceting by month.
 Furthermore, a dedicated Coord could be created (Teun’s thought). Then
 maybe dates would just feed generically in as the ‘x’ aes - this sounds
-cool\!
+cool!
 
 ``` r
 # library(ggcalendar)
@@ -246,27 +246,39 @@ Let’s have a look at some of these.
 ``` r
 df_today()
 #>         date
-#> 1 2024-05-21
+#> 1 2024-07-06
+```
+
+``` r
 
 df_day()
 #>         date
-#> 1 2024-05-21
+#> 1 2024-07-06
+```
+
+``` r
 
 df_dates_interval(start_date = "2024-10-02", end_date = "2024-10-04")
 #>         date
 #> 1 2024-10-02
 #> 2 2024-10-03
 #> 3 2024-10-04
+```
+
+``` r
 
 df_week()
 #>         date
-#> 1 2024-05-19
-#> 2 2024-05-20
-#> 3 2024-05-21
-#> 4 2024-05-22
-#> 5 2024-05-23
-#> 6 2024-05-24
-#> 7 2024-05-25
+#> 1 2024-06-30
+#> 2 2024-07-01
+#> 3 2024-07-02
+#> 4 2024-07-03
+#> 5 2024-07-04
+#> 6 2024-07-05
+#> 7 2024-07-06
+```
+
+``` r
 
 df_year() |> head()
 #>         date
@@ -276,24 +288,30 @@ df_year() |> head()
 #> 4 2024-01-04
 #> 5 2024-01-05
 #> 6 2024-01-06
+```
+
+``` r
 
 df_month() |> head()
 #>         date
-#> 1 2024-05-01
-#> 2 2024-05-02
-#> 3 2024-05-03
-#> 4 2024-05-04
-#> 5 2024-05-05
-#> 6 2024-05-06
+#> 1 2024-07-01
+#> 2 2024-07-02
+#> 3 2024-07-03
+#> 4 2024-07-04
+#> 5 2024-07-05
+#> 6 2024-07-06
+```
+
+``` r
 
 return_df_hours_week() |> head()
 #>                  date
-#> 1 2024-05-19 01:00:00
-#> 2 2024-05-19 02:00:00
-#> 3 2024-05-19 03:00:00
-#> 4 2024-05-19 04:00:00
-#> 5 2024-05-19 05:00:00
-#> 6 2024-05-19 06:00:00
+#> 1 2024-06-30 01:00:00
+#> 2 2024-06-30 02:00:00
+#> 3 2024-06-30 03:00:00
+#> 4 2024-06-30 04:00:00
+#> 5 2024-06-30 05:00:00
+#> 6 2024-06-30 06:00:00
 ```
 
 # Step 1 & 2. Compute: from date to x/y, & define StatCalendar
@@ -327,7 +345,7 @@ created by parsing our date variable.
 Then, we’ll pass all this computation to define a new ggproto object
 StatCalendar. For maximum flexibility, our compute function doesn’t
 create ggplot2 core aesthetic channels ‘x’, ‘y’, and ‘label’ variables,
-but instead uses the default\_aes field to state what should be first
+but instead uses the default_aes field to state what should be first
 interpreted as x, y and label (thoughts? Maybe only ‘label’ should be
 managed like this).
 
@@ -375,27 +393,30 @@ StatWeekly <- ggplot2::ggproto(`_class` = "StatCalendar",
 
 ## Test it out
 
-Okay, let’s see how our compute and Stat work in action\!
+Okay, let’s see how our compute and Stat work in action!
 
 ``` r
 df_week() |>
   compute_group_calendar()
 #>         date wday wday_abbr week_of_month day year month_abbr hour
-#> 1 2024-05-19    1       Sun             4  19    6        May    0
-#> 2 2024-05-20    2       Mon             4  20    6        May    0
-#> 3 2024-05-21    3       Tue             4  21    6        May    0
-#> 4 2024-05-22    4       Wed             4  22    6        May    0
-#> 5 2024-05-23    5       Thu             4  23    6        May    0
-#> 6 2024-05-24    6       Fri             4  24    6        May    0
-#> 7 2024-05-25    7       Sat             4  25    6        May    0
+#> 1 2024-06-30    1       Sun             6  30    6        Jun    0
+#> 2 2024-07-01    2       Mon             1   1    6        Jul    0
+#> 3 2024-07-02    3       Tue             1   2    6        Jul    0
+#> 4 2024-07-03    4       Wed             1   3    6        Jul    0
+#> 5 2024-07-04    5       Thu             1   4    6        Jul    0
+#> 6 2024-07-05    6       Fri             1   5    6        Jul    0
+#> 7 2024-07-06    7       Sat             1   6    6        Jul    0
 #>   year_academic month_academic_abbr
-#> 1          2024                 May
-#> 2          2024                 May
-#> 3          2024                 May
-#> 4          2024                 May
-#> 5          2024                 May
-#> 6          2024                 May
-#> 7          2024                 May
+#> 1          2024                 Jun
+#> 2          2025                 Jul
+#> 3          2025                 Jul
+#> 4          2025                 Jul
+#> 5          2025                 Jul
+#> 6          2025                 Jul
+#> 7          2025                 Jul
+```
+
+``` r
 
 df_month() |>
   ggplot() + 
@@ -464,7 +485,7 @@ df_year() |>
 # aliasing and convenience
 
 To give the user a better sense of what they’ll see when using
-stat\_calendar we create the alias, ‘geom\_text\_calendar()’.
+stat_calendar we create the alias, ‘geom_text_calendar()’.
 
 ``` r
 knitrExtra:::chunk_to_r("geom_text_calendar")
@@ -504,7 +525,7 @@ geom_tile_calendar <- function(...){stat_calendar(geom = "tile", ...)}
 
 # `defaults_calendar` & `ggcalendar()` Thinking about set of scales/coords etc, that gives you a nice calendar (to wrap up into defaults)
 
-In our test of stat\_calendar, we see cumbersomeness. Below, we consider
+In our test of stat_calendar, we see cumbersomeness. Below, we consider
 even more ggplot2 decision that would make our plot easier to consume
 and more beautiful.
 
@@ -537,7 +558,7 @@ df_year() |>
 
 ## `defaults_calendar` & `ggcalendar()`
 
-Then, we bundle these up into defaults\_calendar, which can be quickly
+Then, we bundle these up into defaults_calendar, which can be quickly
 added for converting to a more polished and readable calendar.
 
 ``` r
@@ -621,13 +642,13 @@ ggcalendar <- function(dates_df = df_year(),
                        labels_layer = TRUE, 
                        color = "grey35",
                        size = 3,
-                       alpha = .5){
+                       alpha = 1){
   
   if(labels_layer){
     
     my_layer <- stat_calendar(
-    color = color, aes(date = date), 
-    size = size, show.legend = F) 
+    color = color, ggplot2::aes(date = date), 
+    size = size, alpha = alpha, show.legend = F) 
     
     } else { my_layer <- NULL}
   
@@ -639,7 +660,7 @@ ggcalendar <- function(dates_df = df_year(),
   }
 ```
 
-Let’s check it out\!
+Let’s check it out!
 
 ``` r
 ggcalendar()
@@ -799,7 +820,7 @@ nycflights13::flights |>
 
 <img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
 
------
+------------------------------------------------------------------------
 
 # Births example
 
@@ -828,7 +849,7 @@ readr::read_csv(births) |>
 
 <img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
 
------
+------------------------------------------------------------------------
 
 # data defaults to calendar year and aes(date = date)
 
@@ -848,9 +869,9 @@ ggcalendar() +
 
 <img src="man/figures/README-unnamed-chunk-19-1.png" width="100%" />
 
------
+------------------------------------------------------------------------
 
------
+------------------------------------------------------------------------
 
 # Minimal Viable Packaging
 
@@ -978,7 +999,7 @@ return_dates_interval(start_date = "2022-07-01",
                       size = 10, shape = "x")
 ```
 
------
+------------------------------------------------------------------------
 
 ``` r
 knitr::knit_exit()

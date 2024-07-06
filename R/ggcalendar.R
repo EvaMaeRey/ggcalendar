@@ -16,13 +16,13 @@ ggcalendar <- function(dates_df = df_year(),
                        labels_layer = TRUE, 
                        color = "grey35",
                        size = 3,
-                       alpha = .5){
+                       alpha = 1){
   
   if(labels_layer){
     
     my_layer <- stat_calendar(
-    color = color, aes(date = date), 
-    size = size, show.legend = F) 
+    color = color, ggplot2::aes(date = date), 
+    size = size, alpha = alpha, show.legend = F) 
     
     } else { my_layer <- NULL}
   
