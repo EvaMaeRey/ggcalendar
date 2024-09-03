@@ -6,7 +6,7 @@
 #' @export
 #'
 #' @examples
-geom_text_calendar <- function(...){stat_calendar(...)}
+geom_text_calendar <- function(...){stat_calendar(geom = "text", ...)}
 
 #' Title
 #'

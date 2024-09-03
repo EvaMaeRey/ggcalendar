@@ -313,8 +313,7 @@ df_week() |>
 df_month() |>
   ggplot() + 
   aes(date = date) + 
-  layer(stat = StatCalendar, geom = "text", 
-        position = "identity")
+  geom_text(stat = StatCalendar)
 ```
 
 # Step 3.  Let's write a user-facing function `stat_calendar()`
@@ -390,7 +389,7 @@ knitrExtra:::chunk_to_r("geom_text_calendar")
 #' @export
 #'
 #' @examples
-geom_text_calendar <- function(...){stat_calendar(...)}
+geom_text_calendar <- function(...){stat_calendar(geom = "text", ...)}
 
 #' Title
 #'
@@ -446,9 +445,65 @@ df_year() |>
 
 ```
 
-## `defaults_calendar` & `ggcalendar()`
+## `theme_calendar`, `defaults_calendar` & `ggcalendar()`
 
 Then, we bundle these up into defaults_calendar, which can be quickly added for converting to a more polished and readable calendar.
+
+```{r}
+knitrExtra::chunk_to_dir("theme_grey_calendar")
+```
+
+
+```{r theme_grey_calendar}
+#' Title
+#'
+#' @param ... 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+theme_grey_calendar <- function(...){
+
+  theme_grey(...) %+replace%
+    ggplot2::theme(
+      axis.text.y = ggplot2::element_blank(),
+      axis.ticks.y = ggplot2::element_blank(),
+      axis.ticks.x = ggplot2::element_blank(),
+      axis.title = element_blank()) +
+    ggplot2::theme(
+      panel.grid.major = ggplot2::element_blank())
+  
+}
+
+
+scale_y_calendar <- function(...){ggplot2::scale_y_reverse(breaks = 6:0, 
+                             expand = c(0,0), 
+                             limits = c(6.5, 0.5), ...)}
+
+scale_x_calendar <- function(day_labels = c("M", "T", "W", "T", "F", "S", "S"), ...){
+  
+    ggplot2::scale_x_continuous(breaks = 1:7, 
+                                labels = day_labels,
+                                limits = c(.5, 7.5), 
+                                expand = c(0,0), ...)}
+
+facet_calendar <- function(...){
+  
+  ggplot2::facet_wrap(~lubridate::month(date, abbr = T, label = T), 
+                      scales = "free",...)
+  
+}
+
+
+geom_calendar_blank <- function(...){
+  
+  stat_calendar(geom = "blank", ...)
+  
+}
+
+
+```
 
 ```{r}
 knitrExtra:::chunk_to_r("defaults_calendar")
@@ -469,24 +524,12 @@ defaults_calendar <- function(day_labels = c("M", "T", "W", "T", "F", "S", "S"))
   
   if(week_start != 1){day_labels <- day_labels[c(week_start:7, 1:(week_start-1))]}
 
-  
-  list(
-    ggplot2::scale_y_reverse(breaks = 6:0, 
-                             expand = c(0,0), 
-                             limits = c(6.5, 0.5)),
-    ggplot2::scale_x_continuous(breaks = 1:7, 
-                                labels = day_labels,
-                                limits = c(.5, 7.5), 
-                                expand = c(0,0)
-                                ),
-    ggplot2::facet_wrap(~lubridate::month(date, abbr = T, label = T), scales = "free"),
-    ggplot2::labs(x = NULL, y = NULL),
-    ggplot2::theme(axis.text.y = ggplot2::element_blank(),
-          axis.ticks.y = ggplot2::element_blank(),
-          axis.ticks.x = ggplot2::element_blank()) +
-    ggplot2::theme(panel.grid.major = ggplot2::element_blank()),
-    ggplot2::geom_blank()
-  )
+  list(scale_y_calendar(),
+       scale_x_calendar(day_labels = day_labels),
+       facet_calendar(),
+       theme_grey_calendar(),
+       stat_calendar(geom = "blank")
+       )
   
 }
 ```
@@ -496,11 +539,18 @@ Let's check it out...
 
 
 ```{r}
-df_year(2024) |> 
+df_week() |> 
   ggplot() +
   aes(date = date) + 
   stat_calendar() + 
   defaults_calendar()
+
+df_year() |> 
+  ggplot() +
+  aes(date = date) + 
+  stat_calendar() + 
+  defaults_calendar()
+
 ```
 
 Furthermore, we provide ggcalendar as an alternative point of entry into the ggplot framework.  The default data frame is even included (the current calendar year), so a full calendar will print with no additional specification.
@@ -514,7 +564,7 @@ knitrExtra:::chunk_to_r("ggcalendar")
 #'
 #' @param dates_df 
 #' @param day_labels 
-#' @param labels_layer 
+#' @param geom 
 #' @param color 
 #' @param size 
 #' @param alpha 
@@ -525,19 +575,18 @@ knitrExtra:::chunk_to_r("ggcalendar")
 #' @examples
 ggcalendar <- function(dates_df = df_year(), 
                        day_labels = c("M", "T", "W", "T", "F", "S", "S"), 
-                       labels_layer = TRUE, 
+                       geom = "text", 
                        color = "grey35",
                        size = 3,
                        alpha = 1){
   
-  if(labels_layer){
+    my_layer <- stat_calendar(geom = geom, 
+                              color = color, 
+                              ggplot2::aes(date = date), 
+                              size = size, 
+                              alpha = alpha, 
+                              show.legend = F) 
     
-    my_layer <- stat_calendar(
-    color = color, ggplot2::aes(date = date), 
-    size = size, alpha = alpha, show.legend = F) 
-    
-    } else { my_layer <- NULL}
-  
   ggplot2::ggplot(data = dates_df) +
   defaults_calendar(day_labels = day_labels) +
   ggplot2::aes(date = date) +
@@ -557,7 +606,6 @@ ggcalendar() +
                 color = "darkred",
                 size = 5,
                 alpha = .5)
-
 
 options(lubridate.week.start = 1)
 
@@ -599,7 +647,7 @@ df_month(year = 2023, month = 2) |>
 ggcalendar()
 
 df_month(year = 2023, month = 2) |> 
-ggcalendar(labels_layer = F) + 
+ggcalendar(geom = "blank") + 
   aes(date = date) + 
   geom_text_calendar(label = "Another\nday...", # override default
                      size = 4)
@@ -775,7 +823,7 @@ nycflights13::flights |>
   mutate(date = as.Date(time_hour)) |> 
   filter(year(date) == 2013) |> 
   count(date) |> 
-  ggcalendar(labels_layer = FALSE) +
+  ggcalendar(geom = "blank") +
       aes(date = date) +
       geom_tile_calendar(
         aes(fill = n),
@@ -809,7 +857,7 @@ nhl_player_births |>
            str_replace("....", "2024") %>% 
            as_date()) %>% 
   count(date) %>% 
-  ggcalendar(labels_layer = F) +  
+  ggcalendar(geom = "blank") +  
   aes(date = date, # date is positional aes
       fill = n) +
   labs(title = "Number of NHL Player Birthdays by day 1879-2005\nas celebrated in 2024") +

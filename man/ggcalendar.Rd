@@ -7,7 +7,7 @@
 ggcalendar(
   dates_df = df_year(),
   day_labels = c("M", "T", "W", "T", "F", "S", "S"),
-  labels_layer = TRUE,
+  geom = "text",
   color = "grey35",
   size = 3,
   alpha = 1
@@ -18,7 +18,7 @@ ggcalendar(
 
 \item{day_labels}{}
 
-\item{labels_layer}{}
+\item{geom}{}
 
 \item{color}{}
 
