@@ -6,16 +6,16 @@
 #' @export
 #'
 #' @examples
-theme_grey_calendar <- function(...){
+theme_calendar <- function(base_theme = theme_grey, ...){
 
-  theme_grey(...) %+replace%
+  base_theme(...) %+replace%
     ggplot2::theme(
       axis.text.y = ggplot2::element_blank(),
       axis.ticks.y = ggplot2::element_blank(),
       axis.ticks.x = ggplot2::element_blank(),
       axis.title = element_blank()) +
     ggplot2::theme(
-      panel.grid.major = ggplot2::element_blank())
+      panel.grid.major = ggplot2::element_blank()) 
   
 }
 

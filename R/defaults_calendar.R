@@ -15,7 +15,7 @@ defaults_calendar <- function(day_labels = c("M", "T", "W", "T", "F", "S", "S"))
   list(scale_y_calendar(),
        scale_x_calendar(day_labels = day_labels),
        facet_calendar(),
-       theme_grey_calendar(),
+       theme_calendar(),
        stat_calendar(geom = "blank")
        )
   
