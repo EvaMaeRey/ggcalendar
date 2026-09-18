@@ -73,6 +73,18 @@ library(tidyverse)
 ```
 
 ``` r
+ggcalendar::df_week() |> # returns current week in df
+  ggplot() +
+  aes(x = date,
+      y = 1,
+      label = wday(date, label = T)) +
+  geom_text(hjust = 0) +
+  ggtime::coord_calendar()
+```
+
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+
+``` r
 # install.packages("devtools")
 devtools::install_github("EvaMaeRey/ggcalendar")
 ```
@@ -206,11 +218,11 @@ Let’s have a look at some of these.
 ``` r
 df_today()
 #>         date
-#> 1 2026-09-17
+#> 1 2026-09-18
 
 df_day()
 #>         date
-#> 1 2026-09-17
+#> 1 2026-09-18
 
 df_dates_interval(start_date = "2024-10-02", end_date = "2024-10-04")
 #>         date
@@ -472,7 +484,7 @@ df_week() |>
   geom_text(stat = StatCalendar)
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
 
 ``` r
 
@@ -482,7 +494,7 @@ df_week() |>
   geom_text(stat = StatCalendar, complete = T)
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-8-2.png" width="100%" />
 
 ``` r
 
@@ -492,7 +504,7 @@ df_week() |>
   geom_text(stat = StatCalendar, complete = T, end_date = "2025-03-23")
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-3.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-8-3.png" width="100%" />
 
 # Step 3. Let’s write a user-facing function `stat_calendar()`
 
@@ -551,7 +563,7 @@ df_year() |>
   scale_y_reverse()
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
 
 # aliasing and convenience
 
@@ -679,7 +691,7 @@ df_year() |>
   geom_calendar_strikeoff()
 ```
 
-<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
 
 ## `theme_calendar`, `defaults_calendar` & `ggcalendar()`
 
@@ -874,7 +886,7 @@ p +
                      base_size = 12)
 ```
 
-<img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
 
 Furthermore, we provide ggcalendar as an alternative point of entry into
 the ggplot framework. The default data frame is even included (the
@@ -908,7 +920,7 @@ df_year() |>
                  alpha = .35, complete = F)
 ```
 
-<img src="man/figures/README-unnamed-chunk-16-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
 
 ``` r
 df_today() |> 
@@ -919,7 +931,7 @@ df_today() |>
   geom_calendar_tile(color = 'darkred', fill = NA)
 ```
 
-<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
 
 ``` r
 
@@ -934,7 +946,7 @@ ggplot() +
                       color = "cadetblue")
 ```
 
-<img src="man/figures/README-unnamed-chunk-17-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-18-2.png" width="100%" />
 
 ``` r
 
@@ -947,7 +959,7 @@ df_dates_interval("2023-09-15", "2023-12-11") |>
   geom_calendar_text()
 ```
 
-<img src="man/figures/README-unnamed-chunk-17-3.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-18-3.png" width="100%" />
 
 ``` r
 ## basic example code
@@ -969,7 +981,7 @@ events |>
   labs(title = "nu2ggplot2X^2sion, 2022")
 ```
 
-<img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-19-1.png" width="100%" />
 
 # NYC flights Example
 
@@ -999,7 +1011,7 @@ nycflights13::flights |>
   labs(title = "nycflights13::flights number of flights in 2013")
 ```
 
-<img src="man/figures/README-unnamed-chunk-19-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-20-1.png" width="100%" />
 
 ------------------------------------------------------------------------
 
@@ -1026,7 +1038,7 @@ readr::read_csv(births) |>
                       size = 5, color = "red", shape = 21)
 ```
 
-<img src="man/figures/README-unnamed-chunk-20-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-21-1.png" width="100%" />
 
 ------------------------------------------------------------------------
 
@@ -1071,7 +1083,7 @@ extender_events_2025 |>
   geom_calendar_text()
 ```
 
-<img src="man/figures/README-unnamed-chunk-22-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-23-1.png" width="100%" />
 
 ``` r
 
@@ -1096,7 +1108,7 @@ library(patchwork)
 ggram(code = _, "#30DayChartChallenge: Day #28 Inclusion")
 ```
 
-<img src="man/figures/README-unnamed-chunk-22-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-23-2.png" width="100%" />
 
 ``` r
 

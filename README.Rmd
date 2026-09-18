@@ -46,6 +46,16 @@ library(tidyverse)
 ```
 
 
+```{r}
+ggcalendar::df_week() |> # returns current week as `date` column in a dataframe
+  ggplot() +
+  aes(x = date,
+      y = 1,
+      label = wday(date, label = T)) +
+  geom_text(hjust = 0) +
+  ggtime::coord_calendar()
+```
+
 ``` r
 # install.packages("devtools")
 devtools::install_github("EvaMaeRey/ggcalendar")
