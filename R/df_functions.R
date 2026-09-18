@@ -1,23 +1,12 @@
-#' Title
-#'
-#' @return
+
 #' @export
-#'
-#' @examples
 df_today <- function(){
 
   data.frame(date = Sys.Date())
 
 }
 
-#' Title
-#'
-#' @param date 
-#'
-#' @return
 #' @export
-#'
-#' @examples
 df_day <- function(date = NULL){
   
   if(is.null(date)){date <- Sys.Date()}
@@ -26,16 +15,7 @@ df_day <- function(date = NULL){
 
 }
 
-
-#' Title
-#'
-#' @param start_date 
-#' @param end_date 
-#'
-#' @return
 #' @export
-#'
-#' @examples
 df_dates_interval <- function(start_date, end_date){
 
   data.frame(date = as.Date(start_date):as.Date(end_date) |>
@@ -43,15 +23,8 @@ df_dates_interval <- function(start_date, end_date){
 
 }
 
-#' Title
-#'
-#' @param month 
-#' @param year 
-#'
-#' @return
+
 #' @export
-#'
-#' @examples
 df_month <- function(month = NULL, year = NULL){
 
   if(is.null(month)){
@@ -86,14 +59,8 @@ df_month <- function(month = NULL, year = NULL){
 
 }
 
-#' Title
-#'
-#' @param date 
-#'
-#' @return
+
 #' @export
-#'
-#' @examples
 df_week <- function(date = NULL){
 
   if(is.null(date)){date <- Sys.Date()}
@@ -106,14 +73,8 @@ df_week <- function(date = NULL){
 
 }
 
-#' Title
-#'
-#' @param date 
-#'
-#' @return
+
 #' @export
-#'
-#' @examples
 return_df_hours_week <- function(date = NULL){
 
   if(is.null(date)){date <- Sys.Date()}
@@ -124,14 +85,8 @@ return_df_hours_week <- function(date = NULL){
 
 }
 
-#' Title
-#'
-#' @param year 
-#'
-#' @return
+
 #' @export
-#'
-#' @examples
 df_year <- function(year = NULL){
 
   if(is.null(year)){year <-  lubridate::year(Sys.Date())}

@@ -20,6 +20,7 @@
 - [Births example](#births-example)
 - [data defaults to calendar year and aes(date =
   date)](#data-defaults-to-calendar-year-and-aesdate--date)
+- [extenders meetings](#extenders-meetings)
 - [Minimal Viable Packaging](#minimal-viable-packaging)
 - [Traditional README](#traditional-readme)
 
@@ -78,35 +79,26 @@ devtools::install_github("EvaMaeRey/ggcalendar")
 
 # Step 00. Convenience functions, dates vectors to data frames.
 
-Because ggplot2’s diet is consists solely of dataframes, we create a
-number of convenience functions that will help us produce dataframes
-with column ‘date’ we can feed into ggplot2.
+Because ggplot2’s diet is consists of dataframes, we create a number of
+convenience functions that will help us produce dataframes with column
+‘date’ we can feed into ggplot2.
+
+<details>
 
 ``` r
 knitrExtra:::chunk_to_r("df_functions")
 ```
 
 ``` r
-#' Title
-#'
-#' @return
+
 #' @export
-#'
-#' @examples
 df_today <- function(){
 
   data.frame(date = Sys.Date())
 
 }
 
-#' Title
-#'
-#' @param date 
-#'
-#' @return
 #' @export
-#'
-#' @examples
 df_day <- function(date = NULL){
   
   if(is.null(date)){date <- Sys.Date()}
@@ -115,16 +107,7 @@ df_day <- function(date = NULL){
 
 }
 
-
-#' Title
-#'
-#' @param start_date 
-#' @param end_date 
-#'
-#' @return
 #' @export
-#'
-#' @examples
 df_dates_interval <- function(start_date, end_date){
 
   data.frame(date = as.Date(start_date):as.Date(end_date) |>
@@ -132,15 +115,8 @@ df_dates_interval <- function(start_date, end_date){
 
 }
 
-#' Title
-#'
-#' @param month 
-#' @param year 
-#'
-#' @return
+
 #' @export
-#'
-#' @examples
 df_month <- function(month = NULL, year = NULL){
 
   if(is.null(month)){
@@ -175,14 +151,8 @@ df_month <- function(month = NULL, year = NULL){
 
 }
 
-#' Title
-#'
-#' @param date 
-#'
-#' @return
+
 #' @export
-#'
-#' @examples
 df_week <- function(date = NULL){
 
   if(is.null(date)){date <- Sys.Date()}
@@ -195,14 +165,8 @@ df_week <- function(date = NULL){
 
 }
 
-#' Title
-#'
-#' @param date 
-#'
-#' @return
+
 #' @export
-#'
-#' @examples
 return_df_hours_week <- function(date = NULL){
 
   if(is.null(date)){date <- Sys.Date()}
@@ -213,14 +177,8 @@ return_df_hours_week <- function(date = NULL){
 
 }
 
-#' Title
-#'
-#' @param year 
-#'
-#' @return
+
 #' @export
-#'
-#' @examples
 df_year <- function(year = NULL){
 
   if(is.null(year)){year <-  lubridate::year(Sys.Date())}
@@ -239,6 +197,8 @@ df_year <- function(year = NULL){
 }
 ```
 
+</details>
+
 ## Examples
 
 Let’s have a look at some of these.
@@ -246,11 +206,11 @@ Let’s have a look at some of these.
 ``` r
 df_today()
 #>         date
-#> 1 2025-03-28
+#> 1 2026-09-17
 
 df_day()
 #>         date
-#> 1 2025-03-28
+#> 1 2026-09-17
 
 df_dates_interval(start_date = "2024-10-02", end_date = "2024-10-04")
 #>         date
@@ -260,40 +220,40 @@ df_dates_interval(start_date = "2024-10-02", end_date = "2024-10-04")
 
 df_week()
 #>         date
-#> 1 2025-03-23
-#> 2 2025-03-24
-#> 3 2025-03-25
-#> 4 2025-03-26
-#> 5 2025-03-27
-#> 6 2025-03-28
-#> 7 2025-03-29
+#> 1 2026-09-13
+#> 2 2026-09-14
+#> 3 2026-09-15
+#> 4 2026-09-16
+#> 5 2026-09-17
+#> 6 2026-09-18
+#> 7 2026-09-19
 
 df_year() |> head()
 #>         date
-#> 1 2025-01-01
-#> 2 2025-01-02
-#> 3 2025-01-03
-#> 4 2025-01-04
-#> 5 2025-01-05
-#> 6 2025-01-06
+#> 1 2026-01-01
+#> 2 2026-01-02
+#> 3 2026-01-03
+#> 4 2026-01-04
+#> 5 2026-01-05
+#> 6 2026-01-06
 
 df_month() |> head()
 #>         date
-#> 1 2025-03-01
-#> 2 2025-03-02
-#> 3 2025-03-03
-#> 4 2025-03-04
-#> 5 2025-03-05
-#> 6 2025-03-06
+#> 1 2026-09-01
+#> 2 2026-09-02
+#> 3 2026-09-03
+#> 4 2026-09-04
+#> 5 2026-09-05
+#> 6 2026-09-06
 
 return_df_hours_week() |> head()
 #>                  date
-#> 1 2025-03-23 01:00:00
-#> 2 2025-03-23 02:00:00
-#> 3 2025-03-23 03:00:00
-#> 4 2025-03-23 04:00:00
-#> 5 2025-03-23 05:00:00
-#> 6 2025-03-23 06:00:00
+#> 1 2026-09-13 01:00:00
+#> 2 2026-09-13 02:00:00
+#> 3 2026-09-13 03:00:00
+#> 4 2026-09-13 04:00:00
+#> 5 2026-09-13 05:00:00
+#> 6 2026-09-13 06:00:00
 ```
 
 # Step 1 & 2. Compute: from date to x/y, & define StatCalendar
@@ -302,6 +262,8 @@ The computation that we want to be done under the hood relates to
 translating the here-to-fore unknown positional aesthetic ‘date’ to the
 first-class ‘x’ and ‘y’ positional aesthetic mappings, as well as
 variables that can be used in faceting (month).
+
+<details>
 
 ``` r
 knitrExtra:::chunk_to_r("get_week_of_month")
@@ -321,6 +283,8 @@ get_week_of_month <- function(x){
 }
 ```
 
+</details>
+
 Next, we’ll define a compute group function. A number of variables are
 created by parsing our date variable.
 
@@ -331,6 +295,8 @@ but instead uses the default_aes field to state what should be first
 interpreted as x, y and label (thoughts? Maybe only ‘label’ should be
 managed like this).
 
+<details>
+
 ``` r
 knitrExtra:::chunk_to_r("compute_group_calendar")
 ```
@@ -339,6 +305,7 @@ knitrExtra:::chunk_to_r("compute_group_calendar")
 date_df_parse <- function(data){
   
   data |>
+    dplyr::mutate(date = as.Date(date)) |>
     dplyr::mutate(wday = lubridate::wday(.data$date)) |>
     dplyr::mutate(wday_abbr = lubridate::wday(.data$date, label = TRUE, abbr = TRUE)) |>
     dplyr::mutate(week_of_month = get_week_of_month(.data$date)) |>
@@ -359,11 +326,11 @@ compute_panel_calendar <- function(data, scales, complete = F, start_date = NULL
   
   if(!complete){
     
-      data |> date_df_parse()
+      data |> date_df_parse() |> mutate(orginal = 1)
 
   }else{ # complete case; fill in all days of month
   
-    data$date <- as.Date(data$date)
+    data$date <- as.Date(data$date) 
     
     month_start <- lubridate::floor_date(min(data$date), unit = "month")
     month_end <- (lubridate::ceiling_date(max(data$date), unit = "month") - days(1))
@@ -375,7 +342,8 @@ compute_panel_calendar <- function(data, scales, complete = F, start_date = NULL
     if(!is.null(start_date)){completed <- completed |> dplyr::filter(completed$date >= as.Date(start_date)) }
     if(!is.null(end_date)){completed <- completed |> dplyr::filter(completed$date <= as.Date(end_date)) }
     
-    completed
+    completed |>
+      mutate(original = date %in% data$date)
 
    }
 }
@@ -386,7 +354,8 @@ StatCalendar <- ggplot2::ggproto(`_class` = "StatCalendar",
                                  compute_panel = compute_panel_calendar,
                                  default_aes = ggplot2::aes(x = ggplot2::after_stat(wday),
                                                             y = ggplot2::after_stat(week_of_month),
-                                                            label = ggplot2::after_stat(day)))
+                                                            label = ggplot2::after_stat(day),
+                                                            alpha = original))
 
 
 StatWeekly <- ggplot2::ggproto(`_class` = "StatCalendar",
@@ -398,6 +367,8 @@ StatWeekly <- ggplot2::ggproto(`_class` = "StatCalendar",
                                                           label = ggplot2::after_stat(hour)))
 ```
 
+</details>
+
 ## Test it out
 
 Okay, let’s see how our compute and Stat work in action!
@@ -406,139 +377,94 @@ Okay, let’s see how our compute and Stat work in action!
 df_week() |>
   compute_panel_calendar()
 #>         date wday wday_abbr week_of_month day year month_abbr hour
-#> 1 2025-03-23    1       Sun             5  23    7        Mar    0
-#> 2 2025-03-24    2       Mon             5  24    7        Mar    0
-#> 3 2025-03-25    3       Tue             5  25    7        Mar    0
-#> 4 2025-03-26    4       Wed             5  26    7        Mar    0
-#> 5 2025-03-27    5       Thu             5  27    7        Mar    0
-#> 6 2025-03-28    6       Fri             5  28    7        Mar    0
-#> 7 2025-03-29    7       Sat             5  29    7        Mar    0
-#>   year_academic month_academic_abbr
-#> 1          2025                 Mar
-#> 2          2025                 Mar
-#> 3          2025                 Mar
-#> 4          2025                 Mar
-#> 5          2025                 Mar
-#> 6          2025                 Mar
-#> 7          2025                 Mar
+#> 1 2026-09-13    1       Sun             3  13    8        Sep    0
+#> 2 2026-09-14    2       Mon             3  14    8        Sep    0
+#> 3 2026-09-15    3       Tue             3  15    8        Sep    0
+#> 4 2026-09-16    4       Wed             3  16    8        Sep    0
+#> 5 2026-09-17    5       Thu             3  17    8        Sep    0
+#> 6 2026-09-18    6       Fri             3  18    8        Sep    0
+#> 7 2026-09-19    7       Sat             3  19    8        Sep    0
+#>   year_academic month_academic_abbr orginal
+#> 1          2027                 Sep       1
+#> 2          2027                 Sep       1
+#> 3          2027                 Sep       1
+#> 4          2027                 Sep       1
+#> 5          2027                 Sep       1
+#> 6          2027                 Sep       1
+#> 7          2027                 Sep       1
 
 df_week() |>
   compute_panel_calendar(complete = T)
 #>          date wday wday_abbr week_of_month day year month_abbr hour
-#> 1  2025-03-01    7       Sat             1   1    7        Mar    0
-#> 2  2025-03-02    1       Sun             2   2    7        Mar    0
-#> 3  2025-03-03    2       Mon             2   3    7        Mar    0
-#> 4  2025-03-04    3       Tue             2   4    7        Mar    0
-#> 5  2025-03-05    4       Wed             2   5    7        Mar    0
-#> 6  2025-03-06    5       Thu             2   6    7        Mar    0
-#> 7  2025-03-07    6       Fri             2   7    7        Mar    0
-#> 8  2025-03-08    7       Sat             2   8    7        Mar    0
-#> 9  2025-03-09    1       Sun             3   9    7        Mar    0
-#> 10 2025-03-10    2       Mon             3  10    7        Mar    0
-#> 11 2025-03-11    3       Tue             3  11    7        Mar    0
-#> 12 2025-03-12    4       Wed             3  12    7        Mar    0
-#> 13 2025-03-13    5       Thu             3  13    7        Mar    0
-#> 14 2025-03-14    6       Fri             3  14    7        Mar    0
-#> 15 2025-03-15    7       Sat             3  15    7        Mar    0
-#> 16 2025-03-16    1       Sun             4  16    7        Mar    0
-#> 17 2025-03-17    2       Mon             4  17    7        Mar    0
-#> 18 2025-03-18    3       Tue             4  18    7        Mar    0
-#> 19 2025-03-19    4       Wed             4  19    7        Mar    0
-#> 20 2025-03-20    5       Thu             4  20    7        Mar    0
-#> 21 2025-03-21    6       Fri             4  21    7        Mar    0
-#> 22 2025-03-22    7       Sat             4  22    7        Mar    0
-#> 23 2025-03-23    1       Sun             5  23    7        Mar    0
-#> 24 2025-03-24    2       Mon             5  24    7        Mar    0
-#> 25 2025-03-25    3       Tue             5  25    7        Mar    0
-#> 26 2025-03-26    4       Wed             5  26    7        Mar    0
-#> 27 2025-03-27    5       Thu             5  27    7        Mar    0
-#> 28 2025-03-28    6       Fri             5  28    7        Mar    0
-#> 29 2025-03-29    7       Sat             5  29    7        Mar    0
-#> 30 2025-03-30    1       Sun             6  30    7        Mar    0
-#> 31 2025-03-31    2       Mon             6  31    7        Mar    0
-#>    year_academic month_academic_abbr
-#> 1           2025                 Mar
-#> 2           2025                 Mar
-#> 3           2025                 Mar
-#> 4           2025                 Mar
-#> 5           2025                 Mar
-#> 6           2025                 Mar
-#> 7           2025                 Mar
-#> 8           2025                 Mar
-#> 9           2025                 Mar
-#> 10          2025                 Mar
-#> 11          2025                 Mar
-#> 12          2025                 Mar
-#> 13          2025                 Mar
-#> 14          2025                 Mar
-#> 15          2025                 Mar
-#> 16          2025                 Mar
-#> 17          2025                 Mar
-#> 18          2025                 Mar
-#> 19          2025                 Mar
-#> 20          2025                 Mar
-#> 21          2025                 Mar
-#> 22          2025                 Mar
-#> 23          2025                 Mar
-#> 24          2025                 Mar
-#> 25          2025                 Mar
-#> 26          2025                 Mar
-#> 27          2025                 Mar
-#> 28          2025                 Mar
-#> 29          2025                 Mar
-#> 30          2025                 Mar
-#> 31          2025                 Mar
+#> 1  2026-09-01    3       Tue             1   1    8        Sep    0
+#> 2  2026-09-02    4       Wed             1   2    8        Sep    0
+#> 3  2026-09-03    5       Thu             1   3    8        Sep    0
+#> 4  2026-09-04    6       Fri             1   4    8        Sep    0
+#> 5  2026-09-05    7       Sat             1   5    8        Sep    0
+#> 6  2026-09-06    1       Sun             2   6    8        Sep    0
+#> 7  2026-09-07    2       Mon             2   7    8        Sep    0
+#> 8  2026-09-08    3       Tue             2   8    8        Sep    0
+#> 9  2026-09-09    4       Wed             2   9    8        Sep    0
+#> 10 2026-09-10    5       Thu             2  10    8        Sep    0
+#> 11 2026-09-11    6       Fri             2  11    8        Sep    0
+#> 12 2026-09-12    7       Sat             2  12    8        Sep    0
+#> 13 2026-09-13    1       Sun             3  13    8        Sep    0
+#> 14 2026-09-14    2       Mon             3  14    8        Sep    0
+#> 15 2026-09-15    3       Tue             3  15    8        Sep    0
+#> 16 2026-09-16    4       Wed             3  16    8        Sep    0
+#> 17 2026-09-17    5       Thu             3  17    8        Sep    0
+#> 18 2026-09-18    6       Fri             3  18    8        Sep    0
+#> 19 2026-09-19    7       Sat             3  19    8        Sep    0
+#> 20 2026-09-20    1       Sun             4  20    8        Sep    0
+#> 21 2026-09-21    2       Mon             4  21    8        Sep    0
+#> 22 2026-09-22    3       Tue             4  22    8        Sep    0
+#> 23 2026-09-23    4       Wed             4  23    8        Sep    0
+#> 24 2026-09-24    5       Thu             4  24    8        Sep    0
+#> 25 2026-09-25    6       Fri             4  25    8        Sep    0
+#> 26 2026-09-26    7       Sat             4  26    8        Sep    0
+#> 27 2026-09-27    1       Sun             5  27    8        Sep    0
+#> 28 2026-09-28    2       Mon             5  28    8        Sep    0
+#> 29 2026-09-29    3       Tue             5  29    8        Sep    0
+#> 30 2026-09-30    4       Wed             5  30    8        Sep    0
+#>    year_academic month_academic_abbr original
+#> 1           2027                 Sep    FALSE
+#> 2           2027                 Sep    FALSE
+#> 3           2027                 Sep    FALSE
+#> 4           2027                 Sep    FALSE
+#> 5           2027                 Sep    FALSE
+#> 6           2027                 Sep    FALSE
+#> 7           2027                 Sep    FALSE
+#> 8           2027                 Sep    FALSE
+#> 9           2027                 Sep    FALSE
+#> 10          2027                 Sep    FALSE
+#> 11          2027                 Sep    FALSE
+#> 12          2027                 Sep    FALSE
+#> 13          2027                 Sep     TRUE
+#> 14          2027                 Sep     TRUE
+#> 15          2027                 Sep     TRUE
+#> 16          2027                 Sep     TRUE
+#> 17          2027                 Sep     TRUE
+#> 18          2027                 Sep     TRUE
+#> 19          2027                 Sep     TRUE
+#> 20          2027                 Sep    FALSE
+#> 21          2027                 Sep    FALSE
+#> 22          2027                 Sep    FALSE
+#> 23          2027                 Sep    FALSE
+#> 24          2027                 Sep    FALSE
+#> 25          2027                 Sep    FALSE
+#> 26          2027                 Sep    FALSE
+#> 27          2027                 Sep    FALSE
+#> 28          2027                 Sep    FALSE
+#> 29          2027                 Sep    FALSE
+#> 30          2027                 Sep    FALSE
 
 df_week() |>
   compute_panel_calendar(complete = T, end_date = "2025-03-23")
-#>          date wday wday_abbr week_of_month day year month_abbr hour
-#> 1  2025-03-01    7       Sat             1   1    7        Mar    0
-#> 2  2025-03-02    1       Sun             2   2    7        Mar    0
-#> 3  2025-03-03    2       Mon             2   3    7        Mar    0
-#> 4  2025-03-04    3       Tue             2   4    7        Mar    0
-#> 5  2025-03-05    4       Wed             2   5    7        Mar    0
-#> 6  2025-03-06    5       Thu             2   6    7        Mar    0
-#> 7  2025-03-07    6       Fri             2   7    7        Mar    0
-#> 8  2025-03-08    7       Sat             2   8    7        Mar    0
-#> 9  2025-03-09    1       Sun             3   9    7        Mar    0
-#> 10 2025-03-10    2       Mon             3  10    7        Mar    0
-#> 11 2025-03-11    3       Tue             3  11    7        Mar    0
-#> 12 2025-03-12    4       Wed             3  12    7        Mar    0
-#> 13 2025-03-13    5       Thu             3  13    7        Mar    0
-#> 14 2025-03-14    6       Fri             3  14    7        Mar    0
-#> 15 2025-03-15    7       Sat             3  15    7        Mar    0
-#> 16 2025-03-16    1       Sun             4  16    7        Mar    0
-#> 17 2025-03-17    2       Mon             4  17    7        Mar    0
-#> 18 2025-03-18    3       Tue             4  18    7        Mar    0
-#> 19 2025-03-19    4       Wed             4  19    7        Mar    0
-#> 20 2025-03-20    5       Thu             4  20    7        Mar    0
-#> 21 2025-03-21    6       Fri             4  21    7        Mar    0
-#> 22 2025-03-22    7       Sat             4  22    7        Mar    0
-#> 23 2025-03-23    1       Sun             5  23    7        Mar    0
-#>    year_academic month_academic_abbr
-#> 1           2025                 Mar
-#> 2           2025                 Mar
-#> 3           2025                 Mar
-#> 4           2025                 Mar
-#> 5           2025                 Mar
-#> 6           2025                 Mar
-#> 7           2025                 Mar
-#> 8           2025                 Mar
-#> 9           2025                 Mar
-#> 10          2025                 Mar
-#> 11          2025                 Mar
-#> 12          2025                 Mar
-#> 13          2025                 Mar
-#> 14          2025                 Mar
-#> 15          2025                 Mar
-#> 16          2025                 Mar
-#> 17          2025                 Mar
-#> 18          2025                 Mar
-#> 19          2025                 Mar
-#> 20          2025                 Mar
-#> 21          2025                 Mar
-#> 22          2025                 Mar
-#> 23          2025                 Mar
+#>  [1] date                wday                wday_abbr          
+#>  [4] week_of_month       day                 year               
+#>  [7] month_abbr          hour                year_academic      
+#> [10] month_academic_abbr original           
+#> <0 rows> (or 0-length row.names)
 
 df_week() |>
   ggplot() + 
@@ -546,7 +472,7 @@ df_week() |>
   geom_text(stat = StatCalendar)
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
 ``` r
 
@@ -556,7 +482,7 @@ df_week() |>
   geom_text(stat = StatCalendar, complete = T)
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-7-2.png" width="100%" />
 
 ``` r
 
@@ -566,9 +492,11 @@ df_week() |>
   geom_text(stat = StatCalendar, complete = T, end_date = "2025-03-23")
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-3.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-7-3.png" width="100%" />
 
 # Step 3. Let’s write a user-facing function `stat_calendar()`
+
+<details>
 
 ``` r
 knitrExtra:::chunk_to_r("a_stat_calendar")
@@ -610,23 +538,27 @@ stat_calendar <- function(mapping = NULL,
 }
 ```
 
+</details>
+
 ### Test `stat_calendar`
 
 ``` r
 df_year() |> 
   ggplot() + 
   aes(date = date) +
-  stat_calendar(color = "grey") + 
+  stat_calendar() + 
   facet_wrap(~month(date, label = T,  abbr = T)) + 
   scale_y_reverse()
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
 
 # aliasing and convenience
 
 To give the user a better sense of what they’ll see when using
 stat_calendar we create the alias, ‘geom_calendar_text()’.
+
+<details>
 
 ``` r
 knitrExtra:::chunk_to_r("geom_calendar_text")
@@ -664,13 +596,56 @@ geom_calendar_point <- function(...){stat_calendar(geom = "point", ...)}
 geom_calendar_tile <- function(...){stat_calendar(geom = "tile", ...)}
 
 
-geom_calendar_strikeoff <- function(label = "X", end_date = Sys.Date() - days(1), ...){
+
+#' Title
+#'
+#' @param ... 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+geom_calendar_tile <- function(...){stat_calendar(geom = "tile", ...)}
+
+GeomTileFrame <- ggplot2::ggproto("GeomTileFrame", ggplot2::GeomTile,
+                     default_aes = modifyList(ggplot2::GeomTile$default_aes, 
+                                              ggplot2::aes(fill = NA, color = ggplot2::from_theme(accent),
+                                                  linewidth = 1)))
+
+#' @export
+geom_calendar_tile_frame <- function(...){stat_calendar(geom = "tile_frame", ...)}
+
+
+GeomTextRed <- ggplot2::ggproto("GeomTextRed", ggplot2::GeomText,
+                     default_aes = modifyList(ggplot2::GeomText$default_aes, 
+                                              ggplot2::aes(color = ggplot2::from_theme(accent),
+                                                  alpha = .65)))
+
+#' @export
+geom_calendar_strikeoff <- function(label = "X", end_date = Sys.Date() - lubridate::days(1), ...){
   
-  stat_calendar(geom = ggexpress:::qproto_update(GeomText, aes(color = "darkred", alpha = .85)),
-                label = label, complete = T, end_date = end_date, 
+  stat_calendar(geom = GeomTextRed,
+                label = label, complete = T, end_date = end_date, show.legend = F,
                 ...)
   }
+
+#' @export
+geom_calendar_today <- function(geom = GeomTileFrame, ...){
+  
+  stat_calendar(geom = geom, complete = T, 
+                start_date = Sys.Date(), end_date = Sys.Date(), show.legend = F,
+                ...)
+  }
+
+#' @export
+geom_calendar_complete <- function(geom = "text", ...){
+  
+  stat_calendar(geom = geom, complete = T, ...)
+  
+  }
 ```
+
+</details>
 
 # `defaults_calendar` & `ggcalendar()` Thinking about set of scales/coords etc, that gives you a nice calendar (to wrap up into defaults)
 
@@ -704,12 +679,14 @@ df_year() |>
   geom_calendar_strikeoff()
 ```
 
-<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
 
 ## `theme_calendar`, `defaults_calendar` & `ggcalendar()`
 
 Then, we bundle these up into defaults_calendar, which can be quickly
 added for converting to a more polished and readable calendar.
+
+<details>
 
 ``` r
 knitrExtra::chunk_to_dir("theme_calendar")
@@ -724,9 +701,9 @@ knitrExtra::chunk_to_dir("theme_calendar")
 #' @export
 #'
 #' @examples
-theme_calendar <- function(base_theme = theme_grey, ...){
+theme_calendar <- function(base_theme = theme_grey, accent = "darkred", ...){
 
-  base_theme(...) %+replace%
+  base_theme(accent = accent, ...) %+replace%
     ggplot2::theme(
       axis.text.y = ggplot2::element_blank(),
       axis.ticks.y = ggplot2::element_blank(),
@@ -749,11 +726,35 @@ scale_x_calendar <- function(day_labels = c("M", "T", "W", "T", "F", "S", "S"), 
                                 limits = c(.5, 7.5), 
                                 expand = c(0,0), ...)}
 
-facet_calendar <- function(...){
+# facet_calendar <- function(...){
+#   
+#   ggplot2::facet_wrap(~lubridate::month(date, abbr = T, label = T), 
+#                       scales = "free",...)
+#   
+# }
+
+# don't make assumption about name of var
+facet_calendar <- function(i = NULL) {
+
+  structure(
+    list(wipe_which = i), 
+    class = "facet_calendar"
+    )
+
+}
+
+#' @import ggplot2
+#' @importFrom ggplot2 ggplot_add
+#' @export
+ggplot_add.facet_calendar <- function(object, plot, object_name) {
   
+  date_name <- last_plot()$mapping$date |> _[2] |> as.character()
+  plot$data$date <- plot$data[, date_name]
+  
+  plot +
   ggplot2::facet_wrap(~lubridate::month(date, abbr = T, label = T), 
-                      scales = "free",...)
-  
+                       scales = "free")
+
 }
 
 
@@ -769,109 +770,111 @@ knitrExtra:::chunk_to_r("defaults_calendar")
 ```
 
 ``` r
-#' Title
-#'
-#' @param day_labels 
-#'
-#' @return
-#' @export
-#'
 #' @examples
-defaults_calendar <- function(day_labels = c("M", "T", "W", "T", "F", "S", "S")){
+defaults_calendar <- function(day_labels = c("M", "T", "W", "T", "F", "S", "S"),
+                              .stat.calendar = stat_calendar(geom = "blank", complete = T),
+                              .scale.y.calendar = scale_y_calendar(),
+                              .scale.x.calendar = scale_x_calendar(day_labels = day_labels),
+                              .facet.calendar = facet_calendar(),
+                              .theme.calendar = theme_calendar()
+                              ){
   
   week_start <- getOption("lubridate.week.start", 7)
   
   if(week_start != 1){day_labels <- day_labels[c(week_start:7, 1:(week_start-1))]}
 
-  list(scale_y_calendar(),
-       scale_x_calendar(day_labels = day_labels),
-       facet_calendar(),
-       theme_calendar(),
-       stat_calendar(geom = "blank")
-       )
+  list(.stat.calendar, .scale.y.calendar, .scale.x.calendar, .facet.calendar, .theme.calendar)
+  
+}
+
+
+stamp_calendar_text <- function(..., 
+                                complete = T,
+                                .defaults.calendar = defaults_calendar()
+                              ){
+  
+  list(stat_calendar(..., geom = "text", alpha = .6, complete = complete),
+       .defaults.calendar)
+  
+}
+
+geom_calendar_text <- function(..., 
+                              complete = F,
+                              .defaults.calendar = defaults_calendar()
+                              ){
+  
+  list(stat_calendar(..., geom = "text", complete = complete), .defaults.calendar)
+  
+}
+
+
+stamp_calendar_tile <- function(..., 
+                                complete = T,
+                                .defaults.calendar = defaults_calendar()
+                              ){
+  
+  list(stat_calendar(..., geom = "tile", alpha = .4, complete = complete), .defaults.calendar)
+  
+}
+
+geom_calendar_tile <- function(..., 
+                              complete = F,
+                              .defaults.calendar = defaults_calendar()
+                              ){
+  
+  list(stat_calendar(..., geom = "tile", complete = complete), .defaults.calendar)
+  
+}
+
+
+stamp_calendar_text <- function(..., 
+                                complete = T,
+                                .defaults.calendar = defaults_calendar()
+                              ){
+  
+  list(stat_calendar(..., geom = "text", alpha = .4, complete = complete), .defaults.calendar)
+  
+}
+
+geom_calendar_text <- function(..., 
+                              complete = F,
+                              .defaults.calendar = defaults_calendar()
+                              ){
+  
+  list(stat_calendar(..., geom = "text", complete = complete), .defaults.calendar)
   
 }
 ```
 
+</details>
+
 Let’s check it out…
 
 ``` r
-df_week() |> 
+library(patchwork)
+
+p <- df_week() |> 
   ggplot() +
   aes(date = date) + 
-  stat_calendar() + 
-  defaults_calendar()
+  stamp_calendar_text() + 
+  geom_calendar_text()
+
+
+library(ggchalkboard)
+# patchwork of theming choices
+p +
+  p + theme_calendar(base_theme = theme_classic) +
+  p + theme_calendar(base_theme = theme_linedraw) + 
+  p + theme_calendar(base_theme = theme_light) + 
+  p + theme_calendar(base_theme = theme_bw) + 
+  p + theme_calendar(base_theme = theme_dark) +
+  p + theme_calendar(base_theme = theme_minimal) + 
+  p + theme_calendar(base_theme = theme_void) + 
+  p + theme_calendar(base_theme = theme_chalkboard, 
+                     base_size = 12)
 ```
 
-<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
-
-``` r
-
-df_year() |> 
-  ggplot() +
-  aes(date = date) + 
-  stat_calendar() + 
-  defaults_calendar()
-```
-
-<img src="man/figures/README-unnamed-chunk-13-2.png" width="100%" />
-
-``` r
-
-
-last_plot() + 
-  theme_calendar(base_theme = theme_classic)
-```
-
-<img src="man/figures/README-unnamed-chunk-13-3.png" width="100%" />
-
-``` r
-
-last_plot() + 
-  theme_calendar(base_theme = theme_linedraw)
-```
-
-<img src="man/figures/README-unnamed-chunk-13-4.png" width="100%" />
-
-``` r
-
-last_plot() + 
-  theme_calendar(base_theme = theme_light)
-```
-
-<img src="man/figures/README-unnamed-chunk-13-5.png" width="100%" />
-
-``` r
-
-last_plot() + 
-  theme_calendar(base_theme = theme_bw)
-```
-
-<img src="man/figures/README-unnamed-chunk-13-6.png" width="100%" />
-
-``` r
-
-last_plot() + 
-  theme_calendar(base_theme = theme_dark)
-```
-
-<img src="man/figures/README-unnamed-chunk-13-7.png" width="100%" />
-
-``` r
-
-last_plot() + 
-  theme_calendar(base_theme = theme_minimal)
-```
-
-<img src="man/figures/README-unnamed-chunk-13-8.png" width="100%" />
-
-``` r
-
-last_plot() + 
-  theme_calendar(base_theme = theme_void)
-```
-
-<img src="man/figures/README-unnamed-chunk-13-9.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
 
 Furthermore, we provide ggcalendar as an alternative point of entry into
 the ggplot framework. The default data frame is even included (the
@@ -879,169 +882,94 @@ current calendar year), so a full calendar will print with no additional
 specification.
 
 ``` r
-knitrExtra:::chunk_to_r("ggcalendar")
+# knitrExtra:::chunk_to_r("ggcalendar")
 ```
-
-``` r
-#' Title
-#'
-#' @param dates_df 
-#' @param day_labels 
-#' @param geom 
-#' @param color 
-#' @param size 
-#' @param alpha 
-#'
-#' @return
-#' @export
-#'
-#' @examples
-ggcalendar <- function(dates_df = df_year(), 
-                       day_labels = c("M", "T", "W", "T", "F", "S", "S"), 
-                       geom = "blank", 
-                       color = "grey35",
-                       size = 3,
-                       alpha = 1){
-  
-    my_layer <- stat_calendar(geom = geom, 
-                              color = color, 
-                              ggplot2::aes(date = date), 
-                              size = size, 
-                              alpha = alpha, 
-                              show.legend = F) 
-
-    
-  ggplot2::ggplot(data = dates_df) +
-  defaults_calendar(day_labels = day_labels) +
-  ggplot2::aes(date = date) +
-  my_layer
-
-  }
-```
-
-Let’s check it out!
-
-``` r
-ggcalendar(geom = "text")
-```
-
-<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
-
-``` r
-
-ggcalendar(geom = "text") + 
-  stat_calendar(geom = "point", 
-                data = df_week(),
-                color = "darkred",
-                size = 5,
-                alpha = .5)
-```
-
-<img src="man/figures/README-unnamed-chunk-15-2.png" width="100%" />
-
-``` r
-
-options(lubridate.week.start = 1)
-
-ggcalendar(geom = "text") + 
-  stat_calendar(geom = "point", 
-                data = df_week(),
-                color = "darkred",
-                size = 5,
-                alpha = .5)
-```
-
-<img src="man/figures/README-unnamed-chunk-15-3.png" width="100%" />
 
 ## More
 
 ``` r
 library(magrittr)
-ggcalendar(geom = "text") +
-   # remember default data in ggcalendar() is current year of dates
-  aes(date = date) +
-  geom_calendar_tile(data = . %>%  
-                      filter(wday(date) == 3),  
-                      fill = "blue",  
-                      alpha = .2) +
+
+
+
+df_year() |> 
+  filter(wday(date) == 3) |> 
+  ggplot() +
   labs(title = "When to do #TidyTuesday in 2025") +
-  stat_calendar(label = "X",
+  aes(date = date) +
+  stamp_calendar_text() +
+  geom_calendar_tile(color = "blue",  
+                    alpha = .2) +
+  stat_calendar(label = "x",
                 color = "darkred",
-                size = 5,
+                size = 8,
                 data = df_dates_interval(
-                  "2025/01/01", Sys.Date() - days(1)),
-                 alpha = .35)
+                  "2026/01/01", Sys.Date() - days(1)),
+                 alpha = .35, complete = F)
 ```
 
 <img src="man/figures/README-unnamed-chunk-16-1.png" width="100%" />
 
 ``` r
-df_month(year = 2023, month = 2) |> 
-  ggcalendar(geom = "text")
+df_today() |> 
+  ggplot() + 
+  aes(date = date) + 
+  stamp_calendar_text() +
+  geom_calendar_text(color = 'darkred') + 
+  geom_calendar_tile(color = 'darkred', fill = NA)
 ```
 
 <img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
 
 ``` r
 
+
 df_month(year = 2023, month = 2) |> 
-ggcalendar(geom = "blank") + 
+ggplot() + 
   aes(date = date) + 
-  geom_calendar_text(label = "Another\nday...", # override default
-                     size = 4)
+  geom_calendar_text() + 
+  geom_calendar_point(data = . %>% filter(wday(date) %in% 2:6),
+                      alpha = .2,
+                      size = 12,
+                      color = "cadetblue")
 ```
 
 <img src="man/figures/README-unnamed-chunk-17-2.png" width="100%" />
 
 ``` r
 
-df_month(year = 2023, month = 2) |> 
-ggcalendar() + 
+library(ggplot2)
+
+df_dates_interval("2023-09-15", "2023-12-11") |> 
+  ggplot() + 
   aes(date = date) + 
-  geom_calendar_text() + 
-  geom_calendar_point(data = . %>% filter(wday(date) %in% 2:6),
-                      alpha = .2,
-                      size = 5,
-                      color = "cadetblue") + 
-  theme(panel.background = element_rect(fill = "beige"))
+  stamp_calendar_text() + 
+  geom_calendar_text()
 ```
 
 <img src="man/figures/README-unnamed-chunk-17-3.png" width="100%" />
-
-``` r
-
-library(ggplot2)
-
-df_dates_interval("2023-09-01", "2023-12-31") |> 
-  ggcalendar()
-```
-
-<img src="man/figures/README-unnamed-chunk-17-4.png" width="100%" />
 
 ``` r
 ## basic example code
 c("2022-03-19", 
   "2022-04-09", 
   "2022-05-07", 
-  # "2022-06-11", 
+  "2022-06-11", 
   "2022-07-16") %>% 
-  tibble(date = .) |> 
-  mutate(date = date %>% as_date) |> 
-  mutate(future = "2022-05-07" < date) ->
+  data.frame(date = as_date(.))  ->
 events
 
 events |> 
-  ggcalendar() +
+  ggplot() +
   aes(date = date) +
-  geom_calendar_text(complete = T) + 
-  aes(color = future) +
+  stamp_calendar_text() +
   geom_calendar_point(size = 8, 
-                      alpha = .5,
+                      alpha = .25,
                       show.legend = F) +
   labs(title = "nu2ggplot2X^2sion, 2022")
 ```
 
-<img src="man/figures/README-example-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
 
 # NYC flights Example
 
@@ -1052,17 +980,17 @@ Data inspiration:
 <https://twitter.com/rappa753/status/1545729747774308354> @rappa753
 
 ``` r
-
 # example 
 nycflights13::flights |> 
   ungroup() |> 
   mutate(date = as.Date(time_hour)) |> 
   filter(year(date) == 2013) |> 
   count(date) |> 
-  ggcalendar() +
+  data.frame() |>
+  ggplot() +
   aes(date = date) + # optional
-  geom_calendar_point(alpha = .7, 
-                      shape = 21) + 
+  geom_calendar_point(alpha = .7,
+                      shape = 21) +
   aes(size = n, fill = n, label = n) +
   geom_calendar_text(size = 2) + 
   scale_fill_viridis_c(option = "inferno", 
@@ -1071,7 +999,7 @@ nycflights13::flights |>
   labs(title = "nycflights13::flights number of flights in 2013")
 ```
 
-<img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-19-1.png" width="100%" />
 
 ------------------------------------------------------------------------
 
@@ -1085,20 +1013,20 @@ readr::read_csv(births) |>
          date_of_month = str_pad(date_of_month, 2, pad = "0")) |> 
   mutate(date = paste(year, month, date_of_month, sep = "-") |> as_date()) |> 
   filter(year == 2012) |> 
-  ggcalendar() + 
+  data.frame() |>
+  ggplot() + 
   aes(date = date) + 
   geom_calendar_point(alpha = .4) +
-  geom_calendar_text(color = "darkgrey", size = 2) +
+  geom_calendar_text(size = 2) +
   aes(size = births) +
   aes(color = births) +
   scale_color_viridis_c() +
   guides(colour = guide_legend("Births"), size = guide_legend("Births")) + 
-  geom_calendar_point(data = data.frame(date =
-                                      as_date("2012-12-25")),
+  geom_calendar_point(data = df_day("2012-12-25"),
                       size = 5, color = "red", shape = 21)
 ```
 
-<img src="man/figures/README-unnamed-chunk-19-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-20-1.png" width="100%" />
 
 ------------------------------------------------------------------------
 
@@ -1118,33 +1046,71 @@ ggcalendar() + # there is a data default if none is provided
  geom_calendar_text()
 ```
 
-<img src="man/figures/README-unnamed-chunk-20-1.png" width="100%" />
-
-------------------------------------------------------------------------
+# extenders meetings
 
 ``` r
 library(tidyverse)
 library(ggcalendar)
 
 tribble(~date, ~event,
-        "2025-01-21", "legendry",
-        "2025-02-12", "ggtime",
-        "2025-03-05", "ggproto",
-        "2025-04-09", "tidyplots") |>
-  mutate(date = date) |>
-  ggcalendar() + 
-  aes(date = date) +
-  geom_calendar_tile() + 
-  aes(fill = event |> fct_inorder()) +
-  geom_calendar_text(complete = T) + 
-  geom_calendar_strikeoff() +
-  theme_calendar(base_size = 15) + 
-  labs(fill = NULL) + 
-  geom_calendar_tile(data = df_day(), color = "darkred",
-                     fill = "transparent", linewidth = 1)
+        "2026-08-19", "ggcube",
+        "2026-09-02", "ggdibbler",
+        "2026-09-08", "SWD"
+        ) |>
+  mutate(when = as_date(date)) |>
+  data.frame() ->
+extender_events_2025  
+
+
+extender_events_2025 |>
+  ggplot() + 
+  aes(date = when, 
+      fill = event
+      ) +
+  stamp_calendar_text() +
+  geom_calendar_text()
 ```
 
-<img src="man/figures/README-unnamed-chunk-21-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-22-1.png" width="100%" />
+
+``` r
+
+library(ggram)
+library(patchwork)
+# ggram:::clearhistory()
+  
+'extender_events_2025 |>
+  ggplot() + 
+  aes(date = when, 
+      fill = event) +
+  stamp_calendar_text() +
+  geom_calendar_tile() + 
+  geom_calendar_today() + 
+  geom_calendar_strikeoff(size = 5) + 
+  theme(legend.position = "top") +
+  labs(title = "Upcoming extenders meetings: Aug-Sept 2026",
+       subtitle = "At the #ggplot2 extenders meetup",
+       fill = NULL) + 
+  theme_calendar(base_size = 11, 
+                 base_theme = theme_bw)' |>
+ggram(code = _, "#30DayChartChallenge: Day #28 Inclusion")
+```
+
+<img src="man/figures/README-unnamed-chunk-22-2.png" width="100%" />
+
+``` r
+
+ggram <- function (title = NULL, widths = c(1, 1), ...) 
+{
+    temp <- tempfile()
+    savehistory(file = temp)
+    plot <- last_plot()
+    code_plot <- ggram:::code_df_to_code_plot(ggram:::code_file_to_code_df(temp))
+    free(code_plot) + plot + patchwork::plot_layout(widths = widths) + 
+        patchwork::plot_annotation(title = title, ...) & theme(plot.background = element_rect(colour = "black", 
+        linewidth = 0.05))
+}
+```
 
 ------------------------------------------------------------------------
 
@@ -1158,6 +1124,16 @@ usethis::use_package("stringr")
 ```
 
 ``` r
+chunk_names <- knitrExtra::chunk_names_get()
+
+chunk_names |> 
+  _[chunk_names |> str_detect("unnamed", negate = T)] |>
+  knitrExtra::chunk_to_dir()
+```
+
+``` r
+
+devtools::document()
 devtools::check(".")
 devtools::install(pkg = ".", upgrade = "never") 
 ```
@@ -1165,18 +1141,13 @@ devtools::install(pkg = ".", upgrade = "never")
 # Traditional README
 
 ``` r
-# rm(list = ls())
+rm(list = ls())
 library(ggcalendar)
 library(tidyverse)
 options(lubridate.week.start = 1) # start on Monday
 
 ggcalendar() + 
   labs(title = "Calendar: 2025")
-```
-
-<img src="man/figures/README-unnamed-chunk-24-1.png" width="100%" />
-
-``` r
 
 ggcalendar() + 
   geom_calendar_tile(
@@ -1188,12 +1159,6 @@ ggcalendar() +
     color = "goldenrod3", shape = 21,
     size = 8, stroke = 1.5
     )
-```
-
-<img src="man/figures/README-unnamed-chunk-24-2.png" width="100%" />
-
-``` r
-
 
 # example 
 nycflights13::flights |> 
@@ -1212,9 +1177,18 @@ nycflights13::flights |>
       geom_calendar_text(aes(label = n), 
                          size = 2) + 
       NULL
-```
 
-<img src="man/figures/README-unnamed-chunk-24-3.png" width="100%" />
+tribble(~event, ~data,
+        "ggcube", "2026-08-19",
+        "ggdibbler", "2026-09-02") |> 
+  ggcalendar() + 
+  aes(date = date,
+      fill = event) +
+  geom_calendar_tile() + 
+  geom_calendar_today() + 
+  geom_calendar_strikeooff() + 
+  theme_calendar()
+```
 
 ``` r
 contrast <- function(colour) {
@@ -1242,20 +1216,14 @@ nhl_player_births |>
   labs(title = "Number of NHL Player Birthdays by day 1879-2005\nas celebrated in 2024") +
   geom_calendar_tile(alpha = .85, linewidth = 0) +
   scale_fill_viridis_c() 
-```
-
-<img src="man/figures/README-unnamed-chunk-25-1.png" width="100%" />
-
-``` r
 
 last_plot() +
   aes(label = n) + 
   geom_calendar_text(size = 3) +
   aes_autocontrast_color_on_fill + 
   guides(fill = "none")
+  
 ```
-
-<img src="man/figures/README-unnamed-chunk-25-2.png" width="100%" />
 
 ``` r
 ## basic example code

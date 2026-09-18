@@ -1,6 +1,7 @@
 date_df_parse <- function(data){
   
   data |>
+    dplyr::mutate(date = as.Date(date)) |>
     dplyr::mutate(wday = lubridate::wday(.data$date)) |>
     dplyr::mutate(wday_abbr = lubridate::wday(.data$date, label = TRUE, abbr = TRUE)) |>
     dplyr::mutate(week_of_month = get_week_of_month(.data$date)) |>
@@ -21,11 +22,11 @@ compute_panel_calendar <- function(data, scales, complete = F, start_date = NULL
   
   if(!complete){
     
-      data |> date_df_parse()
+      data |> date_df_parse() |> mutate(orginal = 1)
 
   }else{ # complete case; fill in all days of month
   
-    data$date <- as.Date(data$date)
+    data$date <- as.Date(data$date) 
     
     month_start <- lubridate::floor_date(min(data$date), unit = "month")
     month_end <- (lubridate::ceiling_date(max(data$date), unit = "month") - days(1))
@@ -37,7 +38,8 @@ compute_panel_calendar <- function(data, scales, complete = F, start_date = NULL
     if(!is.null(start_date)){completed <- completed |> dplyr::filter(completed$date >= as.Date(start_date)) }
     if(!is.null(end_date)){completed <- completed |> dplyr::filter(completed$date <= as.Date(end_date)) }
     
-    completed
+    completed |>
+      mutate(original = date %in% data$date)
 
    }
 }
@@ -48,7 +50,8 @@ StatCalendar <- ggplot2::ggproto(`_class` = "StatCalendar",
                                  compute_panel = compute_panel_calendar,
                                  default_aes = ggplot2::aes(x = ggplot2::after_stat(wday),
                                                             y = ggplot2::after_stat(week_of_month),
-                                                            label = ggplot2::after_stat(day)))
+                                                            label = ggplot2::after_stat(day),
+                                                            alpha = original))
 
 
 StatWeekly <- ggplot2::ggproto(`_class` = "StatCalendar",
